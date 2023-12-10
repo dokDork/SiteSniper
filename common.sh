@@ -102,7 +102,6 @@ site=$4
 folderAppo=$5
 # cartella principale del progetto /target/
 folderProject=$(manageFolder "$folderAppo")
-folderProjectEngine="$folderProject/engine"
 # PathFile con Users e Password
 pathFile_users="$folderProject/users.txt"
 pathFile_passwords="$folderProject/passwords.txt"
@@ -113,6 +112,7 @@ folderProjectQucikWin="$folderProject/QuickWin"
 folderProjectWebFingerprint="$folderProject/WebFingerprint"
 folderProjectWebInfo="$folderProject/WebInfoGathering"
 folderProjectWebAuthN="$folderProject/WebAuthNbypass"
+folderProjectEngine="$folderProjectWebAuthN/engine"
 folderProjectWebStuff="$folderProject/WebAuthNStuff"
 
 #===================================================================
@@ -151,3 +151,10 @@ if [ ! -d "$folderProjectWebStuff" ]; then
     # Se non esiste, crea la cartella
     mkdir -p "$folderProjectWebStuff"
 fi
+#preparo il folder con i file di appoggio per command injection
+if [ ! -d "$folderProjectEngine" ]; then
+    # Se non esiste, crea la cartella
+    mkdir -p "$folderProjectEngine"
+fi
+#copio i file dalla cartella di appoggio a quella di destinazione sul folder del progetto target sovrascrivendo nel caso siano già presenti
+cp -f ./engine/* "$folderProjectEngine"
