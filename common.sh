@@ -100,6 +100,8 @@ domain=$3
 # target site
 site=$4
 folderAppo=$5
+# wp-press token per analizzare il sito target
+wptoken="20En7agrVr8NXWYdZ8CczavcXaJaFYdRm6sWyhPEJu8"
 # cartella principale del progetto /target/
 folderProject=$(manageFolder "$folderAppo")
 # PathFile con Users e Password

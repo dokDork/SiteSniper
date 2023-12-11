@@ -95,6 +95,51 @@ tmux send-keys -t PT:5.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_h
 cd $folderProject
 
 
+
+# CMS: Joomla, wordpress, drupal & co
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:6 -n 'CMS: Joomla, wordpress, drupal & co'
+tmux split-window -v -t PT:6.0
+tmux split-window -v -t PT:6.1
+tmux split-window -v -t PT:6.2
+tmux split-window -v -t PT:6.3
+tmux split-window -v -t PT:6.4
+tmux select-pane -t "6.0"
+tmux split-window -h -t "6.0"
+tmux select-pane -t "6.2"
+tmux split-window -h -t "6.2"
+tmux split-window -h -t "6.2"
+tmux select-pane -t "6.5"
+tmux split-window -h -t "6.5"
+tmux split-window -h -t "6.5"
+tmux select-pane -t "6.8"
+tmux split-window -h -t "6.8"
+
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:6.0 "# whatweb analysis of target site" Enter
+tmux send-keys -t PT:6.0 "whatweb -a 3 http://$site"
+tmux send-keys -t PT:6.1 "# update (if necessary) scan tools" Enter
+tmux send-keys -t PT:6.1 "wpscan --update; joomscan update "
+tmux send-keys -t PT:6.2 "# wordpress scan with nmap analysis" Enter
+tmux send-keys -t PT:6.2 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
+tmux send-keys -t PT:6.3 "# wpscan with principal plugins and themes" Enter
+tmux send-keys -t PT:6.3 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
+tmux send-keys -t PT:6.4 "# wpscan with all plugins and themes" Enter
+tmux send-keys -t PT:6.4 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
+tmux send-keys -t PT:6.5 "# joomscam target site" Enter
+tmux send-keys -t PT:6.5 "joomscan -u http://$site"
+tmux send-keys -t PT:6.6 "# msfconsole to test joomla target site" Enter
+tmux send-keys -t PT:6.6 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:6.7 "# juumla to test joomla target site" Enter
+tmux send-keys -t PT:6.7 "python /opt/juumla/main.py -u http://$site"
+tmux send-keys -t PT:6.8 "# scan drupal site with droopescan" Enter
+tmux send-keys -t PT:6.8 "droopescan scan drupal -u http://$site -t 32"
+cd $folderProject
+
+
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 

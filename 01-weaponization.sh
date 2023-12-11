@@ -132,6 +132,29 @@ else
 	sudo apt-get install uniscan
 fi
 
+# juumscan (automatizzo l'analisi delle vulnerabilità di joomla)
+echo ""
+program="juumla"
+cd /opt
+if ! is_installed "juumla"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo git clone https://github.com/oppsec/juumla.git
+fi
+
+# droopescan (automatizzo l'analisi delle vulnerabilità di drupal)
+echo ""
+program="droopescan"
+cd /opt
+if ! is_installed "droopescan"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	pip install droopescan 
+fi
 
 
 # Synk e copilot
