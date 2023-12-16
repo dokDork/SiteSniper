@@ -107,34 +107,43 @@ tmux split-window -v -t PT:6.3
 tmux split-window -v -t PT:6.4
 tmux select-pane -t "6.0"
 tmux split-window -h -t "6.0"
-tmux select-pane -t "6.2"
-tmux split-window -h -t "6.2"
-tmux split-window -h -t "6.2"
-tmux select-pane -t "6.5"
-tmux split-window -h -t "6.5"
-tmux split-window -h -t "6.5"
-tmux select-pane -t "6.8"
-tmux split-window -h -t "6.8"
+tmux split-window -h -t "6.0"
+tmux select-pane -t "6.3"
+tmux split-window -h -t "6.3"
+tmux split-window -h -t "6.3"
+tmux split-window -h -t "6.3"
+tmux select-pane -t "6.7"
+tmux split-window -h -t "6.7"
+tmux split-window -h -t "6.7"
+tmux split-window -h -t "6.7"
+tmux select-pane -t "6.11"
+tmux split-window -h -t "6.11"
 
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# whatweb analysis of target site" Enter
-tmux send-keys -t PT:6.0 "whatweb -a 3 http://$site"
-tmux send-keys -t PT:6.1 "# update (if necessary) scan tools" Enter
-tmux send-keys -t PT:6.1 "wpscan --update; joomscan update "
-tmux send-keys -t PT:6.2 "# wordpress scan with nmap analysis" Enter
-tmux send-keys -t PT:6.2 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
-tmux send-keys -t PT:6.3 "# wpscan with principal plugins and themes" Enter
-tmux send-keys -t PT:6.3 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
-tmux send-keys -t PT:6.4 "# wpscan with all plugins and themes" Enter
-tmux send-keys -t PT:6.4 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
-tmux send-keys -t PT:6.5 "# joomscam target site" Enter
-tmux send-keys -t PT:6.5 "joomscan -u http://$site"
-tmux send-keys -t PT:6.6 "# msfconsole to test joomla target site" Enter
-tmux send-keys -t PT:6.6 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
-tmux send-keys -t PT:6.7 "# juumla to test joomla target site" Enter
-tmux send-keys -t PT:6.7 "python /opt/juumla/main.py -u http://$site"
-tmux send-keys -t PT:6.8 "# scan drupal site with droopescan" Enter
-tmux send-keys -t PT:6.8 "droopescan scan drupal -u http://$site -t 32"
+tmux send-keys -t PT:6.0 "# update (if necessary) scan tools" Enter
+tmux send-keys -t PT:6.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
+tmux send-keys -t PT:6.1 "# whatweb analysis of target site" Enter
+tmux send-keys -t PT:6.1 "whatweb -a 3 http://$site"
+tmux send-keys -t PT:6.2 "# cmsmap to scan target" Enter
+tmux send-keys -t PT:6.2 "cmsmap http://$site -F"
+tmux send-keys -t PT:6.3 "# wordpress scan with nmap analysis" Enter
+tmux send-keys -t PT:6.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
+tmux send-keys -t PT:6.4 "# wpscan with principal plugins and themes" Enter
+tmux send-keys -t PT:6.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
+tmux send-keys -t PT:6.5 "# wpscan with all plugins and themes" Enter
+tmux send-keys -t PT:6.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken [--disable-tls-checks]"
+tmux send-keys -t PT:6.6 "# cmsmap bruteforceCMS" Enter
+tmux send-keys -t PT:6.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+tmux send-keys -t PT:6.7 "# joomscam target site" Enter
+tmux send-keys -t PT:6.7 "joomscan -u http://$site"
+tmux send-keys -t PT:6.8 "# msfconsole to test joomla target site" Enter
+tmux send-keys -t PT:6.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:6.9 "# juumla to test joomla target site" Enter
+tmux send-keys -t PT:6.9 "python /opt/juumla/main.py -u http://$site"
+tmux send-keys -t PT:6.10 "# cmsmap bruteforce" Enter
+tmux send-keys -t PT:6.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
+tmux send-keys -t PT:6.11 "# scan drupal site with droopescan" Enter
+tmux send-keys -t PT:6.11 "droopescan scan drupal -u http://$site -t 32"
 cd $folderProject
 
 

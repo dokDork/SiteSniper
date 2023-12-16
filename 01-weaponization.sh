@@ -157,6 +157,43 @@ else
 fi
 
 
+# wisker / cupp (automatizzo la creazione di un dizionario)
+echo ""
+program="wisker"
+if ! is_installed "wisker"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	pip install wisker 
+fi
+program="cupp"
+if ! is_installed "cupp"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo apt-get install cupp
+fi
+
+
+# cmsmap (bruteforce su Joomla, WOrdpress e Drupal)
+echo ""
+program="cmsmap"
+cd /opt
+if ! is_installed "droopescan"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo  git clone https://github.com/Dionach/CMSmap
+	cd /opt/CMSmap 
+	sudo pip3 install .
+fi
+
+
+
+
 # Synk e copilot
 echo ""
 echo "[A] Synk e Copilot non possono essere installati in automatico"

