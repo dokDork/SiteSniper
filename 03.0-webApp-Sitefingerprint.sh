@@ -28,7 +28,7 @@ tmux send-keys -t PT:1.0 "# get common file (robots, sitemap, ...)" Enter
 tmux send-keys -t PT:1.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crosssite.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"""
 tmux send-keys -t PT:1.1 "# find a valid dictionary" Enter
 tmux send-keys -t PT:1.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
-tmux send-keys -t PT:1.2 "# site folder structure" Enter
+tmux send-keys -t PT:1.2 "# site folder structure. Try also webDAV on found folders (see 03.2-webApp-AuthNbypass.sh)" Enter
 tmux send-keys -t PT:1.2 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
 tmux send-keys -t PT:1.3 "# if target site respond always 20x" Enter
 tmux send-keys -t PT:1.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
@@ -74,68 +74,52 @@ tmux send-keys -t PT:4.0 "wfuzz -c -w /usr/share/wordlists/dirb/common.txt -w /u
 cd $folderProject
 
 
-# WEB DAV
-cd $folderProjectWebFingerprint
-# Layout
-tmux new-window -t PT:5 -n 'WEB DAV'
-tmux split-window -v -t PT:5.0
-tmux split-window -v -t PT:5.1
-tmux split-window -v -t PT:5.2
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# testing DAV" Enter
-tmux send-keys -t PT:5.0 "davtest --url http://$ip"
-tmux send-keys -t PT:5.1 "# testing DAV" Enter
-tmux send-keys -t PT:5.1 "davtest -move -sendbd auto --url http://$ip:8080/webdav/"
-tmux send-keys -t PT:5.2 "# testing DAV" Enter
-tmux send-keys -t PT:5.2 "cadaver http://$ip:8080/webdav/"
-cd $folderProject
-
-
 # WEB API
 cd $folderProjectWebFingerprint
 # Layout
-tmux new-window -t PT:6 -n 'WEB API'
-tmux split-window -v -t PT:6.0
-tmux split-window -v -t PT:6.1
-tmux split-window -v -t PT:6.2
+tmux new-window -t PT:5 -n 'WEB API'
+tmux split-window -v -t PT:5.0
+tmux split-window -v -t PT:5.1
+tmux split-window -v -t PT:5.2
+tmux split-window -v -t PT:5.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# find kr dictionary" Enter
-tmux send-keys -t PT:6.0 "/opt/kr wordlist list"
-tmux send-keys -t PT:6.1 "# find endPoint with kr" Enter
-tmux send-keys -t PT:6.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
-tmux send-keys -t PT:6.2 "# find endPoint with wfuzz" Enter
-tmux send-keys -t PT:6.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404 # find endpoint manually"
-tmux send-keys -t PT:6.3 "# analyze endPoint with curl " Enter
-tmux send-keys -t PT:6.3 "curl -X POST http://$site/api/v1/user # play with version"
+tmux send-keys -t PT:5.0 "# find kr dictionary" Enter
+tmux send-keys -t PT:5.0 "/opt/kr wordlist list"
+tmux send-keys -t PT:5.1 "# find endPoint with kr" Enter
+tmux send-keys -t PT:5.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
+tmux send-keys -t PT:5.2 "# find endPoint with wfuzz" Enter
+tmux send-keys -t PT:5.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404 # find endpoint manually"
+tmux send-keys -t PT:5.3 "# analyze endPoint with curl " Enter
+tmux send-keys -t PT:5.3 "curl -X POST http://$site/api/v1/user # play with version"
 
 
 # Guessing GET / POST Parameter
 cd $folderProjectWebFingerprint
 # Layout
-tmux new-window -t PT:7 -n 'Guessing GET/POST param'
-tmux split-window -v -t PT:7.0
-tmux split-window -v -t PT:7.1
-tmux split-window -v -t PT:7.2
-tmux split-window -v -t PT:7.3
+tmux new-window -t PT:6 -n 'Guessing GET/POST param'
+tmux split-window -v -t PT:6.0
+tmux split-window -v -t PT:6.1
+tmux split-window -v -t PT:6.2
+tmux split-window -v -t PT:6.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:7.0 "# find a valid parameter (GET)" Enter
-tmux send-keys -t PT:7.0 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?FUZZ=test"
-tmux send-keys -t PT:7.1 "# find a valid value (GET)" Enter
-tmux send-keys -t PT:7.1 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?Param1=FUZZ"
-tmux send-keys -t PT:7.2 "# find a valid parameter (POST)" Enter
-tmux send-keys -t PT:7.2 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&FUZZ=1" http://$site/action.php"
-tmux send-keys -t PT:7.3 "# find a valid value (POST)" Enter
-tmux send-keys -t PT:7.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
+tmux send-keys -t PT:6.0 "# find a valid parameter (GET)" Enter
+tmux send-keys -t PT:6.0 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?FUZZ=test"
+tmux send-keys -t PT:6.1 "# find a valid value (GET)" Enter
+tmux send-keys -t PT:6.1 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?Param1=FUZZ"
+tmux send-keys -t PT:6.2 "# find a valid parameter (POST)" Enter
+tmux send-keys -t PT:6.2 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&FUZZ=1" http://$site/action.php"
+tmux send-keys -t PT:6.3 "# find a valid value (POST)" Enter
+tmux send-keys -t PT:6.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
 
 
 # WEB Site Info
 cd $folderProjectWebFingerprint
 # Layout
-tmux new-window -t PT:8 -n 'WEB Site Info'
-tmux split-window -v -t PT:8.0
+tmux new-window -t PT:7 -n 'WEB Site Info'
+tmux split-window -v -t PT:7.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:8.0 "# get favicon and its creation date" Enter
-tmux send-keys -t PT:8.0 "wget http://$site/images/favicon.ico; exiftool favicon.ico"
+tmux send-keys -t PT:7.0 "# get favicon and its creation date" Enter
+tmux send-keys -t PT:7.0 "wget http://$site/images/favicon.ico; exiftool favicon.ico"
 cd $folderProject
 
 # Attivazione della modalità interattiva
