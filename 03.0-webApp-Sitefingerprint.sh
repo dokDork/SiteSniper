@@ -74,6 +74,7 @@ tmux send-keys -t PT:4.0 "wfuzz -c -w /usr/share/wordlists/dirb/common.txt -w /u
 cd $folderProject
 
 
+
 # WEB API
 cd $folderProjectWebFingerprint
 # Layout
@@ -91,6 +92,7 @@ tmux send-keys -t PT:5.2 "# find endPoint with wfuzz" Enter
 tmux send-keys -t PT:5.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404 # find endpoint manually"
 tmux send-keys -t PT:5.3 "# analyze endPoint with curl " Enter
 tmux send-keys -t PT:5.3 "curl -X POST http://$site/api/v1/user # play with version"
+
 
 
 # Guessing GET / POST Parameter
@@ -112,15 +114,21 @@ tmux send-keys -t PT:6.3 "# find a valid value (POST)" Enter
 tmux send-keys -t PT:6.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
 
 
+
+
 # WEB Site Info
 cd $folderProjectWebFingerprint
 # Layout
 tmux new-window -t PT:7 -n 'WEB Site Info'
 tmux split-window -v -t PT:7.0
+tmux split-window -v -t PT:7.1
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:7.0 "# get favicon and its creation date" Enter
 tmux send-keys -t PT:7.0 "wget http://$site/images/favicon.ico; exiftool favicon.ico"
+tmux send-keys -t PT:7.1 "# cookie analysis to get information about site framework " Enter
+tmux send-keys -t PT:7.1 "curl -s -I http://$site"
 cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT

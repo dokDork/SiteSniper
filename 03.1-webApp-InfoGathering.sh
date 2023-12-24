@@ -20,7 +20,7 @@ tmux new-window -t PT:1 -n 'WEB nmap whois'
 tmux split-window -v -t PT:1.0  
 tmux split-window -v -t PT:1.1 
 tmux split-window -v -t PT:1.2 
-tmux split-window -v -t PT:1.5 
+tmux split-window -v -t PT:1.3 
 tmux select-pane -t "1.2"
 tmux split-window -h -t "1.2"
 tmux split-window -h -t "1.2"
