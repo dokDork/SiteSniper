@@ -27,6 +27,8 @@ manageFolder() {
     else
         # se non esiste lo creo e lo apro
         touch "readme.txt"
+        echo "$ip" > readme.txt
+        echo "$domain" >> readme.txt
         # Apri il file readme.txt
         xdg-open "readme.txt"
     fi
@@ -149,7 +151,7 @@ fold=$domain
 
 # Mostra i valori e chiedi conferma/modifica
 ip=$(confirm_values "IP" "$ip")
-website=$(confirm_values "sito web" "$website")
+website=$(confirm_values "web site" "$website")
 domain=$(confirm_values "domain" "$domain")
 fold=$(confirm_values "project folder" "$fold")
 # Mostra i valori trovati o inseriti
