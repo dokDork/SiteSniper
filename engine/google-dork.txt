@@ -1,0 +1,26 @@
+# Uso googledork perchè pastebin non ha più la ricerca attiva
+site:pastebin.com $domain
+# Cerco informazioni su github
+site:github.com $domain
+# Cerco informazione su pastebin
+site:pastebin.com intext:$domain
+# Exposed directory
+intitle:"Index of" -inurl:(jsp|pl|php|html|aspx|htm|cf|shtml) -inurl:(listen77|mp3raid|mp3toss|mp3drug|index_of|wallywashis) site:$domain
+# Finding email lists:
+filetype:txt @gmail.com OR @yahoo.com OR @hotmail.com OR @aol.com site:$domain
+# Uncovering sensitive information in files:
+intitle:"Index of" password.txt site:$domain
+# Discovering login pages:
+inurl:admin/login site:$domain
+# Finding open FTP servers:
+intitle:"index of" inurl:ftp site:$domain
+# Discovering exposed configuration files:
+intitle:"index of" config.yml site:$domain
+# Finding open Git repositories:
+intitle:index of .git site:$domain
+# Finding sensitive files:
+intitle:"index of" password OR passcode OR passphrase OR keyfile site:$domain
+# Discovering exposed subdomains:
+site:\*.$domain -www
+# Finding exposed sensitive documents:
+filetype:pdf "Confidential" site:$domain

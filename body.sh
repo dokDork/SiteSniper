@@ -691,8 +691,13 @@ cd $folderProjectWebInfo
 tmux new-window -t PT:3 -n 'WEB google dork'
 tmux split-window -v -t PT:3.0
 # Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:3.0 "domain=$domain" Enter
+tmux send-keys -t PT:3.0 "ip=$ip" Enter
+tmux send-keys -t PT:3.0 "site=$site" Enter
 tmux send-keys -t PT:3.0 "# google dork" Enter
-tmux send-keys -t PT:3.0 "xdg-open \"https://google.com/?q=site:$domain filetype:php\" & xdg-open \"https://google.com/?q=site:$domain intitle:\"\"index of\"\" \"\"parent directory\"\"\" & xdg-open \"https://google.com/?q=site:$domain -site:www.$domain\" & xdg-open \"https://google.com/?q=site:pastebin.com $domain\" & xdg-open \"https://google.com/?q=site:github.com $domain\" & xdg-open \"https://google.com/?q=site:pastebin.com intext:$domain\" # google dork"
+#tmux send-keys -t PT:3.0 "xdg-open \"https://google.com/?q=site:$domain filetype:php\" & xdg-open \"https://google.com/?q=site:$domain intitle:\"\"index of\"\" \"\"parent directory\"\"\" & xdg-open \"https://google.com/?q=site:$domain -site:www.$domain\" & xdg-open \"https://google.com/?q=site:pastebin.com $domain\" & xdg-open \"https://google.com/?q=site:github.com $domain\" & xdg-open \"https://google.com/?q=site:pastebin.com intext:$domain\" # google dork"
+tmux send-keys -t PT:3.0 "grep -v '^#' $folderProjectEngine/google-dork.txt | sed 's/\$domain/\\$domain/g' | xargs -I {} xdg-open \"https://google.com/?q=\"{}"
+
 cd $folderProject
 
 
