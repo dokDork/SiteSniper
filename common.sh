@@ -45,7 +45,7 @@ local file_path=$1
 # Verifica se il file esiste, altrimenti lo crea
 if [ ! -e "$file_path" ]; then
 touch "$file_path"
-names=("admin" "administrator" "user" "guest" "root" "(name of box)" "wampp" "public" "private" "manager")
+names=("admin" "administrator" "user" "guest" "root" "(name of box)" "wampp" "public" "private" "manager" "support" "backup")
 for name in "${names[@]}"; do
     echo "$name" >> "$file_path"
 done

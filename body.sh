@@ -236,6 +236,19 @@ fi
 
 
 
+# dirsearch (search directory)
+echo ""
+program="dirsearch"
+cd /opt
+if ! is_installed "dirsearch"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo apt-get install dirsearch
+fi
+
+
 
 # Synk e copilot
 echo ""
@@ -517,6 +530,9 @@ tmux send-keys -t PT:1.3 "# if target site respond always 20x" Enter
 tmux send-keys -t PT:1.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
 tmux send-keys -t PT:1.4 "# if target site respond always 30x" Enter
 tmux send-keys -t PT:1.4 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
+tmux send-keys -t PT:1.5 "# dirsearch to find hidden folder" Enter
+tmux send-keys -t PT:1.5 "dirsearch -u http://$site"
+
 cd $folderProject
 
 
