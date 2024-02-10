@@ -429,6 +429,9 @@ open_terminal "bash -c 'echo EXPLOITATION; sleep 2;"
 
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "varie ed eventuali"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
 
 # OPEN-VPN
 #tmux new-window -t PT:1 -n 'openVPN'
@@ -440,9 +443,13 @@ cd $folderProjectInfoGathering
 # Layout
 tmux new-window -t PT:1 -n 'Information Gathering (dmitry, theharvester ...)'
 tmux split-window -v -t PT:1.0
-tmux split-window -v -t PT:1.1
+tmux select-pane -t "1.0"
+tmux split-window -h -t "1.0"
 tmux split-window -v -t PT:1.2
 tmux split-window -v -t PT:1.3
+tmux split-window -v -t PT:1.4
+tmux select-pane -t "1.4"
+tmux split-window -h -t "1.4"
 # Esecuzione dei comandi nelle sottofinestre
 # NMAP TCP - UDP
 tmux send-keys -t PT:1.0 "# dmitry" Enter
@@ -453,6 +460,11 @@ tmux send-keys -t PT:1.2 "# ping to analyze OS" Enter
 tmux send-keys -t PT:1.2 "ping -c 4 $ip"
 tmux send-keys -t PT:1.3 "# nmap to find OS" Enter
 tmux send-keys -t PT:1.3 "sudo nmap -Pn -O $ip"
+tmux send-keys -t PT:1.4 "# nslookup (from site -> IP)" Enter
+tmux send-keys -t PT:1.4 "nslookup $site"
+tmux send-keys -t PT:1.5 "# reverse nslookup (from IP -> site). Apply Target IP and also all IPs find by direct nslookup" Enter
+tmux send-keys -t PT:1.5 "# Try also reverse nslookup with yougetsignal" Enter
+tmux send-keys -t PT:1.5 "nslookup $ip"
 cd $folderProject
 
 # SERVICE INFORMATION GATHERING
@@ -518,6 +530,9 @@ tmux -2 attach-session -t PT
 open_terminal "bash -c 'echo WEB APP: site fingerprint; sleep 2;"
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "varie ed eventuali"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
 
 # OPEN-VPN
 #tmux new-window -t PT:1 -n 'openVPN'
@@ -675,6 +690,9 @@ tmux -2 attach-session -t PT
 open_terminal "bash -c 'echo WEB APP: INformation GAthering; sleep 2;"
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "varie ed eventuali"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
 
 # OPEN-VPN
 #tmux new-window -t PT:1 -n 'openVPN'
@@ -833,6 +851,9 @@ tmux -2 attach-session -t PT
 open_terminal "bash -c 'echo WEB APP: authN bypass; sleep 3;"
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "varie ed eventuali"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
 
 # OPEN-VPN
 #tmux new-window -t PT:1 -n 'openVPN'
