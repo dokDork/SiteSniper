@@ -1,6 +1,6 @@
 # SiteSniper
 
-![SiteSniper](path/to/image.png)
+![SiteSniper]([path/to/image.png](https://github.com/dokDork/red-team-penetration-test-script/blob/main/siteSniper.webp))
 
 ## Descrizione Generale
 
