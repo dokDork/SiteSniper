@@ -1,7 +1,5 @@
 # SiteSniper
-
-![SiteSniper](siteSniper.png)
-<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/siteSniper.png" width="100" height="100">
+<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/siteSniper.png" width="200" height="200">
 
 
 ## Descrizione Generale
