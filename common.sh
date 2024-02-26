@@ -109,10 +109,10 @@ confirm_values() {
 
 # Funzione per mostrare i valori
 show_values() {
-    echo "IP: $1"
-    echo "Sito web: $2"
-    echo "Dominio: $3"
-    echo "Project Folder $4"
+    echo "Target IP: $1"
+    echo "Target Web Site: $2"
+    echo "Target Domain: $3"
+    echo "Project Folder /$4/"
 }
 
 # Funzione per chiedere all'utente l'URL
@@ -174,6 +174,7 @@ folderAppo=$fold
 wptoken="20En7agrVr8NXWYdZ8CczavcXaJaFYdRm6sWyhPEJu8"
 # cartella principale del progetto /target/
 folderProject=$(manageFolder "$folderAppo")
+echo "Result Bucket Folder: $folderProject"
 # PathFile con Users e Password
 pathFile_users="$folderProject/users.txt"
 pathFile_passwords="$folderProject/passwords.txt"
