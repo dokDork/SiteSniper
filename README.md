@@ -1,6 +1,6 @@
 # SiteSniper
 
-![SiteSniper]([path/to/image.png](siteSniper.webp))
+![SiteSniper](siteSniper.png)
 
 ## Descrizione Generale
 
