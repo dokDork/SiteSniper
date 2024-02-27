@@ -20,7 +20,7 @@ To close the tmux session and return to principal menu use the tmux shortcut:
 
 ## Example Usage
 
-./siteSniper.sh eth0 https://www.example.com 
+`./siteSniper.sh eth0 https://www.example.com` 
 
 
 ## Command-line parameters
