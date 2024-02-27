@@ -18,7 +18,7 @@ To close the tmux session and return to principal menu use the tmux shortcut:
 
 ## Example Usage
 `./siteSniper.sh eth0 https://www.example.com` 
-<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/siteSniper.png">
+<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/01.png">
 
 
 ## Command-line parameters
