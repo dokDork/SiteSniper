@@ -20,8 +20,7 @@ To close the tmux session and return to principal menu use the tmux shortcut:
 
 ## Example Usage
 
-Per utilizzare SiteSniper, eseguire lo script dalla riga di comando con i seguenti parametri:
-./sitesniper.sh [opzioni]
+./siteSniper.sh eth0 https://www.example.com 
 
 
 ## Command-line parameters
