@@ -1,7 +1,5 @@
-coming soon
-
 # SiteSniper
-<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/siteSniper.png" width="200" height="200">
+<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/siteSniper.png" width="250" height="250">
 
 
 ## Description
@@ -19,8 +17,8 @@ To close the tmux session and return to principal menu use the tmux shortcut:
 
 
 ## Example Usage
-
 `./siteSniper.sh eth0 https://www.example.com` 
+<img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/siteSniper.png">
 
 
 ## Command-line parameters
