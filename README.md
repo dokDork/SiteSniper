@@ -46,7 +46,7 @@ To close the tmux session and return to principal menu use the tmux shortcut:
 | `target url`      | Target URL you need to test          | `http://www.example.com`          |
 
   
-## How to install on Kali Linux
+## How to install it on Kali Linux (or Debian distribution)
 It's very simple  
 ```
 cd /opt
