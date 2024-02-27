@@ -4,17 +4,27 @@ coming soon
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/siteSniper.png" width="200" height="200">
 
 
-## Descrizione Generale
+## Description
+sitesniper is a script created to automate some phases of a blackbox penetration test. Once the target has been identified, many scripts are prepared which you can decide if and when to execute them simply by pressing ENTER. It uses **tmux** as terminal so it is necessary to know how to use it.
+The scripts concern the phase of:
+- weaponization: a series of scripts that could be used in the post-exploitation phase on the target machine are loaded onto the attacking Linux machine;
+- target fingerprint and exploitation: scripts to collect information on the target (information gathering, service information gathering, OSINT, etc) and scripts that help identify possible exploits;
+- web App Site fingerprint: script for analyze site structure, virtual host, etc;
+- web App Information gathering: script to implement google dork, CMS analysis, etc;
+- web App AuthN bypass: script to implement service brute force, command injection, webDAV analysis, etc.
 
-SiteSniper è uno script di penetration testing progettato per automatizzare le fasi di weaponization, web app fingerprint e web app service information gathering. Utilizzando tecniche avanzate di scanning e exploit, SiteSniper aiuta i penetration tester a identificare e sfruttare vulnerabilità in applicazioni web.
+Once you select a phase, the script will prepare many tmux session with the precompiled command.
+To close the tmux session and return to principal menu use the tmux shortcut:
+**(CTRL + b) :kill-session**
 
-## Utilizzo
+
+## Example Usage
 
 Per utilizzare SiteSniper, eseguire lo script dalla riga di comando con i seguenti parametri:
 ./sitesniper.sh [opzioni]
 
 
-### Parametri
+## Command-line parameters
 
 | Parametro | Descrizione                          | Esempio       |
 |-----------|--------------------------------------|---------------|
@@ -23,7 +33,7 @@ Per utilizzare SiteSniper, eseguire lo script dalla riga di comando con i seguen
 | `-f`      | Esegue il web app fingerprint        | `-f`          |
 | `-g`      | Raccoglie informazioni sul servizio  | `-g`          |
 
-## Installazione
+## Installation on Kali Linux
 
 Per installare SiteSniper, seguire questi passaggi:
 
