@@ -25,7 +25,7 @@ do
     echo ""    
     echo "Select actions on [$site]:"
     echo "1. WEAPONIZATION: install usefull tools for penetration test."
-    echo "2. EXPLOITATION: Information gathering, service information gathering, quick win, etc."
+    echo "2. FINGERPRINT and EXPLOITATION: Information gathering, service information gathering, quick win, etc."
     echo "3. WEB APP: Site fingerprint (site structure, virtual host, etc)"
     echo "4. WEB APP: Information gathering (google dork, CMS, etc)"
     echo "5. WEB APP: AuthN bypass (brute force, command injection, webDAV, etc)"
