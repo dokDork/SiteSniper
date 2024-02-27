@@ -5,7 +5,7 @@ coming soon
 
 
 ## Description
-sitesniper is a script created to automate some phases of a blackbox penetration test. Once the target has been identified, many scripts are prepared which you can decide if and when to execute them simply by pressing ENTER. It uses **tmux** as terminal so it is necessary to know how to use it.
+**siteSniper** is a script created to automate some phases of a blackbox penetration test. Once the target has been identified, many scripts are prepared which you can decide if and when to execute them simply by pressing ENTER. It uses **tmux** as terminal so it is necessary to know how to use it.
 The scripts concern the phase of:
 - weaponization: a series of scripts that could be used in the post-exploitation phase on the target machine are loaded onto the attacking Linux machine;
 - target fingerprint and exploitation: scripts to collect information on the target (information gathering, service information gathering, OSINT, etc) and scripts that help identify possible exploits;
