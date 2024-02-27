@@ -1,6 +1,9 @@
 #!/bin/bash
-
-source "common.sh"
+# contiene:
+# - le funzioni comuni
+# - la richiesta dei parametri utente
+# - la creazione delle cartelle di progetto
+source "common"
 
 open_terminal() {
     # Determina il terminale da utilizzare in base al sistema operativo
@@ -425,10 +428,10 @@ open_terminal "bash -c 'echo EXPLOITATION; sleep 2;"
 # - le funzioni comuni
 # - la richiesta dei parametri utente
 # - la creazione delle cartelle di progetto
-#source "common.sh"
+#source "common"
 
 # Creazione di una sessione Tmux con attivazione VPN
-tmux new-session -d -s PT -n "varie ed eventuali"
+tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
@@ -529,7 +532,7 @@ tmux -2 attach-session -t PT
 
 open_terminal "bash -c 'echo WEB APP: site fingerprint; sleep 2;"
 # Creazione di una sessione Tmux con attivazione VPN
-tmux new-session -d -s PT -n "varie ed eventuali"
+tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
@@ -689,7 +692,7 @@ tmux -2 attach-session -t PT
 ######################
 open_terminal "bash -c 'echo WEB APP: INformation GAthering; sleep 2;"
 # Creazione di una sessione Tmux con attivazione VPN
-tmux new-session -d -s PT -n "varie ed eventuali"
+tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
@@ -850,7 +853,7 @@ tmux -2 attach-session -t PT
 ######################
 open_terminal "bash -c 'echo WEB APP: authN bypass; sleep 3;"
 # Creazione di una sessione Tmux con attivazione VPN
-tmux new-session -d -s PT -n "varie ed eventuali"
+tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
