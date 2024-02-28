@@ -29,9 +29,9 @@ do
     echo "Select actions on [$site]:"
     echo "1. WEAPONIZATION: install usefull tools for penetration test."
     echo "2. FINGERPRINT and EXPLOITATION: Information gathering, service information gathering, quick win, etc."
-    echo "3. WEB APP: Site fingerprint (site structure, virtual host, etc)"
-    echo "4. WEB APP: Information gathering (google dork, CMS, etc)"
-    echo "5. WEB APP: AuthN bypass (brute force, command injection, webDAV, etc)"
+    echo "3. WEB APP SITE FINGERPRINT: site structure, virtual host, etc"
+    echo "4. WEB APP INFORMATION GATHERING: google dork, CMS, etc"
+    echo "5. WEB APP AUTHN BYPASS: brute force, command injection, webDAV, etc"
     read -p "Enter the number of the desired action (0 to exit): " choice
 
     case $choice in
@@ -69,6 +69,8 @@ is_installed() {
 echo " ==="
 echo " === Utilità da installare su Kali ==="
 echo " ==="
+# aggiornamento apt
+sudo apt update
 
 # seclists
 program="seclists"
@@ -273,6 +275,46 @@ echo "[A] Synk e Copilot non possono essere installati in automatico"
 echo "    Per installarli vedi githib di ippsec"
 echo "    https://github.com/IppSec/parrot-build"
 
+
+# Docker
+echo ""
+program="Docker"
+cd /opt
+if [ -e "docker" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo sudo apt install docker.io -y
+fi
+
+
+# hakluke/hakrawler
+echo ""
+program="hakluke/hakrawler"
+cd /opt
+if [ -d "/opt/hakrawler" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo mkdir /opt/hakrawler
+	cd /opt/hakrawler
+	sudo git clone https://github.com/hakluke/hakrawler
+	cd hakrawler
+	sudo docker build -t hakluke/hakrawler .
+fi
+
+
+# sxcurity/gau
+echo ""
+program="sxcurity/gau"
+cd /opt
+if [ -d "/opt/gau" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo mkdir /opt/gau
+	sudo docker run --rm sxcurity/gau:latest --help
+fi
 
 
 
@@ -669,6 +711,21 @@ tmux split-window -v -t PT:8.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:8.0 "# WAF Detection (whatwaf)" Enter
 tmux send-keys -t PT:8.0 "sudo whatwaf -u http://$site"
+cd $folderProject
+
+
+
+# Site crowler
+cd $folderProjectWebFingerprint
+# Layout
+tmux new-window -t PT:9 -n 'Site Crowler'
+tmux split-window -v -t PT:9.0
+tmux split-window -v -t PT:9.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:9.0 "# Site Crowler Passive (sxcurity/gau)" Enter
+tmux send-keys -t PT:9.0 "sudo docker run --rm -i sxcurity/gau $domain --subs"
+tmux send-keys -t PT:9.1 "# Site Crowler Active (hakluke/hakrawler)" Enter
+tmux send-keys -t PT:9.1 "echo https://$site | sudo docker run --rm -i hakluke/hakrawler -subs"
 cd $folderProject
 
 
