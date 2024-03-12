@@ -28,10 +28,14 @@ with open(file_in, 'r') as f:
             # Lo script python restituisce poi per ogni comando le seguenti regole
             # $(<COMANDO>)
             out.write('$(' + line + ')\n')            
+            # %00<COMANDO>
+            out.write('%00' + line + '\n')
             # <COMANDO>%00
             out.write(line + '%00\n')
             # <COMANDO>%
             out.write(line + '%\n')
+            # %0A<COMANDO>
+            out.write('%0A' + line + '\n')            
             # <COMANDO>%0A
             out.write(line + '%0A\n')
             # <COMANDO>?
