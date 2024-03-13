@@ -19,18 +19,18 @@ Once you select a phase, the script will prepare many tmux session with the prec
  ``` 
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/01.png">
 
-Select one of the possible penetration test phase:
+select one of the penetration test PHASES you are interested in:
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/02.png">
 
-Once selected the phase scripts will be generated using tmux.
-At this point you can select a specific action using tmux commands:  
+Once selected the PHASE, scripts will be generated using tmux as terminal.
+At this point you can select a specific SUB-PHASE using tmux commands:  
 **(CTRL + b) w**  
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/03.png">
 
-once the action has been selected you will be able to view the scripts that have been pre-compiled and decide which of these to execute:
+once the SUB-PHASE has been selected you will be able to view the commands that have been pre-compiled to analyse the SUB-PHASE. At this point it is possible to selecet and execute a specific command just pressing ENTER:
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/04.png">
 
-To close the tmux session and return to principal menu use the tmux shortcut:  
+When you need to change penetration test PHASE and return to main manu, you need to close the tmux session. To implement this action you need to use the tmux shortcut:  
 **(CTRL + b) :kill-session**  
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/05.png">
 
