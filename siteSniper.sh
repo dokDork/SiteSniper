@@ -524,8 +524,8 @@ tmux split-window -h -t "2.2"
 tmux split-window -h -t "2.2"
 # Esecuzione dei comandi nelle sottofinestre
 # NMAP TCP - UDP
-tmux send-keys -t PT:2.0 "# nmap (TCP)" Enter
-tmux send-keys -t PT:2.0 "sudo nmap -sV -vv -p- -T5 --script firewall-bypass $ip -oA out.TCP"
+tmux send-keys -t PT:2.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
+tmux send-keys -t PT:2.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
 tmux send-keys -t PT:2.1 "# nmap (UDP)" Enter
 tmux send-keys -t PT:2.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
 tmux send-keys -t PT:2.2 "# nmap (on specific port)" Enter
@@ -534,6 +534,8 @@ tmux send-keys -t PT:2.3 "# nmap (on specific port - vulners)" Enter
 tmux send-keys -t PT:2.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
 tmux send-keys -t PT:2.4 "# nmap (on specific port - vulscan)" Enter
 tmux send-keys -t PT:2.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
+tmux send-keys -t PT:2.5 "# nmap (TCP) WITH firewall evasion" Enter
+tmux send-keys -t PT:2.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
 cd $folderProject
 
 # QUICK WIN
