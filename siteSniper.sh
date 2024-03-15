@@ -592,22 +592,42 @@ tmux new-window -t PT:1 -n 'WEB Site Structure'
 tmux split-window -v -t PT:1.0  
 tmux split-window -v -t PT:1.1 
 tmux split-window -v -t PT:1.2 
+tmux split-window -v -t PT:1.3 
 tmux select-pane -t "1.2"
 tmux split-window -h -t "1.2"
 tmux split-window -h -t "1.2"
+tmux select-pane -t "1.5"
+tmux split-window -h -t "1.5"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:1.0 "# get common file (robots, sitemap, ...)" Enter
 tmux send-keys -t PT:1.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crosssite.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"""
-tmux send-keys -t PT:1.1 "# find a valid dictionary" Enter
+
 tmux send-keys -t PT:1.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
-tmux send-keys -t PT:1.2 "# site folder structure. Try also webDAV on found folders (see 03.2-webApp-AuthNbypass.sh)" Enter
+tmux send-keys -t PT:1.2 "# find site structure" Enter
+tmux send-keys -t PT:1.2 "# Remeber also that:" Enter
+tmux send-keys -t PT:1.2 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:1.2 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:1.2 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:1.2 "# site folder structure." Enter
 tmux send-keys -t PT:1.2 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
 tmux send-keys -t PT:1.3 "# if target site respond always 20x" Enter
 tmux send-keys -t PT:1.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
 tmux send-keys -t PT:1.4 "# if target site respond always 30x" Enter
 tmux send-keys -t PT:1.4 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
-tmux send-keys -t PT:1.5 "# dirsearch to find hidden folder" Enter
-tmux send-keys -t PT:1.5 "dirsearch -u http://$site"
+tmux send-keys -t PT:1.5 "# dirsearch to find hidden folder (BIG search)" Enter
+tmux send-keys -t PT:1.5 "# find site structure" Enter
+tmux send-keys -t PT:1.5 "# Remeber also that:" Enter
+tmux send-keys -t PT:1.5 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:1.5 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:1.5 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:1.5 "dirsearch -u http://$site /usr/share/wordlists/dirb/big.txt"
+tmux send-keys -t PT:1.6 "# dirsearch to find hidden folder" Enter
+tmux send-keys -t PT:1.6 "# find site structure" Enter
+tmux send-keys -t PT:1.6 "# Remeber also that:" Enter
+tmux send-keys -t PT:1.6 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:1.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:1.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:1.6 "dirsearch -u http://$site"
 
 cd $folderProject
 
