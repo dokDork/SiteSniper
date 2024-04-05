@@ -1,0 +1,33 @@
+##  Ricerca nomi:
+# Github username
+https://api.github.com/users/<username>/events/public
+# Tinder username
+https://tinder.com/@<username>
+	
+## Email
+# Dato un dominio trovo le email associate a quel dominio
+https://www.skymem.info/
+https://www.email-format.com/
+	
+## Email reputation
+https://emailrep.io/
+	
+# Email compromessa in qualche data breach
+https://haveibeenpwned.com/
+	
+## Domain
+# Whois online
+https://whois.domaintools.com/
+	
+# DNS lookup
+https://www.robtex.com/
+	
+## Site Reputation
+https://www.urlvoid.com/
+https://global.sitesafety.trendmicro.com/
+https://zulu.zscaler.com/
+https://www.brightcloud.com/tools/url-ip-lookup.php
+	
+## Dns twist
+# Per avere domini simili al target
+https://dnstwister.report/

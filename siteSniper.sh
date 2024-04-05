@@ -38,8 +38,8 @@ do
     echo ""
     echo ""    
     echo "Select actions on [$site]:"
-    echo "1. Weaponization: install usefull tools for penetration test."
-    echo "2. Information Gathering: information gathering (dmitry, theharvester), service information gathering (nmap) etc."
+    echo "1. Userful Tool: install usefull tools for penetration test."
+    echo "2. Information Gathering: OSINT and Service Information Gathering (nmap) etc."
     echo "3. WEB Information Gathering: WAF detection, site structure, virtual host, etc"
     echo "4. Quick Win: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
@@ -332,6 +332,44 @@ else
 fi
 
 
+# sublist3r (OSINT: subdomain)
+echo ""
+program="sublist3r"
+cd /opt
+if [ -e "sublist3r" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install sublist3r
+fi
+
+
+# spiderfoot (OSINT: info)
+echo ""
+program="spiderfoot"
+cd /opt
+if [ -e "spiderfoot" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install spiderfoot
+fi
+
+
+# metagoofil (OSINT: meta info)
+echo ""
+program="metagoofil"
+cd /opt
+if [ -e "metagoofil" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install metagoofil
+fi
+
+
+
+
 
 
 # ===
@@ -475,7 +513,7 @@ sudo chmod 755 *
         2)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> Information Gathering: information gathering (dmitry, theharvester), service information gathering (nmap) etc."
+###################### 	>>>>>>>>>>>>>>>>> Information Gathering: OSINT from web (synapsint, crt), from cmd (dmitry, theharvester) and service information gathering (nmap) etc."
 ######################
 ######################
 tmux new-session -d -s PT -n "any other business"
@@ -486,58 +524,87 @@ tmux send-keys "domain=$domain" Enter
 
 # INFORMATION GATHERING
 cd $folderProjectInfoGathering
+# OSINT from WEB interesting (synopsint, crt) and other ()
+# Layout
+tmux new-window -t PT:1 -n 'OSINT from web interesting and other stuff'
+tmux split-window -v -t PT:1.0
+tmux split-window -v -t PT:1.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# OSINT from web interesting stuff" Enter
+tmux send-keys -t PT:1.0 "grep -v '^#' $folderProjectEngine/osint-web-interesting.txt | xargs -I {} xdg-open {}"
+tmux send-keys -t PT:1.1 "# OSINT from web other stuff" Enter
+tmux send-keys -t PT:1.1 "grep -v '^#' $folderProjectEngine/osint-web-other.txt | xargs -I {} xdg-open {}" 
+cd $folderProject
+
+
+cd $folderProjectInfoGathering
 # Dmitry, Theharvester, ping / nmap, nslookup, ecc
 # Layout
-tmux new-window -t PT:1 -n 'Information Gathering (dmitry, theharvester ...)'
-tmux split-window -v -t PT:1.0
-tmux select-pane -t "1.0"
-tmux split-window -h -t "1.0"
-tmux split-window -v -t PT:1.2
-tmux split-window -v -t PT:1.3
-tmux split-window -v -t PT:1.4
-tmux select-pane -t "1.4"
-tmux split-window -h -t "1.4"
+tmux new-window -t PT:2 -n 'OSINT from cmd (dmitry, theharvester ...)'
+tmux split-window -v -t PT:2.0
+tmux split-window -v -t PT:2.1
+tmux split-window -v -t PT:2.2
+tmux split-window -v -t PT:2.3
+tmux select-pane -t "2.1"
+tmux split-window -h -t "2.1"
+tmux select-pane -t "2.3"
+tmux split-window -h -t "2.3"
+tmux split-window -h -t "2.3"
+tmux split-window -h -t "2.3"
+tmux select-pane -t "2.7"
+tmux split-window -h -t "2.7"
+tmux split-window -h -t "2.7"
+tmux split-window -h -t "2.7"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:1.0 "# dmitry" Enter
-tmux send-keys -t PT:1.0 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
-tmux send-keys -t PT:1.1 "# theHarvester" Enter
-tmux send-keys -t PT:1.1 "theHarvester -d $domain -b all -l 500 -f $folderProjectInfoGathering/theharvester.html"
-tmux send-keys -t PT:1.2 "# ping to analyze OS" Enter
-tmux send-keys -t PT:1.2 "ping -c 4 $ip"
-tmux send-keys -t PT:1.3 "# nmap to find OS" Enter
-tmux send-keys -t PT:1.3 "sudo nmap -Pn -O $ip"
-tmux send-keys -t PT:1.4 "# nslookup (from site -> IP)" Enter
-tmux send-keys -t PT:1.4 "nslookup $site"
-tmux send-keys -t PT:1.5 "# reverse nslookup (from IP -> site). Apply Target IP and also all IPs find by direct nslookup" Enter
-tmux send-keys -t PT:1.5 "# Try also reverse nslookup with yougetsignal" Enter
-tmux send-keys -t PT:1.5 "nslookup $ip"
+tmux send-keys -t PT:2.0 "# sublist3r (subdomain)" Enter
+tmux send-keys -t PT:2.0 "sublist3r -d $domain"
+tmux send-keys -t PT:2.1 "# ping (OS)" Enter
+tmux send-keys -t PT:2.1 "ping -c 4 $ip"
+tmux send-keys -t PT:2.2 "# nmap (OS)" Enter
+tmux send-keys -t PT:2.2 "sudo nmap -Pn -O $ip"
+tmux send-keys -t PT:2.3 "# whois (domain)" Enter
+tmux send-keys -t PT:2.3 "whois $domain"
+tmux send-keys -t PT:2.4 "# host (DNS)" Enter
+tmux send-keys -t PT:2.4 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
+tmux send-keys -t PT:2.5 "# nslookup IP (DNS)" Enter
+tmux send-keys -t PT:2.5 "nslookup $ip"
+tmux send-keys -t PT:2.6 "# nslookup site (DNS)" Enter
+tmux send-keys -t PT:2.6 "nslookup $site"
+tmux send-keys -t PT:2.7 "# dmitry (info)" Enter
+tmux send-keys -t PT:2.7 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
+tmux send-keys -t PT:2.8 "# theHarvester (info)" Enter
+tmux send-keys -t PT:2.8 "theHarvester -d $domain -b all -l 500 -f $folderProjectInfoGathering/theharvester.html"
+tmux send-keys -t PT:2.9 "# spiderfoot (info)" Enter
+tmux send-keys -t PT:2.9 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083 "
+tmux send-keys -t PT:2.10 "# metagoofil (metainfo: pdf, doc, xls, ppt, docx, pptx, xlsx) -> exiftool <file>" Enter
+tmux send-keys -t PT:2.10 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderProjectInfoGathering/metagoofil-result.txt -o $folderProjectInfoGathering/"
 cd $folderProject
 
 
 cd $folderProjectInfoGathering
 # nmap
 # Layout
-tmux new-window -t PT:2 -n 'nmap: Service analysis'
-tmux split-window -v -t PT:2.0
-tmux split-window -v -t PT:2.1
-tmux split-window -v -t PT:2.2
-tmux select-pane -t "2.2"
-tmux split-window -h -t "2.2"
-tmux split-window -h -t "2.2"
+tmux new-window -t PT:3 -n 'nmap: Service analysis'
+tmux split-window -v -t PT:3.0
+tmux split-window -v -t PT:3.1
+tmux split-window -v -t PT:3.2
+tmux select-pane -t "3.2"
+tmux split-window -h -t "3.2"
+tmux split-window -h -t "3.2"
 # Esecuzione dei comandi nelle sottofinestre
 # NMAP TCP - UDP
-tmux send-keys -t PT:2.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
-tmux send-keys -t PT:2.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
-tmux send-keys -t PT:2.1 "# nmap (UDP)" Enter
-tmux send-keys -t PT:2.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
-tmux send-keys -t PT:2.2 "# nmap (on specific port)" Enter
-tmux send-keys -t PT:2.2 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p <ports>"
-tmux send-keys -t PT:2.3 "# nmap (on specific port - vulners)" Enter
-tmux send-keys -t PT:2.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
-tmux send-keys -t PT:2.4 "# nmap (on specific port - vulscan)" Enter
-tmux send-keys -t PT:2.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
-tmux send-keys -t PT:2.5 "# nmap (TCP) WITH firewall evasion" Enter
-tmux send-keys -t PT:2.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
+tmux send-keys -t PT:3.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
+tmux send-keys -t PT:3.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
+tmux send-keys -t PT:3.1 "# nmap (UDP)" Enter
+tmux send-keys -t PT:3.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
+tmux send-keys -t PT:3.2 "# nmap (on specific port)" Enter
+tmux send-keys -t PT:3.2 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p <ports>"
+tmux send-keys -t PT:3.3 "# nmap (on specific port - vulners)" Enter
+tmux send-keys -t PT:3.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
+tmux send-keys -t PT:3.4 "# nmap (on specific port - vulscan)" Enter
+tmux send-keys -t PT:3.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
+tmux send-keys -t PT:3.5 "# nmap (TCP) WITH firewall evasion" Enter
+tmux send-keys -t PT:3.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
 cd $folderProject
 
 # Attivazione della modalità interattiva

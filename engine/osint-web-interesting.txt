@@ -1,0 +1,11 @@
+## Subdomain
+https://synapsint.com/
+# (voci domain - SSL)
+https://pentest-tools.com/information-gathering/find-subdomains-of-domain
+https://urlscan.io/search/#*
+https://crt.sh/
+https://dnsdumpster.com/
+# (con grafico finale)
+
+## Scanner online (nmap)
+https://portscanner.online/
