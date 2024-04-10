@@ -24,22 +24,11 @@ open_terminal() {
 
 while true
 do
-# XXX
-#    echo ""
-#    echo ""    
-#    echo "Select actions on [$site]:"
-#    echo "1. WEAPONIZATION: install usefull tools for penetration test."
-#    echo "2. FINGERPRINT and EXPLOITATION: Information gathering, service information gathering, quick win, etc."
-#    echo "3. WEB APP SITE FINGERPRINT: site structure, virtual host, etc"
-#    echo "4. WEB APP INFORMATION GATHERING: google dork, CMS, etc"
-#    echo "5. WEB APP AUTHN BYPASS: brute force, command injection, webDAV, etc"
-#    read -p "Enter the number of the desired action (0 to exit): " choice
-
     echo ""
     echo ""    
     echo "Select actions on [$site]:"
     echo "1. Userful Tool: install usefull tools for penetration test."
-    echo "2. Information Gathering: OSINT and Service Information Gathering (nmap) etc."
+    echo "2. Information Gathering: OSINT, Service Information Gathering (nmap), WAF Detection etc."
     echo "3. WEB Information Gathering: WAF detection, site structure, virtual host, etc"
     echo "4. Quick Win: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
@@ -606,6 +595,52 @@ tmux send-keys -t PT:3.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulsc
 tmux send-keys -t PT:3.5 "# nmap (TCP) WITH firewall evasion" Enter
 tmux send-keys -t PT:3.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
 cd $folderProject
+
+
+cd $folderProjectInfoGathering
+# firewall detection
+# Layout
+tmux new-window -t PT:4 -n 'Firewall detection'
+tmux split-window -v -t PT:4.0
+tmux split-window -v -t PT:4.1
+tmux split-window -v -t PT:4.2
+tmux split-window -v -t PT:4.3
+tmux select-pane -t "4.1"
+tmux split-window -h -t "4.1"
+# Esecuzione dei comandi nelle sottofinestre
+# FIREWALL DETECTION
+tmux send-keys -t PT:4.0 "# nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
+tmux send-keys -t PT:4.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
+tmux send-keys -t PT:4.1 "# nmap (firewalk)" Enter
+tmux send-keys -t PT:4.1 "sudo nmap --script=firewalk --traceroute $ip"
+tmux send-keys -t PT:4.2 "# nmap (waf-detection)" Enter
+tmux send-keys -t PT:4.2 "nmap --script=http-waf-detect $ip -Pn -p 80"
+tmux send-keys -t PT:4.3 "# wafw00f" Enter
+tmux send-keys -t PT:4.3 "wafw00f -va $site"
+tmux send-keys -t PT:4.4 "# firewalk" Enter
+tmux send-keys -t PT:4.4 "firewalk -S1-1024 -i <interface> -n -pTCP <gateway IP> $ip"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# nmap with firewall
+# Layout
+tmux new-window -t PT:5 -n 'Nmap trough Firewall'
+tmux split-window -v -t PT:5.0
+tmux split-window -v -t PT:5.1
+tmux split-window -v -t PT:5.2
+tmux split-window -v -t PT:5.3
+# Esecuzione dei comandi nelle sottofinestre
+# NMAP THROUGH FIREWALL
+tmux send-keys -t PT:5.0 "# snmap (ource port 80)" Enter
+tmux send-keys -t PT:5.0 "sudo nmap -g 80 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.s80"
+tmux send-keys -t PT:5.1 "# nmap (decoy)" Enter
+tmux send-keys -t PT:5.1 "sudo nmap -D 216.58.212.67,66.196.86.81,me,46.228.47.115,104.28.6.11,104.27.163.229,198.84.60.198,192.124.249.8 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.decoy"
+tmux send-keys -t PT:5.2 "# nmap (SYN + FIN)" Enter
+tmux send-keys -t PT:5.2 "sudo nmap -sS --scanflags SYNFIN $ip"
+tmux send-keys -t PT:5.3 "# nmap (slowly)" Enter
+tmux send-keys -t PT:5.3 "sudo nmap -T2 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.slow"
+cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
