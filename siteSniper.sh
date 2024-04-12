@@ -527,7 +527,7 @@ cd $folderProject
 
 
 cd $folderProjectInfoGathering
-# Dmitry, Theharvester, ping / nmap, nslookup, ecc
+# OSINT from CMD (Dmitry, Theharvester, ping / nmap, nslookup, ecc)
 # Layout
 tmux new-window -t PT:2 -n 'OSINT from cmd (dmitry, theharvester ...)'
 tmux split-window -v -t PT:2.0
@@ -536,14 +536,15 @@ tmux split-window -v -t PT:2.2
 tmux split-window -v -t PT:2.3
 tmux select-pane -t "2.1"
 tmux split-window -h -t "2.1"
-tmux select-pane -t "2.3"
-tmux split-window -h -t "2.3"
-tmux split-window -h -t "2.3"
-tmux split-window -h -t "2.3"
-tmux select-pane -t "2.7"
-tmux split-window -h -t "2.7"
-tmux split-window -h -t "2.7"
-tmux split-window -h -t "2.7"
+tmux split-window -h -t "2.1"
+tmux select-pane -t "2.4"
+tmux split-window -h -t "2.4"
+tmux split-window -h -t "2.4"
+tmux split-window -h -t "2.4"
+tmux select-pane -t "2.8"
+tmux split-window -h -t "2.8"
+tmux split-window -h -t "2.8"
+tmux split-window -h -t "2.8"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:2.0 "# sublist3r (subdomain)" Enter
 tmux send-keys -t PT:2.0 "sublist3r -d $domain"
@@ -553,20 +554,22 @@ tmux send-keys -t PT:2.2 "# nmap (OS)" Enter
 tmux send-keys -t PT:2.2 "sudo nmap -Pn -O $ip"
 tmux send-keys -t PT:2.3 "# whois (domain)" Enter
 tmux send-keys -t PT:2.3 "whois $domain"
-tmux send-keys -t PT:2.4 "# host (DNS)" Enter
-tmux send-keys -t PT:2.4 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
-tmux send-keys -t PT:2.5 "# nslookup IP (DNS)" Enter
-tmux send-keys -t PT:2.5 "nslookup $ip"
-tmux send-keys -t PT:2.6 "# nslookup site (DNS)" Enter
-tmux send-keys -t PT:2.6 "nslookup $site"
-tmux send-keys -t PT:2.7 "# dmitry (info)" Enter
-tmux send-keys -t PT:2.7 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
-tmux send-keys -t PT:2.8 "# theHarvester (info)" Enter
-tmux send-keys -t PT:2.8 "theHarvester -d $domain -b all -l 500 -f $folderProjectInfoGathering/theharvester.html"
-tmux send-keys -t PT:2.9 "# spiderfoot (info)" Enter
-tmux send-keys -t PT:2.9 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083 "
-tmux send-keys -t PT:2.10 "# metagoofil (metainfo: pdf, doc, xls, ppt, docx, pptx, xlsx) -> exiftool <file>" Enter
-tmux send-keys -t PT:2.10 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderProjectInfoGathering/metagoofil-result.txt -o $folderProjectInfoGathering/"
+tmux send-keys -t PT:2.4 "# Advanced DNS All-in-One (dnsrecon - fierce)" Enter
+tmux send-keys -t PT:2.4 "dnsrecon -d $domain & fierce --domain $domain"
+tmux send-keys -t PT:2.5 "# host (DNS)" Enter
+tmux send-keys -t PT:2.5 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
+tmux send-keys -t PT:2.6 "# Zone Transfer (dig)" Enter
+tmux send-keys -t PT:2.6 "dig axfr $domain"
+tmux send-keys -t PT:2.7 "# nslookup IP - Site (DNS)" Enter
+tmux send-keys -t PT:2.7 "nslookup $ip & nslookup $site"
+tmux send-keys -t PT:2.8 "# dmitry (info)" Enter
+tmux send-keys -t PT:2.8 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
+tmux send-keys -t PT:2.9 "# theHarvester (info)" Enter
+tmux send-keys -t PT:2.9 "theHarvester -d $domain -b all -l 500 -f $folderProjectInfoGathering/theharvester.html"
+tmux send-keys -t PT:2.10 "# spiderfoot (info)" Enter
+tmux send-keys -t PT:2.10 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083 "
+tmux send-keys -t PT:2.11 "# metagoofil (metainfo: pdf, doc, xls, ppt, docx, pptx, xlsx) -> exiftool <file>" Enter
+tmux send-keys -t PT:2.11 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderProjectInfoGathering/metagoofil-result.txt -o $folderProjectInfoGathering/"
 cd $folderProject
 
 
