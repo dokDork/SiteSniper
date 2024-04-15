@@ -357,6 +357,17 @@ else
 fi
 
 
+# ZAP (vulnerability assessment)
+echo ""
+program="zap"
+cd /opt
+if [ -e "zap" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo mkdir /opt/zap &&sudo wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2_14_0_unix.sh -O /opt/zap/zap.sh && sudo chmod +x /opt/zap/zap.sh
+fi
+
 
 
 
@@ -999,7 +1010,7 @@ tmux -2 attach-session -t PT
         4)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> Quick Win: duckduckgo, searchsploit, nessus, nikto, etc
+###################### 	>>>>>>>>>>>>>>>>> Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc
 ######################
 ######################
 
@@ -1068,6 +1079,16 @@ tmux send-keys -t PT:4.0 "# Nikto vulnerability scan" Enter
 tmux send-keys -t PT:4.0 "sudo nikto -h http://$site"
 cd $folderProject
 
+
+
+# ZAP
+cd $folderProjectQuickWin
+# Layout
+tmux new-window -t PT:5 -n 'ZAP'
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:5.0 "# ZAP vulnerability scan" Enter
+tmux send-keys -t PT:5.0 "sudo /opt/zaproxy/zap.sh"
+cd $folderProject
 
 
 # Attivazione della modalità interattiva
