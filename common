@@ -141,7 +141,7 @@ if [ "$#" -ne 2 ]; then
     exit 1
 fi
 
-
+iface=$1
 url=$2
 # Estrai valori
 ip=$(get_ip "$url")
@@ -170,7 +170,7 @@ domain=$domain
 # target site
 site=$website
 folderAppo=$fold
-# wp-press token per analizzare il sito target
+# wp-press test token per analizzare il sito target
 wptoken="20En7agrVr8NXWYdZ8CczavcXaJaFYdRm6sWyhPEJu8"
 # cartella principale del progetto /target/
 folderProject=$(manageFolder "$folderAppo")
