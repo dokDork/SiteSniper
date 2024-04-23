@@ -50,7 +50,6 @@ do
 ###################### 	>>>>>>>>>>>>>>>>> WEAPONIZATION
 ######################
 ######################
-#XXX open_terminal "bash -c 'echo WEAPONIZATION; sleep 2;"
 # Parametri
 folderLin="/opt/_lin"
 folderWin="/opt/_win"
@@ -65,7 +64,16 @@ is_installed() {
     fi
 }
 
-
+    echo ""
+    echo "1. Kali Linux: tools to install on kali linux."
+    echo "2. target Linux: userful tool to upload to a target linux type."
+    echo "3. target Windows: userful tool to upload to a target windows type.."        
+    read -p "Enter the number of the desired action (0 to return Main Menu): " instachoice
+    case $instachoice in
+        0)
+            break
+        ;;
+        1)
 # ===
 # === APPLICAZIONI DA INSTALLARE SU KALI
 # ===
@@ -371,7 +379,8 @@ fi
 
 
 
-
+        ;;
+        2)
 # ===
 # === APPLICAZIONI PER TARGET LINUX
 # ===
@@ -433,7 +442,8 @@ sudo apt-get install python3-impacket
 
 
 
-
+            ;;
+        3)
 # ===
 # === APPLICAZIONI PER TARGET WINDOWS
 # ===
@@ -503,8 +513,8 @@ sudo wget -N https://download.sysinternals.com/files/Procdump.zip
 sudo unzip -o Procdump.zip
 sudo chmod 755 *
 ;;
-
-            
+esac
+;;            
             
             
             
