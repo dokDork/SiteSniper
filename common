@@ -45,7 +45,7 @@ local file_path=$1
 # Verifica se il file esiste, altrimenti lo crea
 if [ ! -e "$file_path" ]; then
 touch "$file_path"
-names=("admin" "administrator" "user" "guest" "root" "(name of box)" "wampp" "public" "private" "manager" "support" "backup")
+names=("admin" "" "administrator" "user" "guest" "root" "(name of box)" "wampp" "public" "private" "manager" "support" "backup")
 for name in "${names[@]}"; do
     echo "$name" >> "$file_path"
 done
@@ -59,7 +59,7 @@ local file_path=$1
 # Verifica se il file esiste, altrimenti lo crea
 if [ ! -e "$file_path" ]; then
 touch "$file_path"
-names=("admin" "password" "administrator" "(name of box)" "user" "12345" "guest" "root" "xampp" "public" "private" "manager")
+names=("admin" "" "password" "administrator" "(name of box)" "user" "12345" "guest" "root" "xampp" "public" "private" "manager")
 for name in "${names[@]}"; do
     echo "$name" >> "$file_path"
 done
@@ -188,7 +188,11 @@ folderProjectServiceInfoGathering="$folderProject/ServiceInfoGathering"
 folderProjectWebFingerprint="$folderProject/WebFingerprint"
 folderProjectEngine="$folderProjectWebAuthN/engine"
 folderProjectWebStuff="$folderProject/WebAuthNStuff"
+folderProjectToTarget="$folderProject/toTarget"
+folderProjectFromTarget="$folderProject/fromTarget"
+folderProjectCrack="$folderProject/crack"
 
+echo "$folderProjectCrack - $folderProjectFromTarget - $folderProjectToTarget"
 #===================================================================
 
 # Creo il file con users e passwords
@@ -225,10 +229,24 @@ if [ ! -d "$folderProjectWebStuff" ]; then
     # Se non esiste, crea la cartella
     mkdir -p "$folderProjectWebStuff"
 fi
+if [ ! -d "$folderProjectToTarget" ]; then
+    # Se non esiste, crea la cartella
+    mkdir -p "$folderProjectToTarget"
+fi
+if [ ! -d "$folderProjectFromTarget" ]; then
+    # Se non esiste, crea la cartella
+    mkdir -p "$folderProjectFromTarget"
+fi
+if [ ! -d "$folderProjectCrack" ]; then
+    # Se non esiste, crea la cartella
+    mkdir -p "$folderProjectCrack"
+fi
+
 #preparo il folder con i file di appoggio per command injection
 if [ ! -d "$folderProjectEngine" ]; then
     # Se non esiste, crea la cartella
     mkdir -p "$folderProjectEngine"
 fi
+
 #copio i file dalla cartella di appoggio a quella di destinazione sul folder del progetto target sovrascrivendo nel caso siano già presenti
 cp -f ./engine/* "$folderProjectEngine"

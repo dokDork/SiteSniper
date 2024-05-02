@@ -530,6 +530,7 @@ tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectInfoGathering" Enter
 
 
 # INFORMATION GATHERING
@@ -699,6 +700,7 @@ tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectWebInfo" Enter
 
 cd $folderProjectWebInfo
 # Layout
@@ -759,7 +761,7 @@ tmux send-keys -t PT:2.0 "find /usr/share/seclists/ -follow | grep subdomain | x
 tmux send-keys -t PT:2.1 "# find Subdomain (via wfuzz)" Enter
 tmux send-keys -t PT:2.1 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
 tmux send-keys -t PT:2.2 "# find Subdomain (via cewl + gobuster)" Enter
-tmux send-keys -t PT:2.2 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo\output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
+tmux send-keys -t PT:2.2 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo/output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
 cd $folderProject
 
 
@@ -1061,6 +1063,8 @@ tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectQuickWin" Enter
+
 
 # duckduckgo, msfconsole
 cd $folderProjectQuickWin
@@ -1157,6 +1161,7 @@ tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectWebAuthN" Enter
 
 # WEB Command Injection
 cd $folderProjectWebAuthN
