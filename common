@@ -113,6 +113,7 @@ show_values() {
     echo "Target Web Site: $2"
     echo "Target Domain: $3"
     echo "Project Folder /$4/"
+    echo "Attacker IP: $5"
 }
 
 # Funzione per chiedere all'utente l'URL
@@ -149,20 +150,22 @@ website=$(get_website "$url")
 domain=$(get_domain "$url")
 fold=$domain
 
+
 # Mostra i valori e chiedi conferma/modifica
-ip=$(confirm_values "IP" "$ip")
+ip=$(confirm_values "Target IP" "$ip")
 website=$(confirm_values "web site" "$website")
 domain=$(confirm_values "domain" "$domain")
 fold=$(confirm_values "project folder" "$fold")
-# Mostra i valori trovati o inseriti
-show_values "$ip" "$website" "$domain" "$fold"
-
-
-#=============== Variabili per moduli applicativi =================
 # Attacker interface
 attackerInt=$1
 # Attacker IP
-attackerIP=$(ip addr show eth0 | grep 'inet ' | awk -F' ' '{print $2}'| awk -F'/' '{print $1}')
+attackerIP=$(ip addr show $attackerInt | grep 'inet ' | awk -F' ' '{print $2}'| awk -F'/' '{print $1}')
+attackerIP=$(confirm_values "attacker IP" "$attackerIP")
+# Mostra i valori trovati o inseriti
+show_values "$ip" "$website" "$domain" "$fold" "$attackerIP"
+
+
+#=============== Variabili per moduli applicativi =================
 # target IP
 ip=$ip
 # target DOMAIN
@@ -192,7 +195,7 @@ folderProjectToTarget="$folderProject/toTarget"
 folderProjectFromTarget="$folderProject/fromTarget"
 folderProjectCrack="$folderProject/crack"
 
-echo "$folderProjectCrack - $folderProjectFromTarget - $folderProjectToTarget"
+#echo "$folderProjectCrack - $folderProjectFromTarget - $folderProjectToTarget"
 #===================================================================
 
 # Creo il file con users e passwords
