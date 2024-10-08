@@ -603,75 +603,91 @@ tmux send-keys -t PT:2.13 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderP
 cd $folderProject
 
 
+# INFORMATION GATHERING
+cd $folderProjectInfoGathering
+# OSINT from WEB interesting (synopsint, crt) and other ()
+# Layout
+tmux new-window -t PT:3 -n 'Host Discovery: seet ping'
+tmux split-window -v -t PT:3.0
+tmux split-window -v -t PT:3.1
+# Esecuzione dei comandi nelle sottofinestre
+base="${ip%.*}.1"
+tmux send-keys -t PT:3.0 "# Sweet ping on local IP" Enter
+tmux send-keys -t PT:3.0 "nmap -sP -PR $base/24"
+tmux send-keys -t PT:3.1 "# Reverse DNS on local IP" Enter
+tmux send-keys -t PT:3.1 "nmap -sP -PR $base/24" 
+cd $folderProject
+
+
 cd $folderProjectInfoGathering
 # nmap
 # Layout
-tmux new-window -t PT:3 -n 'nmap: Service analysis'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux split-window -v -t PT:3.2
-tmux select-pane -t "3.2"
-tmux split-window -h -t "3.2"
-tmux split-window -h -t "3.2"
+tmux new-window -t PT:4 -n 'nmap: Service analysis'
+tmux split-window -v -t PT:4.0
+tmux split-window -v -t PT:4.1
+tmux split-window -v -t PT:4.2
+tmux select-pane -t "4.2"
+tmux split-window -h -t "4.2"
+tmux split-window -h -t "4.2"
 # Esecuzione dei comandi nelle sottofinestre
 # NMAP TCP - UDP
-tmux send-keys -t PT:3.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
-tmux send-keys -t PT:3.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
-tmux send-keys -t PT:3.1 "# nmap (UDP)" Enter
-tmux send-keys -t PT:3.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
-tmux send-keys -t PT:3.2 "# nmap (on specific port)" Enter
-tmux send-keys -t PT:3.2 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p <ports>"
-tmux send-keys -t PT:3.3 "# nmap (on specific port - vulners)" Enter
-tmux send-keys -t PT:3.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
-tmux send-keys -t PT:3.4 "# nmap (on specific port - vulscan)" Enter
-tmux send-keys -t PT:3.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
-tmux send-keys -t PT:3.5 "# nmap (TCP) WITH firewall evasion" Enter
-tmux send-keys -t PT:3.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
+tmux send-keys -t PT:4.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
+tmux send-keys -t PT:4.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
+tmux send-keys -t PT:4.1 "# nmap (UDP)" Enter
+tmux send-keys -t PT:4.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
+tmux send-keys -t PT:4.2 "# nmap (on specific port)" Enter
+tmux send-keys -t PT:4.2 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p <ports>"
+tmux send-keys -t PT:4.3 "# nmap (on specific port - vulners)" Enter
+tmux send-keys -t PT:4.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
+tmux send-keys -t PT:4.4 "# nmap (on specific port - vulscan)" Enter
+tmux send-keys -t PT:4.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
+tmux send-keys -t PT:4.5 "# nmap (TCP) WITH firewall evasion" Enter
+tmux send-keys -t PT:4.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
 cd $folderProject
 
 
 cd $folderProjectInfoGathering
 # firewall detection
 # Layout
-tmux new-window -t PT:4 -n 'Firewall detection'
-tmux split-window -v -t PT:4.0
-tmux split-window -v -t PT:4.1
-tmux split-window -v -t PT:4.2
-tmux split-window -v -t PT:4.3
-tmux select-pane -t "4.1"
-tmux split-window -h -t "4.1"
+tmux new-window -t PT:5 -n 'Firewall detection'
+tmux split-window -v -t PT:5.0
+tmux split-window -v -t PT:5.1
+tmux split-window -v -t PT:5.2
+tmux split-window -v -t PT:5.3
+tmux select-pane -t "5.1"
+tmux split-window -h -t "5.1"
 # Esecuzione dei comandi nelle sottofinestre
 # FIREWALL DETECTION
-tmux send-keys -t PT:4.0 "# nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
-tmux send-keys -t PT:4.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
-tmux send-keys -t PT:4.1 "# nmap (firewalk)" Enter
-tmux send-keys -t PT:4.1 "sudo nmap --script=firewalk --traceroute $ip"
-tmux send-keys -t PT:4.2 "# nmap (waf-detection)" Enter
-tmux send-keys -t PT:4.2 "nmap --script=http-waf-detect $ip -Pn -p 80"
-tmux send-keys -t PT:4.3 "# wafw00f" Enter
-tmux send-keys -t PT:4.3 "wafw00f -va $site"
-tmux send-keys -t PT:4.4 "# firewalk" Enter
-tmux send-keys -t PT:4.4 "firewalk -S1-1024 -i <interface> -n -pTCP <gateway IP> $ip"
+tmux send-keys -t PT:5.0 "# nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
+tmux send-keys -t PT:5.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
+tmux send-keys -t PT:5.1 "# nmap (firewalk)" Enter
+tmux send-keys -t PT:5.1 "sudo nmap --script=firewalk --traceroute $ip"
+tmux send-keys -t PT:5.2 "# nmap (waf-detection)" Enter
+tmux send-keys -t PT:5.2 "nmap --script=http-waf-detect $ip -Pn -p 80"
+tmux send-keys -t PT:5.3 "# wafw00f" Enter
+tmux send-keys -t PT:5.3 "wafw00f -va $site"
+tmux send-keys -t PT:5.4 "# firewalk" Enter
+tmux send-keys -t PT:5.4 "firewalk -S1-1024 -i <interface> -n -pTCP <gateway IP> $ip"
 cd $folderProject
 
 cd $folderProjectInfoGathering
 # nmap with firewall
 # Layout
-tmux new-window -t PT:5 -n 'Nmap trough Firewall'
-tmux split-window -v -t PT:5.0
-tmux split-window -v -t PT:5.1
-tmux split-window -v -t PT:5.2
-tmux split-window -v -t PT:5.3
+tmux new-window -t PT:6 -n 'Nmap trough Firewall'
+tmux split-window -v -t PT:6.0
+tmux split-window -v -t PT:6.1
+tmux split-window -v -t PT:6.2
+tmux split-window -v -t PT:6.3
 # Esecuzione dei comandi nelle sottofinestre
 # NMAP THROUGH FIREWALL
-tmux send-keys -t PT:5.0 "# snmap (ource port 80)" Enter
-tmux send-keys -t PT:5.0 "sudo nmap -g 80 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.s80"
-tmux send-keys -t PT:5.1 "# nmap (decoy)" Enter
-tmux send-keys -t PT:5.1 "sudo nmap -D 216.58.212.67,66.196.86.81,me,46.228.47.115,104.28.6.11,104.27.163.229,198.84.60.198,192.124.249.8 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.decoy"
-tmux send-keys -t PT:5.2 "# nmap (SYN + FIN)" Enter
-tmux send-keys -t PT:5.2 "sudo nmap -sS --scanflags SYNFIN $ip"
-tmux send-keys -t PT:5.3 "# nmap (slowly)" Enter
-tmux send-keys -t PT:5.3 "sudo nmap -T2 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.slow"
+tmux send-keys -t PT:6.0 "# snmap (ource port 80)" Enter
+tmux send-keys -t PT:6.0 "sudo nmap -g 80 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.s80"
+tmux send-keys -t PT:6.1 "# nmap (decoy)" Enter
+tmux send-keys -t PT:6.1 "sudo nmap -D 216.58.212.67,66.196.86.81,me,46.228.47.115,104.28.6.11,104.27.163.229,198.84.60.198,192.124.249.8 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.decoy"
+tmux send-keys -t PT:6.2 "# nmap (SYN + FIN)" Enter
+tmux send-keys -t PT:6.2 "sudo nmap -sS --scanflags SYNFIN $ip"
+tmux send-keys -t PT:6.3 "# nmap (slowly)" Enter
+tmux send-keys -t PT:6.3 "sudo nmap -T2 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.slow"
 cd $folderProject
 
 
