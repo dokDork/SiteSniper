@@ -610,12 +610,15 @@ cd $folderProjectInfoGathering
 tmux new-window -t PT:3 -n 'Host Discovery: seet ping'
 tmux split-window -v -t PT:3.0
 tmux split-window -v -t PT:3.1
+tmux split-window -v -t PT:3.2
 # Esecuzione dei comandi nelle sottofinestre
 base="${ip%.*}.1"
 tmux send-keys -t PT:3.0 "# Sweet ping on local IP" Enter
 tmux send-keys -t PT:3.0 "nmap -sP -PR $base/24"
 tmux send-keys -t PT:3.1 "# Reverse DNS on local IP" Enter
 tmux send-keys -t PT:3.1 "nmap -sP -PR $base/24" 
+tmux send-keys -t PT:3.2 "# netdiscover on local IP" Enter
+tmux send-keys -t PT:3.2 "sudo netdiscover -r $base/24" 
 cd $folderProject
 
 
