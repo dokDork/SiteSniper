@@ -65,9 +65,9 @@ is_installed() {
 }
 
     echo ""
-    echo "1. Kali Linux: tools to install on kali linux."
-    echo "2. target Linux: userful tool to upload to a target linux type."
-    echo "3. target Windows: userful tool to upload to a target windows type.."        
+    echo "1. Kali Linux: tools to install on kali linux to be more powerful."
+    echo "2. target Linux: userful tool to upload to a target machine with linux OS type."
+    echo "3. target Windows: userful tool to upload to a target machine with windows OS type."        
     read -p "Enter the number of the desired action (0 to return Main Menu): " instachoice
     case $instachoice in
         0)
