@@ -9,3 +9,7 @@ https://dnsdumpster.com/
 
 ## Scanner online (nmap)
 https://portscanner.online/
+
+## IPneighbor: Consente di capire quali host sono ospitati su un dato dominio
+https://www.dnsqueries.com/it/vicini_server_web.php
+https://hackertarget.com/reverse-ip-lookup/
