@@ -11,5 +11,24 @@ https://dnsdumpster.com/
 https://portscanner.online/
 
 ## IPneighbor: Consente di capire quali host sono ospitati su un dato dominio
+https://www.yougetsignal.com/tools/web-sites-on-web-server/
 https://www.dnsqueries.com/it/vicini_server_web.php
 https://hackertarget.com/reverse-ip-lookup/
+
+## Scanner online (nmap)
+https://portscanner.online/
+
+## Motori che utilizzano lo stesso algoritmo di google ma che garantiscono la privacy
+https://www.lukol.com/
+https://www.startpage.com/
+https://www.mozbot.com/
+
+## Motori di ricerca per le aziende
+https://www.reportlinker.com/
+https://www.corporationwiki.com/
+https://www.crunchbase.com/
+
+## Ricerca della reputazione di un sito
+https://www.brightcloud.com/tools/url-ip-lookup.php
+https://global.sitesafety.trendmicro.com/result.php
+https://www.urlvoid.com/scan/parsehub.com/

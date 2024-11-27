@@ -84,6 +84,21 @@ echo " ==="
 # aggiornamento apt
 sudo apt update
 
+
+# webDataExtractor
+program="webDataExtractor.py"
+echo ""
+if ! is_installed "$program"; then
+	echo "[->] Installing $program..."
+	# Comando di installazione del programma
+	# Esempio: sudo apt-get install -y "$program"
+	cd /opt
+	sudo pip install beautifulsoup4
+	sudo git clone https://github.com/dokDork/webDataExtractor.git
+else
+	echo "[i] $program is already installed."
+fi
+
 # seclists
 program="seclists"
 echo ""
@@ -600,6 +615,9 @@ tmux send-keys -t PT:2.12 "# spiderfoot (info)" Enter
 tmux send-keys -t PT:2.12 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083 "
 tmux send-keys -t PT:2.13 "# metagoofil (metainfo: pdf, doc, xls, ppt, docx, pptx, xlsx) -> exiftool <file>" Enter
 tmux send-keys -t PT:2.13 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderProjectInfoGathering/metagoofil-result.txt -o $folderProjectInfoGathering/"
+tmux send-keys -t PT:2.14 "# Get Data from site (email, tel, username, ...)" Enter
+tmux send-keys -t PT:2.14 "python /opt/webDataExtractor/webDataExtractor.py $url 1" 
+
 cd $folderProject
 
 
