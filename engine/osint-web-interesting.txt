@@ -32,3 +32,6 @@ https://www.crunchbase.com/
 https://www.brightcloud.com/tools/url-ip-lookup.php
 https://global.sitesafety.trendmicro.com/result.php
 https://www.urlvoid.com/scan/parsehub.com/
+
+## se voglio sapere se un dato dominio è o meno malevolo
+https://threatminer.org
