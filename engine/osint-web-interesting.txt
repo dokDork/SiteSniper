@@ -15,6 +15,9 @@ https://www.yougetsignal.com/tools/web-sites-on-web-server/
 https://www.dnsqueries.com/it/vicini_server_web.php
 https://hackertarget.com/reverse-ip-lookup/
 
+## posso analizzare la tecnologia con cui è fatto un sito andando su:
+https://sitereport.netcraft.com/?url=$site
+
 ## Scanner online (nmap)
 https://portscanner.online/
 
