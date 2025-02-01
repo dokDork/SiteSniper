@@ -18,6 +18,9 @@ https://hackertarget.com/reverse-ip-lookup/
 ## posso analizzare la tecnologia con cui è fatto un sito andando su:
 https://sitereport.netcraft.com/?url=$site
 
+## analisi informazioni DNS
+https://www.robtex.com/
+
 ## Scanner online (nmap)
 https://portscanner.online/
 
