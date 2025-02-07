@@ -1,0 +1,758 @@
+[
+    {
+        "domain": "postsales.componentsengine.com",
+        "ip": [
+            "212.115.187.110"
+        ],
+        "http": [
+            404,
+            null,
+            "Microsoft-HTTPAPI/2.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "download.componentsengine.com",
+        "ip": [
+            "212.115.187.99"
+        ],
+        "http": [
+            403,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            403,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-25",
+            "download.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "offline.componentsengine.com",
+        "ip": [
+            "212.115.187.84"
+        ],
+        "http": [
+            302,
+            "https://offline.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-22",
+            "offline.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "license.componentsengine.com",
+        "ip": [
+            "212.115.187.101"
+        ],
+        "http": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "cert": [
+            true,
+            "2025-04-25",
+            "license.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "bulino.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "www.epcpartscatalogues.it"
+        ]
+    },
+    {
+        "domain": "demo.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://demo.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            302,
+            "/default.wplus?AspxAutoDetectCookieSupport=1",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-26",
+            "bulino.ricambio.net"
+        ]
+    },
+    {
+        "domain": "demochioma.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://demochioma.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            302,
+            "/default.wplus?AspxAutoDetectCookieSupport=1",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-26",
+            "bulino.ricambio.net"
+        ]
+    },
+    {
+        "domain": "demo63.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://demo63.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            302,
+            "/default.wplus?AspxAutoDetectCookieSupport=1",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-26",
+            "bulino.ricambio.net"
+        ]
+    },
+    {
+        "domain": "demotiger.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://demotiger.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            302,
+            "/default.wplus?AspxAutoDetectCookieSupport=1",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-26",
+            "bulino.ricambio.net"
+        ]
+    },
+    {
+        "domain": "license2.componentsengine.com",
+        "ip": [
+            "212.97.48.218"
+        ],
+        "http": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "cert": [
+            true,
+            "2025-04-25",
+            "license.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "catalog.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            307,
+            "https://catalog.sparepartsoftware.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://catalog.sparepartsoftware.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-25",
+            "catalog.components-engine.it"
+        ]
+    },
+    {
+        "domain": "frn.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Gestion-catalogue-electronique-pieces-detachees/Francais/ID_COUNT/home/LN/3/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Gestion-catalogue-electronique-pieces-detachees/Francais/ID_COUNT/home/LN/3/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-30",
+            "frm.epc3d.com"
+        ]
+    },
+    {
+        "domain": "esm.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Catalogos-de-piezas-de-repuesto/Espanol/ID_COUNT/home/LN/5/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Catalogos-de-piezas-de-repuesto/Espanol/ID_COUNT/home/LN/5/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-05-01",
+            "es.softwarericambi.com"
+        ]
+    },
+    {
+        "domain": "cde.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "cde.3dengine.it"
+        ]
+    },
+    {
+        "domain": "license3.componentsengine.com",
+        "ip": [
+            "212.97.48.212"
+        ],
+        "http": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            302,
+            "https://license.componentsengine.com/app/",
+            "Microsoft-IIS/10.0"
+        ],
+        "cert": [
+            true,
+            "2025-04-27",
+            "license3.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "enm.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-30",
+            "en.softwarericambi.com"
+        ]
+    },
+    {
+        "domain": "mnb.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "mnb.3dengine.it"
+        ]
+    },
+    {
+        "domain": "itm.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Software-gestione-cataloghi-ricambio/Italiano/ID_COUNT/home/LN/1/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Software-gestione-cataloghi-ricambio/Italiano/ID_COUNT/home/LN/1/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-30",
+            "it.softwarericambi.com"
+        ]
+    },
+    {
+        "domain": "aws.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "asd.3dengine.it"
+        ]
+    },
+    {
+        "domain": "go.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "go.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "asd.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "asd.3dengine.it"
+        ]
+    },
+    {
+        "domain": "sfa.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            404,
+            null,
+            "Microsoft-HTTPAPI/2.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "nl.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-05-02",
+            "nl.3dengine.it"
+        ]
+    },
+    {
+        "domain": "viewer.componentsengine.com",
+        "ip": [
+            "212.115.187.84"
+        ],
+        "http": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-05-02",
+            "viewer.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "www2.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            200,
+            null,
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-28",
+            "www.epcpartscatalogues.it"
+        ]
+    },
+    {
+        "domain": "qrcode.componentsengine.com",
+        "ip": [
+            "212.97.48.195"
+        ],
+        "http": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            307,
+            "https://www.componentsengine.com/site/page.wplus/Electronic-parts-catalog/English/ID_COUNT/home/LN/2/wx/home.html",
+            "Microsoft-IIS/8.5"
+        ],
+        "cert": [
+            true,
+            "2025-04-25",
+            "qrcode.componentsengine.com"
+        ]
+    },
+    {
+        "domain": "pro.componentsengine.com",
+        "ip": [
+            "212.115.187.95"
+        ],
+        "http": [
+            null,
+            null,
+            null
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "crm.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            301,
+            "https://crm.componentsengine.com/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "crmmail.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            301,
+            "https://crmmail.componentsengine.com/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "crm2.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            301,
+            "https://crm2.componentsengine.com/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "crmnew.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            301,
+            "https://crmnew.componentsengine.com/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "crmmailnewsletter.componentsengine.com",
+        "ip": [
+            "212.115.187.98"
+        ],
+        "http": [
+            301,
+            "https://crmmailnewsletter.componentsengine.com/",
+            "Microsoft-IIS/10.0"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "cew.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://cew.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "digitalsharing.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://digitalsharing.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "store.componentsengine.com",
+        "ip": [
+            "31.3.176.209"
+        ],
+        "http": [
+            null,
+            null,
+            null
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    },
+    {
+        "domain": "www.componentsengine.com",
+        "ip": [
+            "212.115.187.73"
+        ],
+        "http": [
+            302,
+            "https://www.componentsengine.com/",
+            "Microsoft-IIS/8.5"
+        ],
+        "https": [
+            null,
+            null,
+            null
+        ],
+        "cert": [
+            null,
+            null,
+            null
+        ]
+    }
+]
