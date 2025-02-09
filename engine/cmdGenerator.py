@@ -40,6 +40,8 @@ with open(file_in, 'r') as f:
             out.write(line + '%0A\n')
             # <COMANDO>?
             out.write(line + '?\n')
+            # <COMANDO>?%00
+            out.write(line + '?%00\n')            
             # <COMANDO>;
             out.write(line + ';\n')
             # <COMANDO>&
