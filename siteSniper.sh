@@ -356,6 +356,22 @@ else
 fi
 
 
+# crtsh (OSINT: subdomain)
+echo ""
+program="crtsh"
+cd /opt
+if [ -e "sublist3r" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo touch /usr/bin/crtsh
+	sudo chmod 777 /usr/bin/crtsh
+	sudo echo 'curl -s https://crt.sh/\?cn\=%.$1\&output=json | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u' > /usr/bin/crtsh
+	sudo chmod 755 /usr/bin/crtsh
+fi
+
+
+
 # spiderfoot (OSINT: info)
 echo ""
 program="spiderfoot"
@@ -790,15 +806,22 @@ cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:2 -n 'WEB Subdomain'
 tmux split-window -v -t PT:2.0
-tmux split-window -v -t PT:2.1
+tmux select-pane -t "2.0"
+tmux split-window -h -t "2.0"
 tmux split-window -v -t PT:2.2
+tmux split-window -v -t PT:2.3
+tmux split-window -v -t PT:2.4
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# find a valid dictionary" Enter
-tmux send-keys -t PT:2.0 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
-tmux send-keys -t PT:2.1 "# find Subdomain (via wfuzz)" Enter
-tmux send-keys -t PT:2.1 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
-tmux send-keys -t PT:2.2 "# find Subdomain (via cewl + gobuster)" Enter
-tmux send-keys -t PT:2.2 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo/output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
+tmux send-keys -t PT:2.0 "# find subdomain with crtsh site" Enter
+tmux send-keys -t PT:2.0 "crtsh $domain"
+tmux send-keys -t PT:2.1 "# find domain from crtsh sbdomain list" Enter
+tmux send-keys -t PT:2.1 "cat crtsh-domain-list.txt | rev | cut -d "." -f 1,2 | rev | sort -u"
+tmux send-keys -t PT:2.2 "# find a valid dictionary" Enter
+tmux send-keys -t PT:2.2 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
+tmux send-keys -t PT:2.3 "# find Subdomain (via wfuzz)" Enter
+tmux send-keys -t PT:2.3 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
+tmux send-keys -t PT:2.4 "# find Subdomain (via cewl + gobuster)" Enter
+tmux send-keys -t PT:2.4 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo/output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
 cd $folderProject
 
 
