@@ -52,4 +52,10 @@ with open(file_in, 'r') as f:
             out.write('||' + line + '||\n')            
             # |<COMANDO>|
             out.write('|' + line + '|\n')            
-
+            # ;<COMANDO>|
+            out.write(';' + line + '|\n') 
+            # & <COMANDO>|
+            out.write('& ' + line + '|\n')               
+            # && <COMANDO>|
+            out.write('&& ' + line + '|\n')  
+            
