@@ -843,18 +843,26 @@ cd $folderProjectWebInfo
 # Layout
 tmux new-window -t PT:6 -n 'WEB API'
 tmux split-window -v -t PT:6.0
-tmux split-window -v -t PT:6.1
+tmux select-pane -t "6.0"
+tmux split-window -h -t "6.0"
 tmux split-window -v -t PT:6.2
-tmux split-window -v -t PT:6.3
+tmux select-pane -t "6.2"
+tmux split-window -h -t "6.2"
+tmux split-window -v -t PT:6.4
+tmux split-window -v -t PT:6.5
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:6.0 "# find kr dictionary" Enter
 tmux send-keys -t PT:6.0 "/opt/kr wordlist list"
 tmux send-keys -t PT:6.1 "# find endPoint with kr" Enter
 tmux send-keys -t PT:6.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
 tmux send-keys -t PT:6.2 "# find endPoint with wfuzz" Enter
-tmux send-keys -t PT:6.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404 # find endpoint manually"
-tmux send-keys -t PT:6.3 "# analyze endPoint with curl " Enter
-tmux send-keys -t PT:6.3 "curl -X POST http://$site/api/v1/user # play with version"
+tmux send-keys -t PT:6.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404"
+tmux send-keys -t PT:6.3 "# find endPoint with fuff" Enter
+tmux send-keys -t PT:6.3 "ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ "
+tmux send-keys -t PT:6.4 "# analyze Data Parameter with curl " Enter
+tmux send-keys -t PT:6.4 "curl -X POST -H 'Content-type: application/json' -x http://$site/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
+tmux send-keys -t PT:6.5 "# analyze Data Parameter with fuff " Enter
+tmux send-keys -t PT:6.5 "ffuf -request request.txt -w /usr/share/seclists/Discovery/Web-Content/common.txt"
 
 
 # Guessing GET / POST Parameter
