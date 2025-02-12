@@ -29,7 +29,7 @@ do
     echo "Select actions on [$site]:"
     echo "1. Userful Tool: install usefull tools for penetration test."
     echo "2. Information Gathering: OSINT, Service Information Gathering (nmap), WAF Detection etc."
-    echo "3. WEB Information Gathering: WAF detection, site structure, virtual host, etc"
+    echo "3. Information Gathering (WEB): WAF detection, site structure, virtual host, etc"
     echo "4. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
     echo "6. WEB Service AuthN bypass: brute force, command injection"
