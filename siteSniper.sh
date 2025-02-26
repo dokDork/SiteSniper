@@ -295,6 +295,31 @@ else
 	sudo python setup.py install
 fi
 
+# fromWord2Site
+echo ""
+program="fromWord2Site"
+cd /opt
+if ! is_installed "fromWord2Site"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo git clone https://github.com/dokDork/fromWord2Site.git
+	cd /opt/fromWord2Site
+	sudo chmod 755 fromWOrd2Site.py
+fi
+
+# identYwaf
+echo ""
+program="identYwaf"
+cd /opt
+if ! is_installed "identYwaf"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo git clone --depth 1 https://github.com/stamparm/identYwaf.git
+	cd /opt/identYwaf
+	sudo chmod 755 identYwaf.py
+fi
 
 # Synk e copilot
 echo ""
@@ -724,6 +749,94 @@ tmux split-window -v -t PT:13.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:13.0 "# OSINT: other sites" Enter
 tmux send-keys -t PT:13.0 "grep -v '^#' $folderProjectEngine/osint-web-other.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# Active scan: subdomain
+# Layout
+tmux new-window -t PT:14 -n 'Active scan: subdomain'
+tmux split-window -v -t PT:14.0
+tmux select-pane -t "14.0"
+tmux split-window -h -t "14.0"
+tmux split-window -h -t "14.0"
+tmux split-window -v -t PT:14.3
+tmux select-pane -t "14.3"
+tmux split-window -h -t "14.3"
+tmux split-window -h -t "14.3"
+tmux split-window -h -t "14.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:14.0 "# Active scan: subdomain with subfinder" Enter
+tmux send-keys -t PT:14.0 "subfinder -d $domain -all"
+tmux send-keys -t PT:14.1 "# Active scan: subdomain with sublist3r" Enter
+tmux send-keys -t PT:14.1 "sublist3r -d $domain"
+tmux send-keys -t PT:14.2 "# Active scan: subdomain with crtsh" Enter
+tmux send-keys -t PT:14.2 "crtsh $domain"
+tmux send-keys -t PT:14.3 "# Active scan: create dictionary with cewl" Enter
+tmux send-keys -t PT:14.3 "cewl http://$site -d 3 -m 5 -w cewl-subdomain.txt --with-numbers"
+tmux send-keys -t PT:14.4 "# Active scan: subdomain with gobuster" Enter
+tmux send-keys -t PT:14.4 "gobuster vhost -u $domain -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --append-domain"
+tmux send-keys -t PT:14.5 "# Active scan: subdomain with wfuzz" Enter
+tmux send-keys -t PT:14.5 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
+tmux send-keys -t PT:14.6 "# Active scan: subdomain with ffuf" Enter
+tmux send-keys -t PT:14.6 "ffuf -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# Active scan: OS Type
+# Layout
+tmux new-window -t PT:15 -n 'Active scan: OS Type'
+tmux split-window -v -t PT:15.0
+tmux split-window -v -t PT:15.1
+tmux select-pane -t "15.1"
+tmux split-window -h -t "15.1"
+tmux split-window -v -t PT:15.3
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:15.0 "# Active scan: OS Type with ping" Enter
+tmux send-keys -t PT:15.0 "ping $ip"
+tmux send-keys -t PT:15.1 "# Active scan: OS Type with tcpdump and nc" Enter
+tmux send-keys -t PT:15.1 "tcpdump -i eth0 -v -n ip src $ip"
+tmux send-keys -t PT:15.2 "# Active scan: OS Type with tcpdump and nc" Enter
+tmux send-keys -t PT:15.2 "nc $ip 80"
+tmux send-keys -t PT:15.3 "# Active scan: OS Type with nmap" Enter
+tmux send-keys -t PT:15.3 "nmap –Pn –O $ip"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# Active scan: IP Neighbour/Virtual Host
+# Layout
+tmux new-window -t PT:16 -n 'Active scan: IP Neighbour'
+tmux split-window -v -t PT:16.0
+tmux select-pane -t "16.0"
+tmux split-window -h -t "16.0"
+tmux split-window -v -t PT:16.2
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:16.0 "# Active scan: IP Neighbour dictionary with cewl+fromWord2SIte" Enter
+tmux send-keys -t PT:16.0 "cewl http://$site -d 3 -m 5 -w cewl-vhost.txt --with-numbers"
+tmux send-keys -t PT:16.1 "# Active scan: IP Neighbour dictionary with cewl+fromWord2SIte" Enter
+tmux send-keys -t PT:16.1 "sudo python3 /opt/fromWord2Site/fromWord2Site.py cewl-vhost.txt www,api com,ctf,online"
+tmux send-keys -t PT:16.2 "# Active scan: IP Neighbour with gobuster" Enter
+tmux send-keys -t PT:16.2 "gobuster vhost -u http://$site -w cewl-vhost.txt.ouput"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# firewall detection
+# Layout
+tmux new-window -t PT:17 -n 'Active scan: Firewall detection'
+tmux split-window -v -t PT:17.0
+tmux split-window -v -t PT:17.1
+tmux split-window -v -t PT:17.2
+tmux split-window -v -t PT:17.3
+tmux split-window -v -t PT:17.4
+# Esecuzione dei comandi nelle sottofinestre
+# FIREWALL DETECTION
+tmux send-keys -t PT:17.0 "# Active scan: nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
+tmux send-keys -t PT:17.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
+tmux send-keys -t PT:17.1 "# nmap (firewalk)" Enter
+tmux send-keys -t PT:17.1 "sudo nmap --script=firewalk --traceroute $ip"
+tmux send-keys -t PT:17.2 "# nmap (waf-detection)" Enter
+tmux send-keys -t PT:17.2 "nmap --script=http-waf-detect $ip -Pn -p 80"
+tmux send-keys -t PT:17.3 "# WAF detection with identYwaf" Enter
+tmux send-keys -t PT:17.3 "sudo python3 /opt/identYwaf/identYwaf.py $site"
 cd $folderProject
 
 
