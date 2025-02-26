@@ -1,0 +1,8 @@
+## siti multifunzione
+https://osintframework.com/
+https://dnschecker.org/online-traceroute.php
+https://dnschecker.org/ip-location.php
+https://dnschecker.org/server-headers-check.php
+https://dnschecker.org/website-link-analyzer.php
+https://dnschecker.org/ssl-certificate-examination.php
+https://dnschecker.org/dmarc-record-validation.php

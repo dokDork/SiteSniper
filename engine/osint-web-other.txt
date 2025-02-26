@@ -15,25 +15,10 @@ https://emailrep.io/
 # Email compromessa in qualche data breach
 https://haveibeenpwned.com/
 	
-## Domain
-# Whois online
-https://whois.domaintools.com/
-	
-# DNS lookup
-https://www.robtex.com/
-	
-## Site Reputation
-https://www.urlvoid.com/
-https://global.sitesafety.trendmicro.com/
-https://zulu.zscaler.com/
-https://www.brightcloud.com/tools/url-ip-lookup.php
 	
 ## Dns twist
 # Per avere domini simili al target
 https://dnstwister.report/
-
-## Ottimi motori di ricerca che NON usano l'algo di google ma salvaguardiano la privacy
-https://duckduckgo.com/
 
 ## Meta Search Engine: Motori di ricerca che inviano le richieste a molti motori di riecerca e ci mandano i risultati secondo loro logiche di raggruppamento.
 https://www.alltheinternet.com/
@@ -45,11 +30,6 @@ https://search.carrot2.org/
 https://searchcode.com/
 
 ## Ricerca IoT
-https://www.shodan.io/
 https://www.insecam.org/
 https://www.pictimo.com/
 https://www.the-webcam-network.com/
-
-## wayback machine
-Posso vedere quali erano le informazioni esposte da un sito a una certa data
-https://archive.org/

@@ -1,0 +1,3 @@
+## siti subdomain
+https://pentest-tools.com/information-gathering/find-subdomains-of-domain 
+https://dnsdumpster.com/ 

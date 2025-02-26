@@ -28,7 +28,7 @@ do
     echo ""    
     echo "Select actions on [$site]:"
     echo "1. Userful Tool: install usefull tools for penetration test."
-    echo "2. Information Gathering: OSINT, Service Information Gathering (nmap), WAF Detection etc."
+    echo "2. Information Gathering: OSINT from web, active scan from cmd"
     echo "3. Information Gathering (WEB): WAF detection, site structure, virtual host, etc"
     echo "4. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
@@ -568,7 +568,7 @@ esac
         2)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> Information Gathering: OSINT from web (synapsint, crt), from cmd (dmitry, theharvester) and service information gathering (nmap) etc."
+###################### 	>>>>>>>>>>>>>>>>> Information Gathering: OSINT from web, active scan from cmd"
 ######################
 ######################
 tmux new-session -d -s PT -n "any other business"
@@ -580,165 +580,150 @@ tmux send-keys "cd $folderProjectInfoGathering" Enter
 
 # INFORMATION GATHERING
 cd $folderProjectInfoGathering
-# OSINT from WEB interesting (synopsint, crt) and other ()
+# OSINT multifunctional websites
 # Layout
-tmux new-window -t PT:1 -n 'OSINT from web interesting and other stuff'
+tmux new-window -t PT:1 -n 'OSINT: multifunctional websites'
 tmux split-window -v -t PT:1.0
-tmux split-window -v -t PT:1.1
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:1.0 "# OSINT from web interesting stuff" Enter
-tmux send-keys -t PT:1.0 "grep -v '^#' $folderProjectEngine/osint-web-interesting.txt | xargs -I {} xdg-open {}"
-tmux send-keys -t PT:1.1 "# OSINT from web other stuff" Enter
-tmux send-keys -t PT:1.1 "grep -v '^#' $folderProjectEngine/osint-web-other.txt | xargs -I {} xdg-open {}" 
+tmux send-keys -t PT:1.0 "# OSINT: multifunctional websites" Enter
+tmux send-keys -t PT:1.0 "grep -v '^#' $folderProjectEngine/osint-web-multifunzione.txt | xargs -I {} xdg-open {}"
 cd $folderProject
 
-
 cd $folderProjectInfoGathering
-# OSINT from CMD (Dmitry, Theharvester, ping / nmap, nslookup, ecc)
+# OSINT subdomain searcher
 # Layout
-tmux new-window -t PT:2 -n 'OSINT from cmd (dmitry, theharvester ...)'
-tmux split-window -v -l 20 -t PT:2.0
-tmux split-window -v -l 20  -t PT:2.1
-tmux split-window -v -l 20  -t PT:2.2
-tmux split-window -v -l 20  -t PT:2.3
-tmux split-window -v -l 20  -t PT:2.4
-tmux select-pane -t "2.2"
-tmux split-window -h -t "2.2"
-tmux split-window -h -t "2.2"
-tmux split-window -h -t "2.2"
-tmux select-pane -t "2.6"
-tmux split-window -h -t "2.6"
-tmux split-window -h -t "2.6"
-tmux split-window -h -t "2.6"
-tmux select-pane  -t "2.10"
-tmux split-window -h -t "2.10"
-tmux split-window -h -t "2.10"
-tmux split-window -h -t "2.10"
-
-
+tmux new-window -t PT:2 -n 'OSINT: subdomain searcher'
+tmux split-window -v -t PT:2.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# sublist3r (subdomain)" Enter
-tmux send-keys -t PT:2.0 "sublist3r -d $domain"
-tmux send-keys -t PT:2.1 "# whois (domain)" Enter
-tmux send-keys -t PT:2.1 "whois $domain"
-tmux send-keys -t PT:2.2 "# nmap (OS)" Enter
-tmux send-keys -t PT:2.2 "sudo nmap -Pn -O $ip"
-tmux send-keys -t PT:2.3 "# TTL (OS)" Enter
-tmux send-keys -t PT:2.3 "ping -c 4 $ip"
-tmux send-keys -t PT:2.4 "# ping (OS) for specific Service" Enter
-tmux send-keys -t PT:2.4 "tcpdump -i $iface -v -n ip src $ip"
-tmux send-keys -t PT:2.5 "# ping (OS) for specific Service" Enter
-tmux send-keys -t PT:2.5 "nc $ip <port>"
-tmux send-keys -t PT:2.6 "# Advanced DNS All-in-One (dnsrecon - fierce)" Enter
-tmux send-keys -t PT:2.6 "dnsrecon -d $domain & fierce --domain $domain"
-tmux send-keys -t PT:2.7 "# host (DNS)" Enter
-tmux send-keys -t PT:2.7 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
-tmux send-keys -t PT:2.8 "# Zone Transfer (dig)" Enter
-tmux send-keys -t PT:2.8 "dig axfr $domain"
-tmux send-keys -t PT:2.9 "# nslookup IP - Site (DNS)" Enter
-tmux send-keys -t PT:2.9 "nslookup $ip & nslookup $site"
-tmux send-keys -t PT:2.10 "# dmitry (info)" Enter
-tmux send-keys -t PT:2.10 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
-tmux send-keys -t PT:2.11 "# theHarvester (info)" Enter
-tmux send-keys -t PT:2.11 "theHarvester -d $domain -b all -l 500 -f $folderProjectInfoGathering/theharvester.html"
-tmux send-keys -t PT:2.12 "# spiderfoot (info)" Enter
-tmux send-keys -t PT:2.12 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083 "
-tmux send-keys -t PT:2.13 "# metagoofil (metainfo: pdf, doc, xls, ppt, docx, pptx, xlsx) -> exiftool <file>" Enter
-tmux send-keys -t PT:2.13 "metagoofil -d $domain -t pdf -l 100 -n 25 -f $folderProjectInfoGathering/metagoofil-result.txt -o $folderProjectInfoGathering/"
-tmux send-keys -t PT:2.14 "# Get Data from site (email, tel, username, ...)" Enter
-tmux send-keys -t PT:2.14 "python /opt/webDataExtractor/webDataExtractor.py $url 1" 
-
+tmux send-keys -t PT:2.0 "# OSINT: subdomain searcher" Enter
+tmux send-keys -t PT:2.0 "grep -v '^#' $folderProjectEngine/osint-web-subdomain.txt | xargs -I {} xdg-open {}"
 cd $folderProject
 
-
-# INFORMATION GATHERING
 cd $folderProjectInfoGathering
-# OSINT from WEB interesting (synopsint, crt) and other ()
+# OSINT: IP Neighbour searcher
 # Layout
-tmux new-window -t PT:3 -n 'Host Discovery: seet ping'
+tmux new-window -t PT:3 -n 'OSINT: IP Neighbour searcher'
 tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux split-window -v -t PT:3.2
 # Esecuzione dei comandi nelle sottofinestre
-base="${ip%.*}.1"
-tmux send-keys -t PT:3.0 "# Sweet ping on local IP" Enter
-tmux send-keys -t PT:3.0 "nmap -sP -PR $base/24"
-tmux send-keys -t PT:3.1 "# Reverse DNS on local IP" Enter
-tmux send-keys -t PT:3.1 "nmap -sP -PR $base/24" 
-tmux send-keys -t PT:3.2 "# netdiscover on local IP" Enter
-tmux send-keys -t PT:3.2 "sudo netdiscover -r $base/24" 
+tmux send-keys -t PT:3.0 "# OSINT: IP Neighbour searcher" Enter
+tmux send-keys -t PT:3.0 "grep -v '^#' $folderProjectEngine/osint-web-ip.txt | xargs -I {} xdg-open {}"
 cd $folderProject
 
-
 cd $folderProjectInfoGathering
-# nmap
+# OSINT: site Technology
 # Layout
-tmux new-window -t PT:4 -n 'nmap: Service analysis'
+tmux new-window -t PT:4 -n 'OSINT: site Technology'
 tmux split-window -v -t PT:4.0
-tmux split-window -v -t PT:4.1
-tmux split-window -v -t PT:4.2
-tmux select-pane -t "4.2"
-tmux split-window -h -t "4.2"
-tmux split-window -h -t "4.2"
 # Esecuzione dei comandi nelle sottofinestre
-# NMAP TCP - UDP
-tmux send-keys -t PT:4.0 "# nmap (TCP) WITHOUT firewall evasion" Enter
-tmux send-keys -t PT:4.0 "sudo nmap -sV -sC -O -vv -p- -T5 $ip -Pn -oA out.TCP"
-tmux send-keys -t PT:4.1 "# nmap (UDP)" Enter
-tmux send-keys -t PT:4.1 "sudo nmap -sU -Pn -p 53,69,123,161,1985,777,3306 -T5 $ip -oA out.UDP"
-tmux send-keys -t PT:4.2 "# nmap (on specific port)" Enter
-tmux send-keys -t PT:4.2 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p <ports>"
-tmux send-keys -t PT:4.3 "# nmap (on specific port - vulners)" Enter
-tmux send-keys -t PT:4.3 "sudo nmap --script nmap-vulners/ -sV $ip -oA out.SPEC.vulners -p <ports>"
-tmux send-keys -t PT:4.4 "# nmap (on specific port - vulscan)" Enter
-tmux send-keys -t PT:4.4 "sudo nmap --script vulscan/ -sV $ip -oA out.SPEC.vulscan -p <ports>"
-tmux send-keys -t PT:4.5 "# nmap (TCP) WITH firewall evasion" Enter
-tmux send-keys -t PT:4.5 "sudo nmap -sV -sC -O -vv -p- -T5 --script firewall-bypass $ip -Pn -oA out.TCP"
+tmux send-keys -t PT:4.0 "# OSINT: site Technology" Enter
+tmux send-keys -t PT:4.0 "grep -v '^#' $folderProjectEngine/osint-web-site.txt | xargs -I {} xdg-open {}"
 cd $folderProject
 
-
 cd $folderProjectInfoGathering
-# firewall detection
+# OSINT: DNS data exfiltration
 # Layout
-tmux new-window -t PT:5 -n 'Firewall detection'
+tmux new-window -t PT:5 -n 'OSINT: DNS data exfiltration'
 tmux split-window -v -t PT:5.0
 tmux split-window -v -t PT:5.1
 tmux split-window -v -t PT:5.2
 tmux split-window -v -t PT:5.3
-tmux select-pane -t "5.1"
-tmux split-window -h -t "5.1"
+tmux select-pane -t "5.3"
+tmux split-window -h -t "5.3"
+tmux split-window -h -t "5.3"
 # Esecuzione dei comandi nelle sottofinestre
-# FIREWALL DETECTION
-tmux send-keys -t PT:5.0 "# nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
-tmux send-keys -t PT:5.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
-tmux send-keys -t PT:5.1 "# nmap (firewalk)" Enter
-tmux send-keys -t PT:5.1 "sudo nmap --script=firewalk --traceroute $ip"
-tmux send-keys -t PT:5.2 "# nmap (waf-detection)" Enter
-tmux send-keys -t PT:5.2 "nmap --script=http-waf-detect $ip -Pn -p 80"
-tmux send-keys -t PT:5.3 "# wafw00f" Enter
-tmux send-keys -t PT:5.3 "wafw00f -va $site"
-tmux send-keys -t PT:5.4 "# firewalk" Enter
-tmux send-keys -t PT:5.4 "firewalk -S1-1024 -i <interface> -n -pTCP <gateway IP> $ip"
+tmux send-keys -t PT:5.0 "# OSINT: DNS data exfiltration" Enter
+tmux send-keys -t PT:5.0 "grep -v '^#' $folderProjectEngine/osint-web-dns.txt | xargs -I {} xdg-open {}"
+tmux send-keys -t PT:5.1 "# OSINT: DNS query with dnsrecon" Enter
+tmux send-keys -t PT:5.1 "dnsrecon -d $domain"
+tmux send-keys -t PT:5.2 "# OSINT: DNS query with host" Enter
+tmux send-keys -t PT:5.2 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
+tmux send-keys -t PT:5.3 "# OSINT: DNS query with nslookup" Enter
+tmux send-keys -t PT:5.3 "nslookup $site && nslookup $ip"
+tmux send-keys -t PT:5.4 "# OSINT: DNS zone transfer" Enter
+tmux send-keys -t PT:5.4 "dig axfr $domain"
 cd $folderProject
 
 cd $folderProjectInfoGathering
-# nmap with firewall
+# OSINT: WHOIS data exfiltration
 # Layout
-tmux new-window -t PT:6 -n 'Nmap trough Firewall'
+tmux new-window -t PT:6 -n 'OSINT: WHOIS data exfiltration'
 tmux split-window -v -t PT:6.0
 tmux split-window -v -t PT:6.1
-tmux split-window -v -t PT:6.2
-tmux split-window -v -t PT:6.3
 # Esecuzione dei comandi nelle sottofinestre
-# NMAP THROUGH FIREWALL
-tmux send-keys -t PT:6.0 "# snmap (ource port 80)" Enter
-tmux send-keys -t PT:6.0 "sudo nmap -g 80 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.s80"
-tmux send-keys -t PT:6.1 "# nmap (decoy)" Enter
-tmux send-keys -t PT:6.1 "sudo nmap -D 216.58.212.67,66.196.86.81,me,46.228.47.115,104.28.6.11,104.27.163.229,198.84.60.198,192.124.249.8 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.decoy"
-tmux send-keys -t PT:6.2 "# nmap (SYN + FIN)" Enter
-tmux send-keys -t PT:6.2 "sudo nmap -sS --scanflags SYNFIN $ip"
-tmux send-keys -t PT:6.3 "# nmap (slowly)" Enter
-tmux send-keys -t PT:6.3 "sudo nmap -T2 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.TCP.slow"
+tmux send-keys -t PT:6.0 "# OSINT: WHOIS data exfiltration" Enter
+tmux send-keys -t PT:6.0 "grep -v '^#' $folderProjectEngine/osint-web-whois.txt | xargs -I {} xdg-open {}"
+tmux send-keys -t PT:6.1 "# OSINT: WHOIS qury with whois" Enter
+tmux send-keys -t PT:6.1 "whois $domain && whois $ip"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: port scanning (online)
+# Layout
+tmux new-window -t PT:7 -n 'OSINT: port scanning (online)'
+tmux split-window -v -t PT:7.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:7.0 "# OSINT: port scanning (online)" Enter
+tmux send-keys -t PT:7.0 "grep -v '^#' $folderProjectEngine/osint-web-port.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: anonymous search engines
+# Layout
+tmux new-window -t PT:8 -n 'OSINT: anonymous search engines'
+tmux split-window -v -t PT:8.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:8.0 "# OSINT: anonymous search engines" Enter
+tmux send-keys -t PT:8.0 "grep -v '^#' $folderProjectEngine/osint-web-engine.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: search engines for companies or people
+# Layout
+tmux new-window -t PT:9 -n 'OSINT: search engines for companies or people'
+tmux split-window -v -t PT:9.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:9.0 "# OSINT: search engines for companies or people" Enter
+tmux send-keys -t PT:9.0 "grep -v '^#' $folderProjectEngine/osint-web-company.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: web reputation
+# Layout
+tmux new-window -t PT:10 -n 'OSINT: web reputation'
+tmux split-window -v -t PT:10.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:10.0 "# OSINT: web reputation" Enter
+tmux send-keys -t PT:10.0 "grep -v '^#' $folderProjectEngine/osint-web-reputation.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: wayback machine
+# Layout
+tmux new-window -t PT:11 -n 'OSINT: wayback machine'
+tmux split-window -v -t PT:11.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:11.0 "# OSINT: wayback machine" Enter
+tmux send-keys -t PT:11.0 "grep -v '^#' $folderProjectEngine/osint-web-wayback.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: shodan - censis
+# Layout
+tmux new-window -t PT:12 -n 'OSINT: shodan - censis'
+tmux split-window -v -t PT:12.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:12.0 "# OSINT: shodan - censis" Enter
+tmux send-keys -t PT:12.0 "grep -v '^#' $folderProjectEngine/osint-web-shodan.txt | xargs -I {} xdg-open {}"
+cd $folderProject
+
+cd $folderProjectInfoGathering
+# OSINT: other sites
+# Layout
+tmux new-window -t PT:13 -n 'OSINT: other sites'
+tmux split-window -v -t PT:13.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:13.0 "# OSINT: other sites" Enter
+tmux send-keys -t PT:13.0 "grep -v '^#' $folderProjectEngine/osint-web-other.txt | xargs -I {} xdg-open {}"
 cd $folderProject
 
 
