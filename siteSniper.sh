@@ -95,6 +95,8 @@ if ! is_installed "$program"; then
 	cd /opt
 	sudo pip install beautifulsoup4
 	sudo git clone https://github.com/dokDork/webDataExtractor.git
+	cd /opt/webDataExtractor/
+	chmod 755 webDataExtractor.py
 else
 	echo "[i] $program is already installed."
 fi
@@ -759,11 +761,15 @@ tmux split-window -v -t PT:14.0
 tmux select-pane -t "14.0"
 tmux split-window -h -t "14.0"
 tmux split-window -h -t "14.0"
-tmux split-window -v -t PT:14.3
-tmux select-pane -t "14.3"
-tmux split-window -h -t "14.3"
-tmux split-window -h -t "14.3"
-tmux split-window -h -t "14.3"
+tmux split-window -h -t "14.0"
+tmux split-window -v -t PT:14.4
+tmux select-pane -t "14.4"
+tmux split-window -h -t "14.4"
+tmux split-window -v -t PT:14.6
+tmux select-pane -t "14.6"
+tmux split-window -h -t "14.6"
+tmux split-window -h -t "14.6"
+tmux split-window -h -t "14.6"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:14.0 "# Active scan: subdomain with subfinder" Enter
 tmux send-keys -t PT:14.0 "subfinder -d $domain -all"
@@ -771,15 +777,22 @@ tmux send-keys -t PT:14.1 "# Active scan: subdomain with sublist3r" Enter
 tmux send-keys -t PT:14.1 "sublist3r -d $domain"
 tmux send-keys -t PT:14.2 "# Active scan: subdomain with crtsh" Enter
 tmux send-keys -t PT:14.2 "crtsh $domain"
-tmux send-keys -t PT:14.3 "# Active scan: create dictionary with cewl" Enter
-tmux send-keys -t PT:14.3 "cewl http://$site -d 3 -m 5 -w cewl-subdomain.txt --with-numbers"
-tmux send-keys -t PT:14.4 "# Active scan: subdomain with gobuster" Enter
-tmux send-keys -t PT:14.4 "gobuster vhost -u $domain -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --append-domain"
-tmux send-keys -t PT:14.5 "# Active scan: subdomain with wfuzz" Enter
-tmux send-keys -t PT:14.5 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
-tmux send-keys -t PT:14.6 "# Active scan: subdomain with ffuf" Enter
-tmux send-keys -t PT:14.6 "ffuf -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt"
+tmux send-keys -t PT:14.3 "# find domain from crtsh sbdomain list" Enter
+tmux send-keys -t PT:14.3 "cat crtsh-domain-list.txt | rev | cut -d "." -f 1,2 | rev | sort -u"
+tmux send-keys -t PT:14.4 "# Active scan: create dictionary with cewl" Enter
+tmux send-keys -t PT:14.4 "cewl http://$site -d 3 -m 5 -w cewl-subdomain.txt --with-numbers"
+tmux send-keys -t PT:14.5 "# Active scan: find a valid dictionary with seclists" Enter
+tmux send-keys -t PT:14.5 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
+tmux send-keys -t PT:14.6 "# Active scan: subdomain with gobuster" Enter
+tmux send-keys -t PT:14.6 "gobuster vhost -u $domain -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --append-domain"
+tmux send-keys -t PT:14.7 "# Active scan: subdomain with wfuzz" Enter
+tmux send-keys -t PT:14.7 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
+tmux send-keys -t PT:14.8 "# Active scan: subdomain with ffuf" Enter
+tmux send-keys -t PT:14.8 "ffuf -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt"
+tmux send-keys -t PT:14.9 "# find Subdomain (via cewl + gobuster)" Enter
+tmux send-keys -t PT:14.9 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo/output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
 cd $folderProject
+
 
 cd $folderProjectInfoGathering
 # Active scan: OS Type
@@ -808,15 +821,19 @@ tmux new-window -t PT:16 -n 'Active scan: IP Neighbour'
 tmux split-window -v -t PT:16.0
 tmux select-pane -t "16.0"
 tmux split-window -h -t "16.0"
-tmux split-window -v -t PT:16.2
+tmux split-window -h -t "16.0"
+tmux split-window -v -t PT:16.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:16.0 "# Active scan: IP Neighbour dictionary with cewl+fromWord2SIte" Enter
-tmux send-keys -t PT:16.0 "cewl http://$site -d 3 -m 5 -w cewl-vhost.txt --with-numbers"
+tmux send-keys -t PT:16.0 "# Active scan: find a valid dictionary with seclists" Enter
+tmux send-keys -t PT:16.0 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
 tmux send-keys -t PT:16.1 "# Active scan: IP Neighbour dictionary with cewl+fromWord2SIte" Enter
-tmux send-keys -t PT:16.1 "sudo python3 /opt/fromWord2Site/fromWord2Site.py cewl-vhost.txt www,api com,ctf,online"
-tmux send-keys -t PT:16.2 "# Active scan: IP Neighbour with gobuster" Enter
-tmux send-keys -t PT:16.2 "gobuster vhost -u http://$site -w cewl-vhost.txt.ouput"
+tmux send-keys -t PT:16.1 "cewl http://$site -d 3 -m 5 -w cewl-vhost.txt --with-numbers"
+tmux send-keys -t PT:16.2 "# Active scan: IP Neighbour dictionary with cewl+fromWord2SIte" Enter
+tmux send-keys -t PT:16.2 "sudo python3 /opt/fromWord2Site/fromWord2Site.py cewl-vhost.txt www,api com,ctf,online"
+tmux send-keys -t PT:16.3 "# Active scan: IP Neighbour with gobuster" Enter
+tmux send-keys -t PT:16.3 "gobuster vhost -u http://$site -w cewl-vhost.txt.ouput"
 cd $folderProject
+
 
 cd $folderProjectInfoGathering
 # firewall detection
@@ -828,7 +845,6 @@ tmux split-window -v -t PT:17.2
 tmux split-window -v -t PT:17.3
 tmux split-window -v -t PT:17.4
 # Esecuzione dei comandi nelle sottofinestre
-# FIREWALL DETECTION
 tmux send-keys -t PT:17.0 "# Active scan: nmap (SYN + ACK). UNFILTERED -> FW stateless; FILTERED -> FW steteful" Enter
 tmux send-keys -t PT:17.0 "sudo nmap -sS $ip -Pn && sudo nmap -sA $ip -Pn"
 tmux send-keys -t PT:17.1 "# nmap (firewalk)" Enter
@@ -855,7 +871,7 @@ tmux -2 attach-session -t PT
         3)
 ######################
 ######################
-###################### 	>>>>>>>>>>>>>>>>> WEB Information Gathering: WAF detection, site structure, virtual host, etc
+###################### 	>>>>>>>>>>>>>>>>> Information Gathering (WEB): WAF detection, site structure, virtual host, etc
 ######################
 ######################
 
@@ -910,48 +926,6 @@ tmux send-keys -t PT:1.6 "# 1. HTTP PUT -> webDav" Enter
 tmux send-keys -t PT:1.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
 tmux send-keys -t PT:1.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
 tmux send-keys -t PT:1.6 "dirsearch -u http://$site"
-cd $folderProject
-
-
-# WEB Subdomain
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:2 -n 'WEB Subdomain'
-tmux split-window -v -t PT:2.0
-tmux select-pane -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -v -t PT:2.2
-tmux split-window -v -t PT:2.3
-tmux split-window -v -t PT:2.4
-tmux select-pane -t "2.4"
-tmux split-window -h -t "2.4"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# find subdomain with crtsh site" Enter
-tmux send-keys -t PT:2.0 "crtsh $domain"
-tmux send-keys -t PT:2.1 "# find domain from crtsh sbdomain list" Enter
-tmux send-keys -t PT:2.1 "cat crtsh-domain-list.txt | rev | cut -d "." -f 1,2 | rev | sort -u"
-tmux send-keys -t PT:2.2 "# find subdomain with subfinder" Enter
-tmux send-keys -t PT:2.2 "subfinder -d $domain -all"
-tmux send-keys -t PT:2.3 "# find a valid dictionary" Enter
-tmux send-keys -t PT:2.3 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
-tmux send-keys -t PT:2.4 "# find Subdomain (via wfuzz)" Enter
-tmux send-keys -t PT:2.4 "wfuzz -H "Host: FUZZ."$domain -u http://$ip -w /usr/share/seclists/Discovery/DNS/subdomains-top1million-110000.txt --hh 178"
-tmux send-keys -t PT:2.5 "# find Subdomain (via cewl + gobuster)" Enter
-tmux send-keys -t PT:2.5 "cewl http://$site -d 5 -m 3 -w cewl-sub.txt --with-numbers && $folderProjectEngine/manageLower.sh cewl-sub.txt $folderProjectWebInfo/output-sub.txt && wfuzz -H ""\"Host: FUZZ.$domain""\" -u http://$ip -w output-sub.txt --hh 178"
-cd $folderProject
-
-
-# WEB Virtual Host
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:3 -n 'WEB Virtual Host'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "# find a valid dictionary" Enter
-tmux send-keys -t PT:3.0 "find /usr/share/seclists/ -follow | grep subdomain | xargs wc -l | sort -nr # search dictionary"
-tmux send-keys -t PT:3.1 "# site virtual host" Enter
-tmux send-keys -t PT:3.1 "cewl http://$site -d 5 -m 3 -w cewl-vhost.txt --with-numbers && $folderProjectEngine/add-ext.sh cewl-vhost.txt $folderProjectWebInfo/output-vhost.txt && gobuster vhost -u http://$site -w output-vhost.txt"
 cd $folderProject
 
 
@@ -1023,28 +997,7 @@ tmux send-keys -t PT:7.3 "# find a valid value (POST)" Enter
 tmux send-keys -t PT:7.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
 
 
-# WEB Site Info
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:8 -n 'WEB Site Info'
-tmux split-window -v -t PT:8.0
-tmux split-window -v -t PT:8.1
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:8.0 "# get favicon and its creation date" Enter
-tmux send-keys -t PT:8.0 "wget http://$site/images/favicon.ico; exiftool favicon.ico"
-tmux send-keys -t PT:8.1 "# cookie analysis to get information about site framework " Enter
-tmux send-keys -t PT:8.1 "curl -s -I http://$site"
-cd $folderProject
 
-# WAF Detection
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:9 -n 'WAF Detection'
-tmux split-window -v -t PT:9.0
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:9.0 "# WAF Detection (whatwaf)" Enter
-tmux send-keys -t PT:9.0 "sudo whatwaf -u http://$site"
-cd $folderProject
 
 
 # Site crowler
