@@ -865,6 +865,8 @@ tmux -2 attach-session -t PT
 
 
 
+
+
             
             
             
@@ -1170,55 +1172,75 @@ tmux send-keys -t PT:19.0 "# Exploit heartbleed" Enter
 tmux send-keys -t PT:19.0 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
 cd $folderProject
 
-# CMS: Joomla, wordpress, drupal & co
+# CMS: multi-platform analysis and bruteforce
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:20 -n 'Information Gathering (WEB): CMS Joomla, wordpress, drupal'
+tmux new-window -t PT:20 -n 'CMS: multi-platform analysis and bruteforce'
 tmux split-window -v -t PT:20.0
-tmux split-window -v -t PT:20.1
-tmux split-window -v -t PT:20.2
-tmux split-window -v -t PT:20.3
 tmux select-pane -t "20.0"
 tmux split-window -h -t "20.0"
-tmux split-window -h -t "20.0"
-tmux select-pane -t "20.3"
-tmux split-window -h -t "20.3"
-tmux split-window -h -t "20.3"
-tmux split-window -h -t "20.3"
-tmux select-pane -t "20.7"
-tmux split-window -h -t "20.7"
-tmux split-window -h -t "20.7"
-tmux split-window -h -t "20.7"
-tmux select-pane -t "20.11"
-tmux split-window -h -t "20.11"
+tmux split-window -v -t PT:20.2
+tmux select-pane -t "20.2"
+tmux split-window -h -t "20.2"
+tmux split-window -h -t "20.2"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:20.0 "# update (if necessary) scan tools" Enter
-tmux send-keys -t PT:20.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
-tmux send-keys -t PT:20.1 "# whatweb analysis of target site" Enter
-tmux send-keys -t PT:20.1 "whatweb -a 3 http://$site"
-tmux send-keys -t PT:20.2 "# cmsmap to scan target" Enter
-tmux send-keys -t PT:20.2 "cmsmap http://$site -F"
-tmux send-keys -t PT:20.3 "# wordpress scan with nmap analysis" Enter
-tmux send-keys -t PT:20.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
-tmux send-keys -t PT:20.4 "# wpscan with principal plugins and themes" Enter
-tmux send-keys -t PT:20.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken -o wpscan.txt [--disable-tls-checks]"
-tmux send-keys -t PT:20.5 "# wpscan with all plugins and themes" Enter
-tmux send-keys -t PT:20.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken  -o wpscanALL.txt[--disable-tls-checks]"
-tmux send-keys -t PT:20.6 "# cmsmap bruteforceCMS" Enter
-tmux send-keys -t PT:20.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
-tmux send-keys -t PT:20.7 "# joomscam target site" Enter
-tmux send-keys -t PT:20.7 "joomscan -u http://$site"
-tmux send-keys -t PT:20.8 "# msfconsole to test joomla target site" Enter
-tmux send-keys -t PT:20.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
-tmux send-keys -t PT:20.9 "# juumla to test joomla target site" Enter
-tmux send-keys -t PT:20.9 "python /opt/juumla/main.py -u http://$site"
-tmux send-keys -t PT:20.10 "# cmsmap bruteforce" Enter
-tmux send-keys -t PT:20.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
-tmux send-keys -t PT:20.11 "# scan drupal site with droopescan" Enter
-tmux send-keys -t PT:20.11 "droopescan scan drupal -u http://$site -t 32"
+tmux send-keys -t PT:20.0 "# CMS: multi-platform analysis with whatweb" Enter
+tmux send-keys -t PT:20.0 "whatweb -a 3 http://$site"
+tmux send-keys -t PT:20.1 "# CMS: multi-platform analysis with cmsmap (update and scan)" Enter
+tmux send-keys -t PT:20.1 "$ cmsmap --update http://$site && $ cmsmap http://$site –F"
+tmux send-keys -t PT:20.2 "# CMS: multi-platform bruteforce (Wordpress)" Enter
+tmux send-keys -t PT:20.2 "cmsmap http://$site –u users.txt –p passwords.txt –f W"
+tmux send-keys -t PT:20.3 "# CMS: multi-platform bruteforce (Joomla)" Enter
+tmux send-keys -t PT:20.3 "cmsmap http://$site –u users.txt –p passwords.txt –f J"
+tmux send-keys -t PT:20.4 "# CMS: multi-platform bruteforce (Drupal)" Enter
+tmux send-keys -t PT:20.4 "cmsmap http://$site –u users.txt –p passwords.txt –f D"
 cd $folderProject
 
+# CMS: WORDPRESS
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:21 -n 'CMS: Wordpress'
+tmux split-window -v -t PT:21.0
+tmux select-pane -t "21.0"
+tmux split-window -h -t "21.0"
+tmux split-window -h -t "21.0"
+tmux split-window -h -t "21.0"
+tmux split-window -h -t "21.0"
+tmux split-window -h -t "21.0"
+tmux split-window -v -t PT:21.6
+tmux select-pane -t "21.6"
+tmux split-window -h -t "21.6"
+tmux split-window -v -t PT:21.8
+tmux select-pane -t "21.8"
+tmux split-window -h -t "21.8"
+tmux split-window -v -t PT:21.10
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:21.0 "# CMS: Wordpress analysis with nmap" Enter
+tmux send-keys -t PT:21.0 "sudo nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
+tmux send-keys -t PT:21.1 "# CMS: Wordpress analysis with cmseek" Enter
+tmux send-keys -t PT:21.1 "cmseek -u http://$site"
+tmux send-keys -t PT:21.2 "# CMS: Wordpress analysis with cmsmap" Enter
+tmux send-keys -t PT:21.2 "cmsmap http://$site –f W"
+tmux send-keys -t PT:21.3 "# CMS: Wordpress analysis with wpsec" Enter
+tmux send-keys -t PT:21.3 "firefox https://wpsec.com &"
+tmux send-keys -t PT:21.4 "# CMS: Wordpress analysis with msfconsole" Enter
+tmux send-keys -t PT:21.4 "msfconsole -q -x \"use auxiliary/scanner/http/wordpress_scanner;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:21.5 "# CMS: Wordpress analysis with wpscan" Enter
+tmux send-keys -t PT:21.5 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token <TOKEN> [--disable-tls-checks] && wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token <TOKEN> [--disable-tls-checks]"
+tmux send-keys -t PT:21.6 "# CMS: Wordpress manual users enum" Enter
+tmux send-keys -t PT:21.6 "firefox https://$site/?author=1 &"
+tmux send-keys -t PT:21.7 "# CMS: Wordpress manual users enum" Enter
+tmux send-keys -t PT:21.7 "firefox https://$site/wp-json/wp/v2/users/1 &"
+tmux send-keys -t PT:21.8 "# CMS: Wordpress Version" Enter
+tmux send-keys -t PT:21.8 "firefox https://$site/readme.txt &"
+tmux send-keys -t PT:21.9 "# CMS: Wordpress Plugins enumeration" Enter
+tmux send-keys -t PT:21.9 "firefox -no-remote https://$site/wp-content/plugins/ & firefox -no-remote https://$site/wp-content/themes/ & firefox -no-remote https://$site/wp-content/ & firefox -no-remote https://$site/upload/ & firefox -no-remote https://$site/images/ &"
+tmux send-keys -t PT:21.10 "# CMS: Wordpress Exploit vulnerability" Enter
+tmux send-keys -t PT:21.10 "searchsploit -u && searchsploit >module>"
 
+
+
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
