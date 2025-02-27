@@ -1238,7 +1238,28 @@ tmux send-keys -t PT:21.9 "firefox -no-remote https://$site/wp-content/plugins/ 
 tmux send-keys -t PT:21.10 "# CMS: Wordpress Exploit vulnerability" Enter
 tmux send-keys -t PT:21.10 "searchsploit -u && searchsploit >module>"
 
-
+# CMS JOOMLA
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:22 -n 'CMS Joomla'
+tmux split-window -v -t PT:22.0
+tmux select-pane -t "22.0"
+tmux split-window -h -t "22.0"
+tmux split-window -h -t "22.0"
+tmux split-window -h -t "22.0"
+tmux split-window -v -t PT:22.4
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:22.0 "# CMS: Joomla analysis with cmsmap" Enter
+tmux send-keys -t PT:22.0 "cmsmap http://$site –f J"
+tmux send-keys -t PT:22.1 "# CMS: Joomla analysis with cmseek" Enter
+tmux send-keys -t PT:22.1 "cmseek -u http://$site"
+tmux send-keys -t PT:22.2 "# CMS: Joomla analysis with joomscan" Enter
+tmux send-keys -t PT:22.2 "joomscan -u http://$site"
+tmux send-keys -t PT:22.3 "# CMS: Joomla analysis with msfconsole" Enter
+tmux send-keys -t PT:22.3 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:22.4 "# CMS: Joomla exploitation" Enter
+tmux send-keys -t PT:22.4 "searchsploit <module>"
+cd $folderProject
 
 cd $folderProject
 
