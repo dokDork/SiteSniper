@@ -875,8 +875,7 @@ tmux -2 attach-session -t PT
 ######################
 ######################
 
-# XXX open_terminal "bash -c 'echo WEB APP: site fingerprint; sleep 2;"
-# Creazione di una sessione Tmux con attivazione VPN
+# INFORMATION GATHERING (WEB)
 tmux new-session -d -s PT -n "any other business"
 tmux send-keys "ip=$ip" Enter
 tmux send-keys "site=$site" Enter
@@ -884,49 +883,163 @@ tmux send-keys "domain=$domain" Enter
 tmux send-keys "cd $folderProjectWebInfo" Enter
 
 cd $folderProjectWebInfo
+# Information Gathering (WEB): info from site - email,name,telephone
 # Layout
-tmux new-window -t PT:1 -n 'WEB Site Structure'
-tmux split-window -v -t PT:1.0  
-tmux split-window -v -t PT:1.1 
-tmux split-window -v -t PT:1.2 
-tmux split-window -v -t PT:1.3 
-tmux select-pane -t "1.2"
-tmux split-window -h -t "1.2"
-tmux split-window -h -t "1.2"
-tmux select-pane -t "1.5"
-tmux split-window -h -t "1.5"
+tmux new-window -t PT:1 -n 'Information Gathering (WEB): info from site - email,name,telephone (webDataExtractor)'
+tmux split-window -v -t PT:1.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# Information Gathering (WEB): info from site - email,name,telephone (webDataExtractor)" Enter
+tmux send-keys -t PT:1.0 "sudo python webDataExtractor.py $site 1"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - link contenuti nel sistema target
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:2 -n 'Information Gathering (WEB): info from site - link contenuti nel sistema target'
+tmux split-window -v -t PT:2.0
+tmux split-window -v -t PT:2.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:2.0 "# Information Gathering (WEB): info from site - link contenuti nel sistema target (sxcurity/gau)" Enter
+tmux send-keys -t PT:2.0 "sudo docker run --rm -i sxcurity/gau $domain --subs"
+tmux send-keys -t PT:2.1 "# Information Gathering (WEB): info from site - link contenuti nel sistema target (hakluke/hakrawler)" Enter
+tmux send-keys -t PT:2.1 "echo https://$site | sudo docker run --rm -i hakluke/hakrawler -subs"
+cd $folderProject
+
+cd $folderProjectWebInfo
+# Information Gathering (WEB): info from site - whois,subdomain,email (dmitry)
+# Layout
+tmux new-window -t PT:3 -n 'Information Gathering (WEB): info from site - whois,subdomain,email (dmitry)'
+tmux split-window -v -t PT:3.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:3.0 "# Information Gathering (WEB): info from site - whois,subdomain,email (dmitry)" Enter
+tmux send-keys -t PT:3.0 "dmitry -news $domain -o $folderProjectInfoGathering/dmitry.txt"
+cd $folderProject
+
+cd $folderProjectWebInfo
+# Information Gathering (WEB): info from site - link interni, esterni, username, IP (spiderfoot)
+# Layout
+tmux new-window -t PT:4 -n 'Information Gathering (WEB): info from site - link interni, esterni, username, IP (spiderfoot)'
+tmux split-window -v -t PT:4.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:4.0 "# Information Gathering (WEB): info from site - link interni, esterni, username, IP (spiderfoot)" Enter
+tmux send-keys -t PT:4.0 "firefox 127.0.0.1:8083 & spiderfoot -l 127.0.0.1:8083"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - data creazione sito
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:5 -n 'Information Gathering (WEB): info from site - website creation date'
+tmux split-window -v -t PT:5.0
+tmux split-window -v -t PT:5.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:5.0 "# get favicon and its creation date" Enter
+tmux send-keys -t PT:5.0 "wget http://$site/images/favicon.ico; exiftool favicon.ico"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - download file
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:6 -n 'Information Gathering (WEB): info from site - download file'
+tmux split-window -v -t PT:6.0
+tmux split-window -v -t PT:6.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:6.0 "# download interesting file (e.g. pdf)" Enter
+tmux send-keys -t PT:6.0 "metagoofil -d $domain -t pdf -l 100 -n 25 -f metagoofil-result.txt"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - website creation framework
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:7 -n 'Information Gathering (WEB): info from site - website creation framework'
+tmux split-window -v -t PT:7.0  
+tmux split-window -v -t PT:7.1 
+tmux select-pane -t "7.1"
+tmux split-window -h -t "7.1"
+tmux split-window -h -t "7.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:7.0 "# website creation framework" Enter
+tmux send-keys -t PT:7.0 "curl -s -I http://$site"
+tmux send-keys -t PT:7.1 "# GET normal request" Enter
+tmux send-keys -t PT:7.1 "echo -e \"GET / HTTP/1.0\n\" | nc -nv $ip 80"
+tmux send-keys -t PT:7.2 "# GET error request" Enter
+tmux send-keys -t PT:7.2 "echo -e \"GET / HTTP/3.0\n\" | nc -nv $ip 80"
+tmux send-keys -t PT:7.3 "# GET error request" Enter
+tmux send-keys -t PT:7.3 "echo -e \"GET / JUNK/1.0\n\" | nc -nv $ip 80"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - miscellaneous information
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:8 -n 'Information Gathering (WEB): info from site - miscellaneous information'
+tmux split-window -v -t PT:8.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:8.0 "# miscellaneous information" Enter
+tmux send-keys -t PT:8.0 "theHarvester -d $domain -b all -l 500 -f $folderProject"
+cd $folderProject
+
+# Information Gathering (WEB): info from site - security header
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:9 -n 'Information Gathering (WEB): info from site - security header'
+tmux split-window -v -t PT:9.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:9.0 "# Security Header" Enter
+tmux send-keys -t PT:9.0 "xdg-open \"https://securityheaders.com/\" & xdg-open \"https://www.ssllabs.com/ssltest/\""
+cd $folderProject
+
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:10 -n 'Information Gathering (WEB): Site Structure'
+tmux split-window -v -t PT:10.0  
+tmux split-window -v -t PT:10.1 
+tmux split-window -v -t PT:10.2 
+tmux split-window -v -t PT:10.3 
+tmux select-pane -t "10.2"
+tmux split-window -h -t "10.2"
+tmux split-window -h -t "10.2"
+tmux select-pane -t "10.5"
+tmux split-window -h -t "10.5"
 # Esecuzione dei comandi nelle sottofinestre
 # WGET standard file
-tmux send-keys -t PT:1.0 "# get common file (robots, sitemap, ...)" Enter
-tmux send-keys -t PT:1.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crossdomain.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"" ""http://$site/README.md"" ""https://$site/robots.txt"" ""https://$site/sitemap.xml"" ""https://$site/crossdomain.xml"" ""https://$site/phpinfo.php"" ""https://$site/index.php"" ""https://$site/index.html"" ""https://$site/README.md""
-# Gobuster, dirsearch
-tmux send-keys -t PT:1.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
-tmux send-keys -t PT:1.2 "# find site structure" Enter
-tmux send-keys -t PT:1.2 "# Remeber also that:" Enter
-tmux send-keys -t PT:1.2 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:1.2 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:1.2 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:1.2 "# site folder structure." Enter
-tmux send-keys -t PT:1.2 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
-tmux send-keys -t PT:1.3 "# if target site respond always 20x" Enter
-tmux send-keys -t PT:1.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
-tmux send-keys -t PT:1.4 "# if target site respond always 30x" Enter
-tmux send-keys -t PT:1.4 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
-tmux send-keys -t PT:1.5 "# dirsearch to find hidden folder (BIG search)" Enter
-tmux send-keys -t PT:1.5 "# find site structure" Enter
-tmux send-keys -t PT:1.5 "# Remeber also that:" Enter
-tmux send-keys -t PT:1.5 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:1.5 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:1.5 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:1.5 "dirsearch -u http://$site /usr/share/wordlists/dirb/big.txt"
-tmux send-keys -t PT:1.6 "# dirsearch to find hidden folder" Enter
-tmux send-keys -t PT:1.6 "# find site structure" Enter
-tmux send-keys -t PT:1.6 "# Remeber also that:" Enter
-tmux send-keys -t PT:1.6 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:1.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:1.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:1.6 "dirsearch -u http://$site"
+tmux send-keys -t PT:10.0 "# get common file (robots, sitemap, ...)" Enter
+tmux send-keys -t PT:10.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crossdomain.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"" ""http://$site/README.md"" ""https://$site/robots.txt"" ""https://$site/sitemap.xml"" ""https://$site/crossdomain.xml"" ""https://$site/phpinfo.php"" ""https://$site/index.php"" ""https://$site/index.html"" ""https://$site/README.md""
+# Gobuster, dirsearch"
+tmux send-keys -t PT:10.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
+tmux send-keys -t PT:10.2 "# find site structure" Enter
+tmux send-keys -t PT:10.2 "# Remeber also that:" Enter
+tmux send-keys -t PT:10.2 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:10.2 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:10.2 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:10.2 "# site folder structure." Enter
+tmux send-keys -t PT:10.2 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
+tmux send-keys -t PT:10.3 "# if target site respond always 20x" Enter
+tmux send-keys -t PT:10.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
+tmux send-keys -t PT:10.4 "# if target site respond always 30x" Enter
+tmux send-keys -t PT:10.4 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
+tmux send-keys -t PT:10.5 "# dirsearch to find hidden folder (BIG search)" Enter
+tmux send-keys -t PT:10.5 "# find site structure" Enter
+tmux send-keys -t PT:10.5 "# Remeber also that:" Enter
+tmux send-keys -t PT:10.5 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:10.5 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:10.5 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:10.5 "dirsearch -u http://$site /usr/share/wordlists/dirb/big.txt"
+tmux send-keys -t PT:10.6 "# dirsearch to find hidden folder" Enter
+tmux send-keys -t PT:10.6 "# find site structure" Enter
+tmux send-keys -t PT:10.6 "# Remeber also that:" Enter
+tmux send-keys -t PT:10.6 "# 1. HTTP PUT -> webDav" Enter
+tmux send-keys -t PT:10.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
+tmux send-keys -t PT:10.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
+tmux send-keys -t PT:10.6 "dirsearch -u http://$site"
 cd $folderProject
+
+
+#------------------------------------------------
+
+
+
+
+
+
 
 
 # WEB Metodi Attivi
@@ -1000,49 +1113,8 @@ tmux send-keys -t PT:7.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d 
 
 
 
-# Site crowler
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:10 -n 'Site Crowler'
-tmux split-window -v -t PT:10.0
-tmux split-window -v -t PT:10.1
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:10.0 "# Site Crowler Passive (sxcurity/gau)" Enter
-tmux send-keys -t PT:10.0 "sudo docker run --rm -i sxcurity/gau $domain --subs"
-tmux send-keys -t PT:10.1 "# Site Crowler Active (hakluke/hakrawler)" Enter
-tmux send-keys -t PT:10.1 "echo https://$site | sudo docker run --rm -i hakluke/hakrawler -subs"
-cd $folderProject
 
 
-# WEB nmap whois
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:11 -n 'WEB nmap whois'
-tmux split-window -v -t PT:11.0  
-tmux split-window -v -t PT:11.1 
-tmux split-window -v -t PT:11.2 
-tmux split-window -v -t PT:11.3 
-tmux select-pane -t "11.2"
-tmux split-window -h -t "11.2"
-tmux split-window -h -t "11.2"
-tmux select-pane -t "11.5"
-tmux split-window -h -t "11.5"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:11.0 "# nmap on 80 port" Enter
-tmux send-keys -t PT:11.0 "nmap -Pn -sC -sV -T4 -p 80 $ip -oA out.80.infoGathering"
-tmux send-keys -t PT:11.1 "# nmap pm 80 port with specific script" Enter
-tmux send-keys -t PT:11.1 "nmap -Pn -vv -p 80 --script=http-* $ip -oA out.80.InfoGathering-script"
-tmux send-keys -t PT:11.2 "# GET normal request" Enter
-tmux send-keys -t PT:11.2 "echo -e \"GET / HTTP/1.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:11.3 "# GET error request" Enter
-tmux send-keys -t PT:11.3 "echo -e \"GET / HTTP/3.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:11.4 "# GET error request" Enter
-tmux send-keys -t PT:11.4 "echo -e \"GET / JUNK/1.0\n\" | nc -nv $ip 80"
-tmux send-keys -t PT:11.5 "# whois domain" Enter
-tmux send-keys -t PT:11.5 "whois $domain"
-tmux send-keys -t PT:11.6 "# whois IP" Enter
-tmux send-keys -t PT:11.6 "whois $ip"
-cd $folderProject
 
 
 # WEB Analisi del certificato HTTPS
@@ -1059,15 +1131,6 @@ tmux send-keys -t PT:12.1 "openssl s_client -connect $site:443 </dev/null 2>/dev
 cd $folderProject
 
 
-# WEB Information from web
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:13 -n 'WEB Information from web'
-tmux split-window -v -t PT:13.0
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:13.0 "# get info from search site" Enter
-tmux send-keys -t PT:13.0 "xdg-open \"https://securityheaders.com/\" & xdg-open \"https://www.ssllabs.com/ssltest/\" & xdg-open \"https://www.social-searcher.com/\""
-cd $folderProject
 
 
 # openssl_heartbleed
