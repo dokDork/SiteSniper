@@ -28,11 +28,12 @@ do
     echo ""    
     echo "Select actions on [$site]:"
     echo "1. Userful Tool: install usefull tools for penetration test."
-    echo "2. Information Gathering: OSINT from web, active scan from cmd"
-    echo "3. Information Gathering (WEB): WAF detection, site structure, virtual host, etc"
-    echo "4. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
-    echo "5. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
-    echo "6. WEB Service AuthN bypass: brute force, command injection"
+    echo "2. Information Gathering: OSINT from web + active scan from cmd"
+    echo "3. Information Gathering (WEB): Info from WEB, site structure, API, CMS, etc."
+    echo "4. Service Information Gathering: nmap scan"    
+    echo "5. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
+    echo "6. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
+    echo "7. WEB Service AuthN bypass: brute force, command injection"
     read -p "Enter the number of the desired action (0 to exit): " choice
 
 
@@ -1301,12 +1302,74 @@ tmux -2 attach-session -t PT
         4)
 ######################
 ######################
+###################### 	>>>>>>>>>>>>>>>>> Service Information Gathering
+######################
+######################
+tmux new-session -d -s PT -n "any other business"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectInfoGathering" Enter
+
+
+# SERVIVE INFORMATION GATHERING
+cd $folderProjectInfoGathering
+# ServiceInformationGathering
+# Layout
+tmux new-window -t PT:1 -n 'Service Information Gathering'
+tmux split-window -v -t PT:1.0
+tmux select-pane -t "1.0"
+tmux split-window -h -t "1.0"
+tmux split-window -v -t PT:1.2
+tmux split-window -v -t PT:1.3
+tmux select-pane -t "1.3"
+tmux split-window -h -t "1.3"
+tmux split-window -v -t PT:1.5
+tmux select-pane -t "1.5"
+tmux split-window -h -t "1.5"
+tmux split-window -h -t "1.5"
+tmux split-window -h -t "1.5"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# Service Information Gathering - TCP" Enter
+tmux send-keys -t PT:1.0 "sudo nmap -sV -sC -O -Pn --script firewall-bypass $ip -oA out"
+tmux send-keys -t PT:1.1 "# Service Information Gathering - TCP (all)" Enter
+tmux send-keys -t PT:1.1 "sudo nmap -sV -sC -O -Pn -p- --script firewall-bypass $ip -oA out"
+tmux send-keys -t PT:1.2 "# Service Information Gathering - UDP" Enter
+tmux send-keys -t PT:1.2 "sudo nmap -sU -F $ip -Pn"
+tmux send-keys -t PT:1.3 "# Service Information Gathering - Scanning Vulnerability - get ports" Enter
+tmux send-keys -t PT:1.3 "ports=\$(nmap -p- --max-retries 0 -T5 --script firewall-bypass -Pn $ip | grep '^[0-9]' | cut -d '/' -f 1 | tr '\n' ',' | sed s/,$//)"
+tmux send-keys -t PT:1.4 "# Service Information Gathering - Scanning Vulnerability - get vulnerabilities" Enter
+tmux send-keys -t PT:1.4 "sudo nmap -Pn --script vuln --script firewall-bypass $ip -oA out.SPEC -p $ports"
+tmux send-keys -t PT:1.5 "# Service Information Gathering - through FW with SOURCE PORT 80" Enter
+tmux send-keys -t PT:1.5 "sudo nmap -g 80 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.80.txt"
+tmux send-keys -t PT:1.6 "# Service Information Gathering - through FW with DECOY" Enter
+tmux send-keys -t PT:1.6 "nmap -D 216.58.212.67,66.196.86.81,me,46.228.47.115,104.28.6.11,104.27.163.229,198.84.60.198,192.124.249.8 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.decoy.txt"
+tmux send-keys -t PT:1.7 "# Service Information Gathering - through FW with SYNFIN" Enter
+tmux send-keys -t PT:1.7 "sudo nmap -sS --scanflags SYNFIN -sV -sC -O -Pn --script firewall-bypass $ip -oA out.synfin.txt"
+tmux send-keys -t PT:1.8 "# Service Information Gathering - through FW with TIMING" Enter
+tmux send-keys -t PT:1.8 "sudo nmap –T2 -sV -sC -O -Pn --script firewall-bypass $ip -oA out.timing.txt"
+cd $folderProject
+
+# Attivazione della modalità interattiva
+tmux -2 attach-session -t PT
+;;
+
+
+
+
+
+
+
+
+
+
+        5)
+######################
+######################
 ###################### 	>>>>>>>>>>>>>>>>> Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc
 ######################
 ######################
 
-
-# XXX open_terminal "bash -c 'echo EXPLOITATION; sleep 2;"
 # contiene:
 # - le funzioni comuni
 # - la richiesta dei parametri utente
@@ -1392,7 +1455,7 @@ tmux -2 attach-session -t PT
 
 
 
-        5)
+        6)
 ######################
 ######################
 ###################### 	>>>>>>>>>>>>>>>>> Service AuthN bypass: ssh, ftp, smtp,  etc
@@ -1404,7 +1467,7 @@ echo "work in progress for this section."
 
 
 
-        6)
+        7)
 ######################
 ######################
 ###################### 	>>>>>>>>>>>>>>>>> WEB Service AuthN bypass: brute force, command injection, webDAV, etc
