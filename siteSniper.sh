@@ -945,6 +945,8 @@ tmux split-window -v -t PT:6.1
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:6.0 "# download interesting file (e.g. pdf)" Enter
 tmux send-keys -t PT:6.0 "metagoofil -d $domain -t pdf -l 100 -n 25 -f metagoofil-result.txt"
+tmux send-keys -t PT:6.1 "# get meta information from file" Enter
+tmux send-keys -t PT:6.1 "exiftool <link to file>"
 cd $folderProject
 
 # Information Gathering (WEB): info from site - website creation framework
