@@ -1017,7 +1017,7 @@ tmux send-keys -t PT:10.3 "dirsearch -u http://$site"
 tmux send-keys -t PT:10.4 "# find folders" Enter
 tmux send-keys -t PT:10.4 "gobuster dir -u https://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -k"
 tmux send-keys -t PT:10.5 "# if target site respond always 20x" Enter
-tmux send-keys -t PT:10.5 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
+tmux send-keys -t PT:10.5 "ffuf -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
 tmux send-keys -t PT:10.6 "# if target site respond always 30x" Enter
 tmux send-keys -t PT:10.6 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
 cd $folderProject
@@ -1115,11 +1115,11 @@ tmux send-keys -t PT:16.1 "# find endPoint with kr - execute command" Enter
 tmux send-keys -t PT:16.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
 tmux send-keys -t PT:16.2 "# find endPoint with wfuzz" Enter
 tmux send-keys -t PT:16.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404"
-tmux send-keys -t PT:16.3 "# find endPoint with fuff" Enter
+tmux send-keys -t PT:16.3 "# find endPoint with ffuf" Enter
 tmux send-keys -t PT:16.3 "ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ "
 tmux send-keys -t PT:16.4 "# find Data Parameter with curl " Enter
 tmux send-keys -t PT:16.4 "curl -X POST -H 'Content-type: application/json' -x http://$site/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
-tmux send-keys -t PT:16.5 "# find Data Parameter with fuff " Enter
+tmux send-keys -t PT:16.5 "# find Data Parameter with ffuf " Enter
 tmux send-keys -t PT:16.5 "ffuf -request request.txt -w /usr/share/seclists/Discovery/Web-Content/common.txt"
 
 # Guessing GET / POST Parameter
