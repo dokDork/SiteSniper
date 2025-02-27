@@ -1237,6 +1237,7 @@ tmux send-keys -t PT:21.9 "# CMS: Wordpress Plugins enumeration" Enter
 tmux send-keys -t PT:21.9 "firefox -no-remote https://$site/wp-content/plugins/ & firefox -no-remote https://$site/wp-content/themes/ & firefox -no-remote https://$site/wp-content/ & firefox -no-remote https://$site/upload/ & firefox -no-remote https://$site/images/ &"
 tmux send-keys -t PT:21.10 "# CMS: Wordpress Exploit vulnerability" Enter
 tmux send-keys -t PT:21.10 "searchsploit -u && searchsploit >module>"
+cd $folderProject
 
 # CMS JOOMLA
 cd $folderProjectWebInfo
@@ -1261,6 +1262,27 @@ tmux send-keys -t PT:22.4 "# CMS: Joomla exploitation" Enter
 tmux send-keys -t PT:22.4 "searchsploit <module>"
 cd $folderProject
 
+# CMS DRUPAL
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:23 -n 'CMS Drupal'
+tmux split-window -v -t PT:23.0
+tmux select-pane -t "23.0"
+tmux split-window -h -t "23.0"
+tmux split-window -h -t "23.0"
+tmux split-window -v -t PT:23.3
+tmux split-window -v -t PT:23.4
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:23.0 "# CMS: Drupal analysis with cmsmap" Enter
+tmux send-keys -t PT:23.0 "cmsmap http://$site –f D"
+tmux send-keys -t PT:23.1 "# CMS: Drupal analysis with cmseek" Enter
+tmux send-keys -t PT:23.1 "cmseek -u http://$site"
+tmux send-keys -t PT:23.2 "# CMS: Drupal analysis with firefox" Enter
+tmux send-keys -t PT:23.2 "firefox https://hackertarget.com/drupal-security-scan/ &"
+tmux send-keys -t PT:23.3 "# CMS: Drupal Version" Enter
+tmux send-keys -t PT:23.3 "firefox https://$site/CHANGELOG.txt &"
+tmux send-keys -t PT:23.4 "# CMS: Drupal exploitation" Enter
+tmux send-keys -t PT:23.4 "searchsploit <module>"
 cd $folderProject
 
 # Attivazione della modalità interattiva
