@@ -445,6 +445,32 @@ else
 fi
 
 
+# crackmapexec
+echo ""
+program="crackmapexec"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt-get install crackmapexec
+fi
+
+
+# impacket
+echo ""
+program="impacket"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt-get install python3-impacket
+fi
+
+
+
+
 
 
         ;;
@@ -469,23 +495,23 @@ fi
 #File singoli da scaricare nella cartella
 cd $folderLin
 # Crea il file download.txt con 10 URL
-cat << EOF > download.txt
-https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh
-https://raw.githubusercontent.com/sleventyeleven/linuxprivchecker/master/linuxprivchecker.py
-https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh
-https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl
-https://raw.githubusercontent.com/Anon-Exploiter/SUID3NUM/master/suid3num.py
-https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/ncat
-https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nmap
-https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nping
-https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat
-https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_linux_386.gz
-https://github.com/hugsy/gdb-static/raw/master/gdb-7.10.1-x32
-EOF
+sudo touch download.txt
+echo "https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh" | sudo tee -a download.txt
+echo "https://raw.githubusercontent.com/sleventyeleven/linuxprivchecker/master/linuxprivchecker.py" | sudo tee -a download.txt
+echo "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" | sudo tee -a download.txt
+echo "https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl" | sudo tee -a download.txt
+echo "https://raw.githubusercontent.com/Anon-Exploiter/SUID3NUM/master/suid3num.py" | sudo tee -a download.txt
+echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/ncat" | sudo tee -a download.txt
+echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nmap" | sudo tee -a download.txt
+echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nping" | sudo tee -a download.txt
+echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat" | sudo tee -a download.txt
+echo "https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_linux_386.gz" | sudo tee -a download.txt
+echo "https://github.com/hugsy/gdb-static/raw/master/gdb-7.10.1-x32" | sudo tee -a download.txt
+
 # Scarica i file utilizzando wget
 echo ""
 echo "[i] download applicativi"
-wget -N -i download.txt
+sudo wget -N -i download.txt
 
 #completo l'installazione di chisel
 echo ""
@@ -496,12 +522,6 @@ sudo chmod 755 *
 sudo upx brute chisel
 
 
-# Installo applicazioni per analisi SMB: crackmap, impacket
-echo ""
-echo "[i] Installazione applicazioni per analisi SMB: crackmap, impacket"
-cd /opt/
-sudo apt-get install crackmapexec
-sudo apt-get install python3-impacket
 
 
 
