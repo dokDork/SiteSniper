@@ -1175,15 +1175,18 @@ tmux new-window -t PT:20 -n 'CMS: multi-platform analysis and bruteforce'
 tmux split-window -v -t PT:20.0
 tmux select-pane -t "20.0"
 tmux split-window -h -t "20.0"
-tmux split-window -v -t PT:20.2
-tmux select-pane -t "20.2"
-tmux split-window -h -t "20.2"
-tmux split-window -h -t "20.2"
+tmux split-window -h -t "20.0"
+tmux split-window -v -t PT:20.3
+tmux select-pane -t "20.3"
+tmux split-window -h -t "20.3"
+tmux split-window -h -t "20.3"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:20.0 "# CMS: multi-platform analysis with whatweb" Enter
 tmux send-keys -t PT:20.0 "whatweb -a 3 http://$site"
-tmux send-keys -t PT:20.1 "# CMS: multi-platform analysis with cmsmap (update and scan)" Enter
-tmux send-keys -t PT:20.1 "sudo python /opt/CMSmap/cmsmap.py --update http://$site && sudo python /opt/CMSmap/cmsmap.py -F http://$site"
+tmux send-keys -t PT:20.1 "# CMS: multi-platform analysis update cmsmap" Enter
+tmux send-keys -t PT:20.1 "sudo python /opt/CMSmap/cmsmap.py --update http://$site"
+tmux send-keys -t PT:20.1 "# CMS: multi-platform analysis with cmsmap " Enter
+tmux send-keys -t PT:20.1 "sudo python /opt/CMSmap/cmsmap.py -F http://$site"
 tmux send-keys -t PT:20.2 "# CMS: multi-platform bruteforce (Wordpress)" Enter
 tmux send-keys -t PT:20.2 "sudo python /opt/CMSmap/cmsmap.py http://$site –u users.txt –p passwords.txt –f W"
 tmux send-keys -t PT:20.3 "# CMS: multi-platform bruteforce (Joomla)" Enter
