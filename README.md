@@ -32,6 +32,8 @@ once the SUB-PHASE has been selected you will be able to view the commands that 
 
 When you need to change penetration test PHASE and return to main manu, you need to close the tmux session. To implement this action you need to use the tmux shortcut:  
 **(CTRL + b) :kill-session**  
+or, if you execute the shortcut reported in the Installation section, you can use the shortcut:
+**(CTRL + b) (CTRL + n)**  
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/05.png">
 
   
