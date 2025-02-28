@@ -1313,7 +1313,7 @@ tmux send-keys "cd $folderProjectInfoGathering" Enter
 
 
 # SERVIVE INFORMATION GATHERING
-cd $folderProjectInfoGathering
+cd $folderProjectServiceInfoGathering
 # ServiceInformationGathering
 # Layout
 tmux new-window -t PT:1 -n 'Service Information Gathering'
@@ -1455,14 +1455,48 @@ tmux -2 attach-session -t PT
 
 
 
+
+
+
+
+
+
         6)
 ######################
 ######################
 ###################### 	>>>>>>>>>>>>>>>>> Service AuthN bypass: ssh, ftp, smtp,  etc
 ######################
 ######################
-echo "work in progress for this section."
+tmux new-session -d -s PT -n "any other business"
+tmux send-keys "ip=$ip" Enter
+tmux send-keys "site=$site" Enter
+tmux send-keys "domain=$domain" Enter
+tmux send-keys "cd $folderProjectInfoGathering" Enter
+
+
+# Service AuthN bypass
+cd $folderProjectAuthN
+# Layout
+tmux new-window -t PT:1 -n 'Service AuthN bypass: FTP'
+tmux split-window -v -t PT:1.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# Service AuthN bypass: FTP" Enter
+tmux send-keys -t PT:1.0 ""
+cd $folderProject
+
+# Attivazione della modalità interattiva
+tmux -2 attach-session -t PT
 ;;
+
+
+
+
+
+
+
+
+
+
 
 
 

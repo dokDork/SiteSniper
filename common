@@ -98,6 +98,27 @@ get_website() {
     echo "$website"
 }
 
+# Program version
+show_version() {
+  echo ""
+  echo ""
+  echo '           /$$   /$$                /$$$$$$            /$$                              '
+  echo '          |__/  | $$               /$$__  $$          |__/                              '
+  echo '  /$$$$$$$ /$$ /$$$$$$    /$$$$$$ | $$  \__/ /$$$$$$$  /$$  /$$$$$$   /$$$$$$   /$$$$$$ '
+  echo ' /$$_____/| $$|_  $$_/   /$$__  $$|  $$$$$$ | $$__  $$| $$ /$$__  $$ /$$__  $$ /$$__  $$'
+  echo ' |  $$$$$$ | $$  | $$    | $$$$$$$$ \____  $$| $$  \ $$| $$| $$  \ $$| $$$$$$$$| $$  \__/'
+  echo ' \____  $$| $$  | $$ /$$| $$_____/ /$$  \ $$| $$  | $$| $$| $$  | $$| $$_____/| $$      '
+  echo ' /$$$$$$$/| $$  |  $$$$/|  $$$$$$$|  $$$$$$/| $$  | $$| $$| $$$$$$$/|  $$$$$$$| $$      '
+  echo ' |_______/ |__/   \___/   \_______/ \______/ |__/  |__/|__/| $$____/  \_______/|__/      '
+  echo '                                                          | $$                          '
+  echo '                                                          | $$                          '
+  echo '                                                          |__/                          '
+  echo ""
+  echo "version 2.0.0"                      
+  echo ""
+  echo ""
+}
+
 # Funzione per mostrare i valori e chiedere conferma/modifica
 confirm_values() {
     value_type=$1
@@ -152,6 +173,7 @@ fold=$domain
 
 
 # Mostra i valori e chiedi conferma/modifica
+show_version
 ip=$(confirm_values "Target IP" "$ip")
 website=$(confirm_values "web site" "$website")
 domain=$(confirm_values "domain" "$domain")
