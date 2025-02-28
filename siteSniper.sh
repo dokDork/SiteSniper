@@ -34,6 +34,7 @@ do
     echo "5. Vulnerability: duckduckgo, searchsploit, nessus, nikto, etc"
     echo "6. Service AuthN bypass: ssh, ftp, smtp,  etc (TBD)"
     echo "7. WEB Service AuthN bypass: brute force, command injection"
+    echo ""
     read -p "Enter the number of the desired action (0 to exit): " choice
 
 
@@ -129,7 +130,7 @@ else
 	sudo apt-get install $1
 fi
 
-# impacket
+# nishang
 echo ""
 program="nishang"
 if ! is_installed "$program"; then
@@ -173,9 +174,9 @@ fi
 
 #Nessus
 echo ""
-program="Nessus 10.6.3"
-cd /opt
-if [ -e "Nessus-10.6.3-ubuntu1404_amd64.deb" ]; then
+program="nessus"
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -185,9 +186,8 @@ fi
 
 # kitrunner (analisi API)
 echo ""
-program="Kitrunner"
-cd /opt
-if [ -e "kr" ]; then
+program="kr"
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -201,8 +201,7 @@ fi
 # uniscan (automatizzo il command injection)
 echo ""
 program="uniscan"
-cd /opt
-if ! is_installed "uniscan"; then
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -212,21 +211,19 @@ fi
 
 # juumscan (automatizzo l'analisi delle vulnerabilità di joomla)
 echo ""
-program="juumla"
-cd /opt
-if ! is_installed "juumla"; then
+program="joomscan"
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
-	cd /opt
-	sudo git clone https://github.com/oppsec/juumla.git
+	sudo apt install joomscan
 fi
 
 # droopescan (automatizzo l'analisi delle vulnerabilità di drupal)
 echo ""
 program="droopescan"
 cd /opt
-if ! is_installed "droopescan"; then
+if is_installed "droopescan"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -238,7 +235,7 @@ fi
 # wisker / cupp (automatizzo la creazione di un dizionario)
 echo ""
 program="wisker"
-if ! is_installed "wisker"; then
+if is_installed "wisker"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -246,7 +243,7 @@ else
 	pip install wisker 
 fi
 program="cupp"
-if ! is_installed "cupp"; then
+if is_installed "cupp"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -259,7 +256,7 @@ fi
 echo ""
 program="cmsmap"
 cd /opt
-if ! is_installed "droopescan"; then
+if is_installed "cmsmap"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -275,7 +272,7 @@ fi
 echo ""
 program="dirsearch"
 cd /opt
-if ! is_installed "dirsearch"; then
+if is_installed "dirsearch"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -288,21 +285,18 @@ fi
 echo ""
 program="whatweb"
 cd /opt
-if ! is_installed "whatweb"; then
+if is_installed "whatweb"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
-	sudo git clone https://github.com/Ekultek/WhatWaf.git
-	cd /opt/WhatWaf 
-	sudo pip3 install -r requirements.txt
-	sudo python setup.py install
+	sudo apt install whatweb
 fi
 
 # fromWord2Site
 echo ""
 program="fromWord2Site"
 cd /opt
-if ! is_installed "fromWord2Site"; then
+if is_installed "fromWord2Site"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -315,7 +309,7 @@ fi
 echo ""
 program="identYwaf"
 cd /opt
-if ! is_installed "identYwaf"; then
+if is_installed "identYwaf"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -326,16 +320,16 @@ fi
 
 # Synk e copilot
 echo ""
-echo "[A] Synk e Copilot non possono essere installati in automatico"
-echo "    Per installarli vedi githib di ippsec"
+echo "[A] Synk e Copilot can not be installed automatically."
+echo "    Please refer to:"
 echo "    https://github.com/IppSec/parrot-build"
 
 
 # Docker
 echo ""
 program="Docker"
-cd /opt
-if [ -e "docker" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -368,15 +362,16 @@ if [ -d "/opt/gau" ]; then
 else
 	echo "[->] Installing $program..."	
 	sudo mkdir /opt/gau
-	sudo docker run --rm sxcurity/gau:latest --help
+	cd /opt/gau
+        sudo docker run --rm sxcurity/gau:latest –help
 fi
 
 
 # sublist3r (OSINT: subdomain)
 echo ""
 program="sublist3r"
-cd /opt
-if [ -e "sublist3r" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -387,8 +382,8 @@ fi
 # crtsh (OSINT: subdomain)
 echo ""
 program="crtsh"
-cd /opt
-if [ -e "sublist3r" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -402,8 +397,8 @@ fi
 # subfinder (OSINT: subdomain)
 echo ""
 program="subfinder"
-cd /opt
-if [ -e "sublist3r" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -417,8 +412,8 @@ fi
 # spiderfoot (OSINT: info)
 echo ""
 program="spiderfoot"
-cd /opt
-if [ -e "spiderfoot" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -429,8 +424,8 @@ fi
 # metagoofil (OSINT: meta info)
 echo ""
 program="metagoofil"
-cd /opt
-if [ -e "metagoofil" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -441,8 +436,8 @@ fi
 # ZAP (vulnerability assessment)
 echo ""
 program="zap"
-cd /opt
-if [ -e "zap" ]; then
+echo ""
+if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -1188,13 +1183,13 @@ tmux split-window -h -t "20.2"
 tmux send-keys -t PT:20.0 "# CMS: multi-platform analysis with whatweb" Enter
 tmux send-keys -t PT:20.0 "whatweb -a 3 http://$site"
 tmux send-keys -t PT:20.1 "# CMS: multi-platform analysis with cmsmap (update and scan)" Enter
-tmux send-keys -t PT:20.1 "$ cmsmap --update http://$site && $ cmsmap http://$site –F"
+tmux send-keys -t PT:20.1 "sudo python /opt/CMSmap/cmsmap.py --update http://$site && sudo python /opt/CMSmap/cmsmap.py -F http://$site"
 tmux send-keys -t PT:20.2 "# CMS: multi-platform bruteforce (Wordpress)" Enter
-tmux send-keys -t PT:20.2 "cmsmap http://$site –u users.txt –p passwords.txt –f W"
+tmux send-keys -t PT:20.2 "sudo python /opt/CMSmap/cmsmap.py http://$site –u users.txt –p passwords.txt –f W"
 tmux send-keys -t PT:20.3 "# CMS: multi-platform bruteforce (Joomla)" Enter
-tmux send-keys -t PT:20.3 "cmsmap http://$site –u users.txt –p passwords.txt –f J"
+tmux send-keys -t PT:20.3 "sudo python /opt/CMSmap/cmsmap.py http://$site –u users.txt –p passwords.txt –f J"
 tmux send-keys -t PT:20.4 "# CMS: multi-platform bruteforce (Drupal)" Enter
-tmux send-keys -t PT:20.4 "cmsmap http://$site –u users.txt –p passwords.txt –f D"
+tmux send-keys -t PT:20.4 "sudo python /opt/CMSmap/cmsmap.py http://$site –u users.txt –p passwords.txt –f D"
 cd $folderProject
 
 # CMS: WORDPRESS
@@ -1221,7 +1216,7 @@ tmux send-keys -t PT:21.0 "sudo nmap -Pn -vv -p 80 --script=http-wordpress* $ip 
 tmux send-keys -t PT:21.1 "# CMS: Wordpress analysis with cmseek" Enter
 tmux send-keys -t PT:21.1 "cmseek -u http://$site"
 tmux send-keys -t PT:21.2 "# CMS: Wordpress analysis with cmsmap" Enter
-tmux send-keys -t PT:21.2 "cmsmap http://$site –f W"
+tmux send-keys -t PT:21.2 "sudo python /opt/CMSmap/cmsmap.py http://$site –f W"
 tmux send-keys -t PT:21.3 "# CMS: Wordpress analysis with wpsec" Enter
 tmux send-keys -t PT:21.3 "firefox https://wpsec.com &"
 tmux send-keys -t PT:21.4 "# CMS: Wordpress analysis with msfconsole" Enter
@@ -1252,7 +1247,7 @@ tmux split-window -h -t "22.0"
 tmux split-window -v -t PT:22.4
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:22.0 "# CMS: Joomla analysis with cmsmap" Enter
-tmux send-keys -t PT:22.0 "cmsmap http://$site –f J"
+tmux send-keys -t PT:22.0 "sudo python /opt/CMSmap/cmsmap.py http://$site –f J"
 tmux send-keys -t PT:22.1 "# CMS: Joomla analysis with cmseek" Enter
 tmux send-keys -t PT:22.1 "cmseek -u http://$site"
 tmux send-keys -t PT:22.2 "# CMS: Joomla analysis with joomscan" Enter
@@ -1275,7 +1270,7 @@ tmux split-window -v -t PT:23.3
 tmux split-window -v -t PT:23.4
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:23.0 "# CMS: Drupal analysis with cmsmap" Enter
-tmux send-keys -t PT:23.0 "cmsmap http://$site –f D"
+tmux send-keys -t PT:23.0 "sudo python /opt/CMSmap/cmsmap.py http://$site –f D"
 tmux send-keys -t PT:23.1 "# CMS: Drupal analysis with cmseek" Enter
 tmux send-keys -t PT:23.1 "cmseek -u http://$site"
 tmux send-keys -t PT:23.2 "# CMS: Drupal analysis with firefox" Enter
@@ -1573,7 +1568,7 @@ tmux send-keys -t PT:2.2 "ffuf -request BurpSavedRequest.txt -request-proto http
 tmux send-keys -t PT:2.3 "# bruteforce BasicAuth authN" Enter
 tmux send-keys -t PT:2.3 "hydra -L $pathFile_users -P $pathFile_passwords -f $ip http-get / # Bruteforce BasicAuth authN"
 tmux send-keys -t PT:2.4 "# bruteforce CMS" Enter
-tmux send-keys -t PT:2.4 "sudo cmsmap https://$site -u $pathFile_users -p $pathFile_passwords -f W"
+tmux send-keys -t PT:2.4 "sudo python /opt/CMSmap/cmsmap.py https://$site -u $pathFile_users -p $pathFile_passwords -f W"
 cd $folderProject
 
 
