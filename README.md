@@ -50,7 +50,8 @@ When you need to change penetration test PHASE and return to main manu, you need
 It's very simple  
 ```
 cd /opt
-```
-```  
-sudo git clone https://github.com/dokDork/red-team-penetration-test-script.git
+sudo git clone https://github.com/dokDork/SiteSniper.git
+cd SiteSniper 
+chmod 755 siteSniper.sh 
+./siteSniper.sh 
 ```
