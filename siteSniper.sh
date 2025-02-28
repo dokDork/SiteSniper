@@ -43,7 +43,9 @@ do
 
     case $choice in
         0)
-            echo "Exit from tool."
+            echo "I'm exiting the tool"
+            echo "See you next game..."
+            echo ""
             break
             ;;
         1)
