@@ -55,3 +55,8 @@ cd SiteSniper
 chmod 755 siteSniper.sh 
 ./siteSniper.sh 
 ```
+Optional: You can insert a shortcut to move faster through the tool.
+```
+echo "bind-key C-n run-shell \"tmux kill-session -t #{session_name}\"" >> ~/.tmux.conf
+```
+
