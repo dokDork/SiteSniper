@@ -188,6 +188,8 @@ show_values "$ip" "$website" "$domain" "$fold" "$attackerIP"
 
 
 #=============== Variabili per moduli applicativi =================
+# target url 
+url=$url
 # target IP
 ip=$ip
 # target DOMAIN
