@@ -268,7 +268,10 @@ if [ ! -d "$folderProjectCrack" ]; then
     # Se non esiste, crea la cartella
     mkdir -p "$folderProjectCrack"
 fi
-
+if [ ! -d "$folderProjectAuthN" ]; then
+    # Se non esiste, crea la cartella
+    mkdir -p "$folderProjectAuthN"
+fi
 #preparo il folder con i file di appoggio per command injection
 if [ ! -d "$folderProjectEngine" ]; then
     # Se non esiste, crea la cartella

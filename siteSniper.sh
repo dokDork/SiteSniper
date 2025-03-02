@@ -471,7 +471,42 @@ else
 	sudo apt-get install python3-impacket
 fi
 
+# git-dumper
+echo ""
+program="git-dumper"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install python3 python3-pip
+	sudo apt install python3.13-venv
+	python3 -m venv git_stuff
+	source git_stuff/bin/activate
+	pip install git-dumper
+fi
 
+# gitleaks
+echo ""
+program="gitleaks"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install gitleaks
+fi
+
+# trufflehog 
+echo ""
+program="trufflehog"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install trufflehog
+fi
 
 
 
@@ -1497,7 +1532,7 @@ tmux send-keys "cd $folderProjectInfoGathering" Enter
 
 # Service AuthN bypass
 cd $folderProjectAuthN
-# Layout
+# FTP
 tmux new-window -t PT:1 -n 'Service AuthN bypass: FTP'
 tmux split-window -v -t PT:1.0
 tmux split-window -v -t PT:1.1
@@ -1516,7 +1551,6 @@ tmux split-window -v -t PT:1.11
 tmux select-pane -t "1.11"
 tmux split-window -h -t "1.11"
 tmux split-window -h -t "1.11"
-
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:1.0 "# FTP service fingerprint" Enter
 tmux send-keys -t PT:1.0 "nmap -sV -Pn -vv -p 21 --script=ftp* $ip -oA out.21"
@@ -1547,6 +1581,53 @@ tmux send-keys -t PT:1.12 "searchsploit \"<servizio da cercare>\""
 tmux send-keys -t PT:1.13 "# FTP authn bypass: exploitation" Enter
 tmux send-keys -t PT:1.13 "msfconsole -qx \"search type:exploit <servizio da cercare>\""
 cd $folderProject
+
+cd $folderProjectAuthN
+# GIT
+tmux new-window -t PT:2 -n 'Service AuthN bypass: GIT'
+tmux split-window -v -t PT:2.0
+tmux select-pane -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -v -t PT:2.6
+tmux select-pane -t "2.6"
+tmux split-window -h -t "2.6"
+tmux split-window -h -t "2.6"
+tmux split-window -v -t PT:2.9
+tmux select-pane -t "2.9"
+tmux split-window -h -t "2.9"
+tmux split-window -h -t "2.9"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:2.0 "# GIT download LOCAL repository" Enter
+tmux send-keys -t PT:2.0 "git clone /opt/git/project.git"
+tmux send-keys -t PT:2.1 "GIT download LOCAL repository" Enter
+tmux send-keys -t PT:2.1 "git clone file:///opt/git/project.git"
+tmux send-keys -t PT:2.2 "# GIT download REMOTE repository" Enter
+tmux send-keys -t PT:2.2 "git clone $url/project.git"
+tmux send-keys -t PT:2.3 "# GIT download REMOTE repository" Enter
+tmux send-keys -t PT:2.3 "git clone ssh://user@$domain/project.git"
+tmux send-keys -t PT:2.4 "# GIT download .git file" Enter
+tmux send-keys -t PT:2.4 "source git_stuff/bin/activate && git-dumper $url/.git/ ./"
+tmux send-keys -t PT:2.5 "# GIT download .git file" Enter
+tmux send-keys -t PT:2.5 "wget --recursive --no-clobber --page-requisites --convert-links --domains targetDomain.ctf --no-parent $url/.git/"
+tmux send-keys -t PT:2.6 "# GIT repository analysis (user, pass, token) with gitleaks" Enter
+tmux send-keys -t PT:2.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
+tmux send-keys -t PT:2.7 "# GIT repository analysis (user, pass, token) with trufflwhog" Enter
+tmux send-keys -t PT:2.7 "trufflehog git /path/to/.git"
+tmux send-keys -t PT:2.8 "# GIT repository analysis (user, pass, token) with grep" Enter
+tmux send-keys -t PT:2.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
+tmux send-keys -t PT:2.9 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:2.9 "git log -p"
+tmux send-keys -t PT:2.10 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:2.10 "git diff <UUID commit>"
+tmux send-keys -t PT:2.11 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:2.11 "git reset --hard <UUID commit>"
+
+cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
