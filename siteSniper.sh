@@ -1716,6 +1716,13 @@ tmux send-keys -t PT:5.11 "# SVN: navigate the SVN repository (downloaded as GIT
 tmux send-keys -t PT:5.11 "git reset --hard <UUID commit>"
 cd $folderProject
 
+cd $folderProjectAuthN
+# Telnet
+tmux new-window -t PT:6 -n 'Service fingerprint: Telnet'
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:5.0 "# Service fingerprint" Enter
+tmux send-keys -t PT:5.0 "nmap -sV -Pn -vv -p 23 --script=telnet* $ip -oA out.23"
+cd $folderProject
 
 
 
