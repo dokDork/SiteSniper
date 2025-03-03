@@ -1736,8 +1736,12 @@ tmux split-window -h -t "7.1"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:7.0 "# SMTP: Service fingerprint" Enter
 tmux send-keys -t PT:7.0 "nmap -sV -Pn -vv -p 25 --script=smtp-* $ip -oA out.25"
-tmux send-keys -t PT:7.0 "# SMTP: Email enumeration" Enter
-tmux send-keys -t PT:7.0 "ismtp -h 52.101.73.19:25 -e ./users.txt"
+tmux send-keys -t PT:7.1 "# SMTP: Email enumeration with ismtp" Enter
+tmux send-keys -t PT:7.1 "ismtp -h $ip:25 -e ./users.txt"
+tmux send-keys -t PT:7.2 "# SMTP: Email enumeration with smtp-user-enum" Enter
+tmux send-keys -t PT:7.2 "smtp-user-enum -M VRFY -D $domain -U /usr/share/seclists/Usernames/cirt-default-usernames.txt -t $ip | cut -d " " -f2 | tee smtp.user.txt"
+tmux send-keys -t PT:7.3 "# SMTP: Email enumeration manually (with telnet + VRFY email)" Enter
+tmux send-keys -t PT:7.3 "telnet $ip 25"
 cd $folderProject
 
 
