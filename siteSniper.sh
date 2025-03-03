@@ -1718,12 +1718,27 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Telnet
-tmux new-window -t PT:6 -n 'Service fingerprint: Telnet'
+tmux new-window -t PT:6 -n 'Telnet: Service fingerprint'
+tmux split-window -v -t PT:6.0
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# Service fingerprint" Enter
-tmux send-keys -t PT:5.0 "nmap -sV -Pn -vv -p 23 --script=telnet* $ip -oA out.23"
+tmux send-keys -t PT:6.0 "# Telnet: Service fingerprint" Enter
+tmux send-keys -t PT:6.0 "nmap -sV -Pn -vv -p 23 --script=telnet* $ip -oA out.23"
 cd $folderProject
 
+cd $folderProjectAuthN
+# SMTP
+tmux new-window -t PT:7 -n 'SMTP: Service fingerprint'
+tmux split-window -v -t PT:7.0
+tmux split-window -v -t PT:7.1
+tmux select-pane -t "7.1"
+tmux split-window -h -t "7.1"
+tmux split-window -h -t "7.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:7.0 "# SMTP: Service fingerprint" Enter
+tmux send-keys -t PT:7.0 "nmap -sV -Pn -vv -p 25 --script=smtp-* $ip -oA out.25"
+tmux send-keys -t PT:7.0 "# SMTP: Email enumeration" Enter
+tmux send-keys -t PT:7.0 "ismtp -h 52.101.73.19:25 -e ./users.txt"
+cd $folderProject
 
 
 
