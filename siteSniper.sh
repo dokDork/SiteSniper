@@ -1596,7 +1596,7 @@ cd $folderProject
 # Service AuthN bypass
 cd $folderProjectAuthN
 # FTP
-tmux new-window -t PT:2 -n 'Service AuthN bypass: FTP'
+tmux new-window -t PT:2 -n 'FTP protocol'
 tmux split-window -v -t PT:2.0
 tmux split-window -v -t PT:2.1
 tmux select-pane -t "2.1"
@@ -1621,7 +1621,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # GIT
-tmux new-window -t PT:3 -n 'Service AuthN bypass: GIT'
+tmux new-window -t PT:3 -n 'GIT protocol'
 tmux split-window -v -t PT:3.0
 tmux select-pane -t "3.0"
 tmux split-window -h -t "3.0"
@@ -1666,7 +1666,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SSH
-tmux new-window -t PT:4 -n 'Service AuthN bypass: SSH'
+tmux new-window -t PT:4 -n 'SSH protocol'
 tmux split-window -v -t PT:4.0
 tmux split-window -v -t PT:4.1
 tmux select-pane -t "4.1"
@@ -1685,7 +1685,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SVN
-tmux new-window -t PT:5 -n 'Service AuthN bypass: SVN'
+tmux new-window -t PT:5 -n 'SVN protocol'
 tmux split-window -v -t PT:5.0
 tmux select-pane -t "5.0"
 tmux split-window -h -t "5.0"
@@ -1731,7 +1731,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Telnet
-tmux new-window -t PT:6 -n 'Telnet: Service fingerprint'
+tmux new-window -t PT:6 -n 'Telnet protocol'
 tmux split-window -v -t PT:6.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:6.0 "# Telnet: Service fingerprint" Enter
@@ -1740,7 +1740,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SMTP
-tmux new-window -t PT:7 -n 'SMTP: Service fingerprint'
+tmux new-window -t PT:7 -n 'SMTP protocol'
 tmux split-window -v -t PT:7.0
 tmux split-window -v -t PT:7.1
 tmux select-pane -t "7.1"
@@ -1759,7 +1759,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # DNS
-tmux new-window -t PT:8 -n 'DNS: Service fingerprint'
+tmux new-window -t PT:8 -n 'DNS protocol'
 tmux split-window -v -t PT:8.0
 tmux split-window -v -t PT:8.1
 # Esecuzione dei comandi nelle sottofinestre
@@ -1772,6 +1772,26 @@ tmux send-keys -t PT:8.1 "######################################################
 tmux send-keys -t PT:8.1 ""
 cd $folderProject
 
+cd $folderProjectAuthN
+# TFTP
+tmux new-window -t PT:9 -n 'TFTP protocol'
+tmux split-window -v -t PT:9.0
+tmux split-window -v -t PT:9.1
+tmux split-window -v -t PT:9.2
+tmux split-window -v -t PT:9.3
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:9.0 "# TFTP: Service fingerprint" Enter
+tmux send-keys -t PT:9.0 "nmap -sV -Pn -vv -p 69 --script=smtp-* $ip -oA out.69"
+tmux send-keys -t PT:9.1 "# TFTP: File enumeration" Enter
+tmux send-keys -t PT:9.1 "nmap  -sU -p69 --script tftp-enum --script-args tftp-enum.filelist=customlist.txt $ip -Pn"
+tmux send-keys -t PT:9.2 "# TFTP: bruteforce" Enter
+tmux send-keys -t PT:9.2 "msfconsole -q -x \"use auxiliary/scanner/tftp/tftpbrute; set RHOSTS $ip; set DICTIONARY /usr/share/metasploit-framework/data/wordlists/tftp.txt; run\""
+tmux send-keys -t PT:9.3 "# TFTP: bruteforce" Enter
+tmux send-keys -t PT:9.3 "###############################################################" Enter
+tmux send-keys -t PT:9.3 "## ALSO PLEASE REFER TO SERVICE AUTHN BYPASS > ALL PROTOCOLs ##" Enter
+tmux send-keys -t PT:9.3 "###############################################################" Enter
+tmux send-keys -t PT:9.3 ""
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
