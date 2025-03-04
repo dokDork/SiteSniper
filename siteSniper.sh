@@ -92,7 +92,7 @@ sudo apt update
 
 # webDataExtractor
 program="webDataExtractor.py"
-echo ""
+printf "\n===================================\n"
 if ! is_installed "$program"; then
 	echo "[->] Installing $program..."
 	# Comando di installazione del programma
@@ -108,7 +108,7 @@ fi
 
 # seclists
 program="seclists"
-echo ""
+printf "\n===================================\n"
 if ! is_installed "$program"; then
 	echo "[->] Installing $program..."
 	# Comando di installazione del programma
@@ -120,7 +120,7 @@ else
 fi
 
 # impacket
-echo ""
+printf "\n===================================\n"
 program="python3-impacket"
 pathAppo="/usr/share/doc/python3-impacket/examples"
 if [ -d "$pathAppo" ]; then
@@ -134,7 +134,7 @@ else
 fi
 
 # nishang
-echo ""
+printf "\n===================================\n"
 program="nishang"
 if ! is_installed "$program"; then
 	echo "[->] Installing $program..."
@@ -147,7 +147,7 @@ else
 fi
 
 # mingw-w64
-echo ""
+printf "\n===================================\n"
 program="mingw-w64"
 if ! is_installed "i686-w64-mingw32-gcc"; then
 	echo "[->] Installing $program..."
@@ -160,7 +160,7 @@ else
 fi
 
 # script nmap
-echo ""
+printf "\n===================================\n"
 program="nmap script (vulnscan, vulners)"
 pathAppo="/usr/share/nmap/scripts/vulscan"
 if [ -d "$pathAppo" ]; then
@@ -176,9 +176,8 @@ else
 fi
 
 #Nessus
-echo ""
+printf "\n===================================\n"
 program="nessus"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -188,7 +187,7 @@ else
 fi
 
 # kitrunner (analisi API)
-echo ""
+printf "\n===================================\n"
 program="kr"
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
@@ -202,7 +201,7 @@ fi
 
 
 # uniscan (automatizzo il command injection)
-echo ""
+printf "\n===================================\n"
 program="uniscan"
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
@@ -213,7 +212,7 @@ else
 fi
 
 # juumscan (automatizzo l'analisi delle vulnerabilità di joomla)
-echo ""
+printf "\n===================================\n"
 program="joomscan"
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
@@ -223,7 +222,7 @@ else
 fi
 
 # droopescan (automatizzo l'analisi delle vulnerabilità di drupal)
-echo ""
+printf "\n===================================\n"
 program="droopescan"
 cd /opt
 if is_installed "droopescan"; then
@@ -236,7 +235,7 @@ fi
 
 
 # wisker / cupp (automatizzo la creazione di un dizionario)
-echo ""
+printf "\n===================================\n"
 program="wisker"
 if is_installed "wisker"; then
 	echo "[i] $program is already installed."
@@ -256,7 +255,7 @@ fi
 
 
 # cmsmap (bruteforce su Joomla, WOrdpress e Drupal)
-echo ""
+printf "\n===================================\n"
 program="cmsmap"
 cd /opt
 if is_installed "cmsmap"; then
@@ -272,7 +271,7 @@ fi
 
 
 # dirsearch (search directory)
-echo ""
+printf "\n===================================\n"
 program="dirsearch"
 cd /opt
 if is_installed "dirsearch"; then
@@ -285,7 +284,7 @@ fi
 
 
 # whatwaf (WAF detection)
-echo ""
+printf "\n===================================\n"
 program="whatweb"
 cd /opt
 if is_installed "whatweb"; then
@@ -296,7 +295,7 @@ else
 fi
 
 # fromWord2Site
-echo ""
+printf "\n===================================\n"
 program="fromWord2Site"
 cd /opt
 if is_installed "fromWord2Site"; then
@@ -309,7 +308,7 @@ else
 fi
 
 # identYwaf
-echo ""
+printf "\n===================================\n"
 program="identYwaf"
 cd /opt
 if is_installed "identYwaf"; then
@@ -322,16 +321,15 @@ else
 fi
 
 # Synk e copilot
-echo ""
+printf "\n===================================\n"
 echo "[A] Synk e Copilot can not be installed automatically."
 echo "    Please refer to:"
 echo "    https://github.com/IppSec/parrot-build"
 
 
 # Docker
-echo ""
+printf "\n===================================\n"
 program="Docker"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -341,7 +339,7 @@ fi
 
 
 # hakluke/hakrawler
-echo ""
+printf "\n===================================\n"
 program="hakluke/hakrawler"
 cd /opt
 if [ -d "/opt/hakrawler" ]; then
@@ -357,7 +355,7 @@ fi
 
 
 # sxcurity/gau
-echo ""
+printf "\n===================================\n"
 program="sxcurity/gau"
 cd /opt
 if [ -d "/opt/gau" ]; then
@@ -371,9 +369,8 @@ fi
 
 
 # sublist3r (OSINT: subdomain)
-echo ""
+printf "\n===================================\n"
 program="sublist3r"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -383,9 +380,8 @@ fi
 
 
 # crtsh (OSINT: subdomain)
-echo ""
+printf "\n===================================\n"
 program="crtsh"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -398,9 +394,8 @@ fi
 
 
 # subfinder (OSINT: subdomain)
-echo ""
+printf "\n===================================\n"
 program="subfinder"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -413,9 +408,8 @@ fi
 
 
 # spiderfoot (OSINT: info)
-echo ""
+printf "\n===================================\n"
 program="spiderfoot"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -425,9 +419,8 @@ fi
 
 
 # metagoofil (OSINT: meta info)
-echo ""
+printf "\n===================================\n"
 program="metagoofil"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -437,9 +430,8 @@ fi
 
 
 # ZAP (vulnerability assessment)
-echo ""
+printf "\n===================================\n"
 program="zap"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -449,9 +441,8 @@ fi
 
 
 # crackmapexec
-echo ""
+printf "\n===================================\n"
 program="crackmapexec"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -461,9 +452,8 @@ fi
 
 
 # impacket
-echo ""
+printf "\n===================================\n"
 program="impacket"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -472,9 +462,8 @@ else
 fi
 
 # git-dumper
-echo ""
+printf "\n===================================\n"
 program="git-dumper"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -487,9 +476,8 @@ else
 fi
 
 # gitleaks
-echo ""
+printf "\n===================================\n"
 program="gitleaks"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -498,9 +486,8 @@ else
 fi
 
 # trufflehog 
-echo ""
+printf "\n===================================\n"
 program="trufflehog"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -508,16 +495,29 @@ else
 	sudo apt install trufflehog
 fi
 
-# SVN TOOL 
-echo ""
+# gxfr (DNS tool)
+printf "\n===================================\n"
+program="gxfr"
+cd /opt
+if [ -d "/opt/gxfr" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo mkdir /opt/gxfr
+	cd /opt/gxfr
+	sudo wget https://raw.githubusercontent.com/leonteale/pentestpackage/master/gxfr.py
+fi
+
+# SVN TOOLs 
+printf "\n===================================\n"
 program="svn"
-echo ""
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
 	sudo apt install git git-svn subversion
 fi
+
 
 
 
@@ -557,13 +557,13 @@ echo "https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_l
 echo "https://github.com/hugsy/gdb-static/raw/master/gdb-7.10.1-x32" | sudo tee -a download.txt
 
 # Scarica i file utilizzando wget
-echo ""
-echo "[i] download applicativi"
+printf "\n===================================\n"
+echo "[i] Interesting Application download"
 sudo wget -N -i download.txt
 
 #completo l'installazione di chisel
-echo ""
-echo "[i] Completo l'installazione di chisel"
+printf "\n===================================\n"
+echo "[i] chisel installation"
 sudo gunzip chisel_1.7.4_linux_386.gz 
 sudo mv chisel_1.7.4_linux_386 chisel 
 sudo chmod 755 *
@@ -614,37 +614,37 @@ https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/ncat
 https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_windows_386.gz
 EOF
 # Scarica i file utilizzando wget
-echo ""
-echo "[i] download applicativi"
+printf "\n===================================\n"
+echo "[i] Interesting Application Download"
 wget -N -i download.txt
 
 #completo l'installazione di chisel
-echo ""
-echo "[i] Completo l'installazione di chisel"
+printf "\n===================================\n"
+echo "[i] chisel installation"
 sudo gunzip chisel_1.7.4_windows_386.gz 
 sudo mv chisel_1.7.4_windows_386 chisel.exe 
 sudo upx brute chisel.exe
 
 # SharpCollection
-echo ""
-echo "[i] Installazione di sharpCollection"
+printf "\n===================================\n"
+echo "[i] sharpCollection installation"
 sudo git clone https://github.com/Flangvik/SharpCollection.git
 
 # samdump, pwdump, procdump
 #SAMDUMP2
-echo ""
-echo "[i] Installazione di samdump2"
+printf "\n===================================\n"
+echo "[i] samdump2 installation"
 sudo apt install samdump2
 # PWDUMP
-echo ""
-echo "[i] Installazione di Pwdump"
+printf "\n===================================\n"
+echo "[i] Pwdump installation"
 sudo wget -N https://download.openwall.net/pub/projects/john/contrib/pwdump/pwdump8-8.2.zip
 sudo unzip -o pwdump8-8.2.zip
 sudo chmod 755 ./pwdump8
 sudo chmod 755 ./pwdump8/*
 # PROCDUMP
-echo ""
-echo "[i] Installazione di ProcDump"
+printf "\n===================================\n"
+echo "[i] ProcDump installation"
 sudo wget -N https://download.sysinternals.com/files/Procdump.zip
 sudo unzip -o Procdump.zip
 sudo chmod 755 *
@@ -715,23 +715,36 @@ cd $folderProjectInfoGathering
 # Layout
 tmux new-window -t PT:5 -n 'OSINT: DNS data exfiltration'
 tmux split-window -v -t PT:5.0
-tmux split-window -v -t PT:5.1
-tmux split-window -v -t PT:5.2
-tmux split-window -v -t PT:5.3
-tmux select-pane -t "5.3"
-tmux split-window -h -t "5.3"
-tmux split-window -h -t "5.3"
+tmux select-pane -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -v -t PT:5.5
+tmux select-pane -t "5.5"
+tmux split-window -h -t "5.5"
+tmux split-window -v -t PT:5.7
+tmux select-pane -t "5.7"
+tmux split-window -h -t "5.7"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:5.0 "# OSINT: DNS data exfiltration" Enter
+tmux send-keys -t PT:5.0 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with webSite" Enter
 tmux send-keys -t PT:5.0 "grep -v '^#' $folderProjectEngine/osint-web-dns.txt | xargs -I {} xdg-open {}"
-tmux send-keys -t PT:5.1 "# OSINT: DNS query with dnsrecon" Enter
+tmux send-keys -t PT:5.1 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with dnsrecon" Enter
 tmux send-keys -t PT:5.1 "dnsrecon -d $domain"
-tmux send-keys -t PT:5.2 "# OSINT: DNS query with host" Enter
+tmux send-keys -t PT:5.2 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with host" Enter
 tmux send-keys -t PT:5.2 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
-tmux send-keys -t PT:5.3 "# OSINT: DNS query with nslookup" Enter
+tmux send-keys -t PT:5.3 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with nslookup" Enter
 tmux send-keys -t PT:5.3 "nslookup $site && nslookup $ip"
-tmux send-keys -t PT:5.4 "# OSINT: DNS zone transfer" Enter
-tmux send-keys -t PT:5.4 "dig axfr $domain"
+tmux send-keys -t PT:5.4 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with dnsenum" Enter
+tmux send-keys -t PT:5.4 "dnsenum $domain"
+tmux send-keys -t PT:5.5 "# OSINT: DNS Zone Transfer with dig" Enter
+tmux send-keys -t PT:5.5 "dig axfr $domain"
+tmux send-keys -t PT:5.6 "# OSINT: DNS Zone Transfer with dnsrecon" Enter
+tmux send-keys -t PT:5.6 "dnsrecon -t axfr -n $ip -d $domain"
+tmux send-keys -t PT:5.7 "# OSINT: DNS SubDomain research" Enter
+tmux send-keys -t PT:5.7 "python2 /opt/gxfr/gxfr.py --gxfr --dns-lookup"
+tmux send-keys -t PT:5.8 "# OSINT: DNS SubDomain research" Enter
+tmux send-keys -t PT:5.8 "dnsrecon -t brt -D /usr/share/dnsrecon/namelist.txt -d $domain"
 cd $folderProject
 
 cd $folderProjectInfoGathering
