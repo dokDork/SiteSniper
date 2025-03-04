@@ -1757,6 +1757,20 @@ tmux send-keys -t PT:7.3 "# SMTP: Email enumeration manually (with telnet + VRFY
 tmux send-keys -t PT:7.3 "telnet $ip 25"
 cd $folderProject
 
+cd $folderProjectAuthN
+# DNS
+tmux new-window -t PT:8 -n 'DNS: Service fingerprint'
+tmux split-window -v -t PT:8.0
+tmux split-window -v -t PT:8.1
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:8.0 "# DNS: Service fingerprint" Enter
+tmux send-keys -t PT:8.0 "nmap -sV -Pn -vv -p 53 --script=smtp-* $ip -oA out.53"
+tmux send-keys -t PT:8.1 "# DNS: Information Gathering" Enter
+tmux send-keys -t PT:8.1 "##############################################################" Enter
+tmux send-keys -t PT:8.1 "## PLEASE REFER TO OSINT > OSINT: Data Exfiltration Section ##" Enter
+tmux send-keys -t PT:8.1 "##############################################################" Enter
+tmux send-keys -t PT:8.1 ""
+cd $folderProject
 
 
 # Attivazione della modalità interattiva
