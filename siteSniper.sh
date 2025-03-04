@@ -508,6 +508,22 @@ else
 	sudo wget https://raw.githubusercontent.com/leonteale/pentestpackage/master/gxfr.py
 fi
 
+# finger-user-enum (finger enumeration)
+printf "\n===================================\n"
+program="finger-user-enum"
+cd /opt
+if [ -d "/opt/finger-user-enum" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo mkdir finger-user-enum
+	cd finger-user-enum
+	sudo git clone https://github.com/pentestmonkey/finger-user-enum
+	cd finger-user-enum
+	sudo chmod 755 finger-user-enum.pl
+fi
+
 # SVN TOOLs 
 printf "\n===================================\n"
 program="svn"
@@ -1791,6 +1807,35 @@ tmux send-keys -t PT:9.3 "######################################################
 tmux send-keys -t PT:9.3 "## ALSO PLEASE REFER TO SERVICE AUTHN BYPASS > ALL PROTOCOLs ##" Enter
 tmux send-keys -t PT:9.3 "###############################################################" Enter
 tmux send-keys -t PT:9.3 ""
+cd $folderProject
+
+cd $folderProjectAuthN
+# finger
+tmux new-window -t PT:10 -n 'Finger protocol'
+tmux split-window -v -t PT:10.0
+tmux split-window -v -t PT:10.1
+tmux select-pane -t "10.1"
+tmux split-window -h -t "10.1"
+tmux split-window -h -t "10.1"
+tmux split-window -v -t PT:10.4
+tmux select-pane -t "10.4"
+tmux split-window -h -t "10.4"
+tmux split-window -h -t "10.4"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:10.0 "# Finger: Service fingerprint" Enter
+tmux send-keys -t PT:10.0 "nmap -sV -Pn -vv -p 79 --script=finger* $ip -oA out.79"
+tmux send-keys -t PT:10.1 "# Finger: Enumerate Connected Users with finger" Enter
+tmux send-keys -t PT:10.1 "finger @$ip"
+tmux send-keys -t PT:10.2 "# Finger: Get extended info for a specific User with finger" Enter
+tmux send-keys -t PT:10.2 "finger -l utente@$ip"
+tmux send-keys -t PT:10.3 "# Finger: Get restricted info for a specific User with finger" Enter
+tmux send-keys -t PT:10.3 "finger -s utente@$ip"
+tmux send-keys -t PT:10.4 "# Find a user's dictionary to enumerate target user with finger-user-enum" Enter
+tmux send-keys -t PT:10.4 "find /usr/share/seclists/ -follow | grep user | xargs wc -l | sort -n"
+tmux send-keys -t PT:10.5 "# Finger: Enumerate target users with finger-user-enum" Enter
+tmux send-keys -t PT:10.5 "/opt/finger-user-enum/finger-user-enum/finger-user-enum.pl -U usernames.txt -t $ip | tee finger.user.txt"
+tmux send-keys -t PT:10.6 "# Finger: Enumerate target users with msfconsole" Enter
+tmux send-keys -t PT:10.6 "msfconsole -q -x \"use auxiliary/scanner/finger/finger_users; set RHOSTS $ip; run\""
 cd $folderProject
 
 # Attivazione della modalità interattiva
