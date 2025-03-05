@@ -119,9 +119,6 @@ else
 	sudo chmod 755 username-anarchy
 fi
 
-
-
-
 # seclists
 program="seclists"
 printf "\n===================================\n"
@@ -260,6 +257,8 @@ else
 	cd /opt
 	pip install wisker 
 fi
+
+printf "\n===================================\n"
 program="cupp"
 if is_installed "cupp"; then
 	echo "[i] $program is already installed."
@@ -283,8 +282,6 @@ else
 	cd /opt/CMSmap 
 	sudo pip3 install .
 fi
-
-
 
 # dirsearch (search directory)
 printf "\n===================================\n"
@@ -501,6 +498,18 @@ else
 	sudo apt install gitleaks
 fi
 
+# kerbrute 
+printf "\n===================================\n"
+program="kerbrute"
+if is_installed "/home/kali/.local/bin/kerbrute "; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install pipx
+	pipx install kerbrute
+	pipx ensurepath 
+fi
+
 # trufflehog 
 printf "\n===================================\n"
 program="trufflehog"
@@ -549,7 +558,6 @@ else
 	echo "[->] Installing $program..."	
 	sudo apt install git git-svn subversion
 fi
-
 
 
 
