@@ -93,18 +93,34 @@ sudo apt update
 # webDataExtractor
 program="webDataExtractor.py"
 printf "\n===================================\n"
-if ! is_installed "$program"; then
+pathAppo="/opt/webDataExtractor/"
+if [ -d "$pathAppo" ]; then
+	echo "[i] $program is already installed."
+else
 	echo "[->] Installing $program..."
-	# Comando di installazione del programma
-	# Esempio: sudo apt-get install -y "$program"
 	cd /opt
 	sudo pip install beautifulsoup4
 	sudo git clone https://github.com/dokDork/webDataExtractor.git
 	cd /opt/webDataExtractor/
 	chmod 755 webDataExtractor.py
-else
-	echo "[i] $program is already installed."
 fi
+
+# username_anarchy
+program="username-anarchy"
+printf "\n===================================\n"
+pathAppo="/opt/uername-anarchy"
+if [ -d "$pathAppo" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."
+	cd /opt
+	sudo git clone https://github.com/urbanadventurer/username-anarchy.git
+	cd /opt/username-anarchy
+	sudo chmod 755 username-anarchy
+fi
+
+
+
 
 # seclists
 program="seclists"
@@ -984,7 +1000,9 @@ tmux new-window -t PT:1 -n 'Information Gathering (WEB): info from site - email,
 tmux split-window -v -t PT:1.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:1.0 "# Information Gathering (WEB): info from site - email,name,telephone (webDataExtractor)" Enter
-tmux send-keys -t PT:1.0 "sudo python webDataExtractor.py $site 1"
+tmux send-keys -t PT:1.0 "sudo python /opt/webDataExtractor/webDataExtractor.py $url 1"
+tmux send-keys -t PT:1.1 "# Information Gathering (WEB): extend name list with username-anarchy" Enter
+tmux send-keys -t PT:1.1 "sudo /opt/username-anarchy/username-anarchy <usernname>"
 cd $folderProject
 
 # Information Gathering (WEB): info from site - link contenuti nel sistema target
