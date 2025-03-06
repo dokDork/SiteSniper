@@ -688,6 +688,14 @@ echo "[i] ProcDump installation"
 sudo wget -N https://download.sysinternals.com/files/Procdump.zip
 sudo unzip -o Procdump.zip
 sudo chmod 755 *
+# Rubeus.exe
+printf "\n===================================\n"
+echo "[i] ProcDump installation"
+sudo wget -N https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/raw/refs/heads/master/Rubeus.exe
+sudo unzip -o Rubeus.exe
+sudo chmod 755 *
+
+
 ;;
 esac
 ;;            
