@@ -1864,6 +1864,27 @@ tmux send-keys -t PT:10.6 "# Finger: Enumerate target users with msfconsole" Ent
 tmux send-keys -t PT:10.6 "msfconsole -q -x \"use auxiliary/scanner/finger/finger_users; set RHOSTS $ip; run\""
 cd $folderProject
 
+cd $folderProjectAuthN
+# Kerberos - Enumeration
+tmux new-window -t PT:11 -n 'Kerberos - Enumeration'
+tmux split-window -v -t PT:11.0
+tmux select-pane -t "11.0"
+tmux split-window -h -t "11.0"
+tmux split-window -v -t PT:11.2
+tmux select-pane -t "11.2"
+tmux split-window -h -t "11.2"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:11.0 "# Kerberos-Enumeration: create a username dictionary with usrname-anarchy" Enter
+tmux send-keys -t PT:11.0 "sudo /opt/username-anarchy/username-anarchy mario rossi"
+tmux send-keys -t PT:11.1 "# Kerberos-Enumeration: create a username dictionary with webSite" Enter
+tmux send-keys -t PT:11.1 "grep -v '^#' $folderProjectEngine/kerberos-enumeration.txt | xargs -I {} xdg-open {}"
+tmux send-keys -t PT:11.2 "# Kerberos-Enumeration: Verify valid username with nmap" Enter
+tmux send-keys -t PT:11.2 "nmap -p 88 --script=krb5-enum-users --script-args krb5-enum-users.realm="$domain",userdb=users.txt $ip"
+tmux send-keys -t PT:11.3 "# Kerberos-Enumeration: Verify valid username with kerbrute" Enter
+tmux send-keys -t PT:11.3 "/home/kali/.local/bin/kerbrute -users users.txt -dc-ip $ip -domain $domain "
+cd $folderProject
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
