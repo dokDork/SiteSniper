@@ -1983,6 +1983,27 @@ tmux send-keys -t PT:13.12 "# Kerberos KERBEROASTING: Get a shell on remote syst
 tmux send-keys -t PT:13.12 "crackmapexec smb $ip -u <utente> -H <HASH-NT> -x \"<comando>\""
 cd $folderProject
 
+
+cd $folderProjectAuthN
+# POP3
+tmux new-window -t PT:14 -n 'POP3'
+tmux split-window -v -t PT:14.0
+tmux split-window -v -t PT:14.1
+tmux select-pane -t "14.1"
+tmux split-window -h -t "14.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:14.0 "# POP3: Service fingerprint" Enter
+tmux send-keys -t PT:14.0 "nmap -sV -Pn -vv -p 110 --script=pop3* $ip -oA out.110"
+tmux send-keys -t PT:14.1 "# POP3: get Banner" Enter
+tmux send-keys -t PT:14.1 "telnet $ip 110"
+tmux send-keys -t PT:14.2 "# POP3: get Emails" Enter
+tmux send-keys -t PT:14.2 "# USER myUser" Enter
+tmux send-keys -t PT:14.2 "# PASS myPass" Enter
+tmux send-keys -t PT:14.2 "# list" Enter
+tmux send-keys -t PT:14.2 "# retr 5" Enter
+tmux send-keys -t PT:14.2 "telnet $ip 110"
+cd $folderProject
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
