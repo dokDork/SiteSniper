@@ -1983,7 +1983,6 @@ tmux send-keys -t PT:13.12 "# Kerberos KERBEROASTING: Get a shell on remote syst
 tmux send-keys -t PT:13.12 "crackmapexec smb $ip -u <utente> -H <HASH-NT> -x \"<comando>\""
 cd $folderProject
 
-
 cd $folderProjectAuthN
 # POP3
 tmux new-window -t PT:14 -n 'POP3'
@@ -1996,13 +1995,36 @@ tmux send-keys -t PT:14.0 "# POP3: Service fingerprint" Enter
 tmux send-keys -t PT:14.0 "nmap -sV -Pn -vv -p 110 --script=pop3* $ip -oA out.110"
 tmux send-keys -t PT:14.1 "# POP3: get Banner" Enter
 tmux send-keys -t PT:14.1 "telnet $ip 110"
-tmux send-keys -t PT:14.2 "# POP3: get Emails" Enter
-tmux send-keys -t PT:14.2 "# USER myUser" Enter
-tmux send-keys -t PT:14.2 "# PASS myPass" Enter
-tmux send-keys -t PT:14.2 "# list" Enter
-tmux send-keys -t PT:14.2 "# retr 5" Enter
+tmux send-keys -t PT:14.2 "printf \"\n# POP3: get Emails\n# USER myUser\n# PASS myPass\n# list\n# retr 5\" " Enter
 tmux send-keys -t PT:14.2 "telnet $ip 110"
 cd $folderProject
+
+
+cd $folderProjectAuthN
+# NFS
+tmux new-window -t PT:15 -n 'NFS'
+tmux split-window -v -t PT:15.0
+tmux split-window -v -t PT:15.1
+tmux select-pane -t "15.1"
+tmux split-window -h -t "15.1"
+tmux split-window -h -t "15.1"
+tmux split-window -v -t PT:15.4
+tmux split-window -v -t PT:15.5
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:15.0 "# NFS: Service fingerprint" Enter
+tmux send-keys -t PT:15.0 "nmap -sV -Pn -vv -p 111 --script=nts* $ip -oA out.111"
+tmux send-keys -t PT:15.1 "# NFS: Verify if NTS is enabled on top of RPC" Enter
+tmux send-keys -t PT:15.1 "rpcinfo -p $ip | grep nfs"
+tmux send-keys -t PT:15.2 "# NFS: get info on service exposed by RPC" Enter
+tmux send-keys -t PT:15.2 "nmap -sV -Pn -vv -p 111 --script=rpc2info $ip"
+tmux send-keys -t PT:15.3 "# NFS: enumerate remote folder" Enter
+tmux send-keys -t PT:15.3 "showmount –e $ip"
+tmux send-keys -t PT:15.4 "# NFS: mount remote folder" Enter
+tmux send-keys -t PT:15.4 "sudo mkdir /mnt/opt && sudo mount -t nfs -o nolock $ip:/opt /mnt/opt"
+tmux send-keys -t PT:15.5 "printf \"\n# NFS: If you get the error\n# ls: cannot open directory 'vulnix': Permission denied\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\n# NFS: Exploit: NFS root squashing\n# If NFS is active and on remote server 'no_root_squash' is active\n# then NFS root squashing attack could be possible \n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\" " Enter
+
+cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
