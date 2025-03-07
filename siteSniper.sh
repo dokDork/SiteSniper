@@ -2012,7 +2012,7 @@ tmux split-window -v -t PT:15.4
 tmux split-window -v -t PT:15.5
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:15.0 "# NFS: Service fingerprint" Enter
-tmux send-keys -t PT:15.0 "nmap -sV -Pn -vv -p 111 --script=nts* $ip -oA out.111"
+tmux send-keys -t PT:15.0 "nmap -sV -Pn -vv -p 111 --script=nfs* $ip -oA out.111"
 tmux send-keys -t PT:15.1 "# NFS: Verify if NTS is enabled on top of RPC" Enter
 tmux send-keys -t PT:15.1 "rpcinfo -p $ip | grep nfs"
 tmux send-keys -t PT:15.2 "# NFS: get info on service exposed by RPC" Enter
@@ -2022,9 +2022,22 @@ tmux send-keys -t PT:15.3 "showmount –e $ip"
 tmux send-keys -t PT:15.4 "# NFS: mount remote folder" Enter
 tmux send-keys -t PT:15.4 "sudo mkdir /mnt/opt && sudo mount -t nfs -o nolock $ip:/opt /mnt/opt"
 tmux send-keys -t PT:15.5 "printf \"\n# NFS: If you get the error\n# ls: cannot open directory 'vulnix': Permission denied\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\n# NFS: Exploit: NFS root squashing\n# If NFS is active and on remote server 'no_root_squash' is active\n# then NFS root squashing attack could be possible \n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\" " Enter
-
 cd $folderProject
 
+cd $folderProjectAuthN
+# NTQ
+tmux new-window -t PT:16 -n 'NTQ'
+tmux split-window -v -t PT:16.0
+tmux split-window -v -t PT:16.1
+tmux select-pane -t "15.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:16.0 "# NTQ: Service fingerprint" Enter
+tmux send-keys -t PT:16.0 "nmap -sV -Pn -vv -p 123 --script=ntq* $ip -oA out.123"
+tmux send-keys -t PT:16.1 "# NTQ: get information from NTQ service" Enter
+tmux send-keys -t PT:16.1 "ntpq -c readlist $ip && ntpq -c readvar $ip && ntpq -c peers $ip && ntpq -c associations $ip && ntpq -c iostat $ip && ntpq -c peers $ip && ntpq -c sysinfo $ip"
+tmux send-keys -t PT:16.2 "# NTQ: get date and time from NTQ service" Enter
+tmux send-keys -t PT:16.2 "sudo python3 $folderProjectEngine/ntq.py $ip"
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
