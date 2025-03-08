@@ -2021,7 +2021,7 @@ tmux send-keys -t PT:15.3 "# NFS: enumerate remote folder" Enter
 tmux send-keys -t PT:15.3 "showmount –e $ip"
 tmux send-keys -t PT:15.4 "# NFS: mount remote folder" Enter
 tmux send-keys -t PT:15.4 "sudo mkdir /mnt/opt && sudo mount -t nfs -o nolock $ip:/opt /mnt/opt"
-tmux send-keys -t PT:15.5 "printf \"\n# NFS: If you get the error\n# ls: cannot open directory 'vulnix': Permission denied\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\n# NFS: Exploit: NFS root squashing\n# If NFS is active and on remote server 'no_root_squash' is active\n# then NFS root squashing attack could be possible \n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\" " Enter
+tmux send-keys -t PT:15.5 "printf \"\n# NFS: If you get the error\n# ls: cannot open directory 'vulnix': Permission denied\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\n# NFS: Exploit: NFS root squashing\n# If NFS is active and on remote server 'no_root_squash' is active\n# then NFS root squashing attack could be possible \n# Please refer to the manual \n'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\" " Enter
 cd $folderProject
 
 cd $folderProjectAuthN
@@ -2038,6 +2038,15 @@ tmux send-keys -t PT:16.1 "ntpq -c readlist $ip && ntpq -c readvar $ip && ntpq -
 tmux send-keys -t PT:16.2 "# NTQ: get date and time from NTQ service" Enter
 tmux send-keys -t PT:16.2 "sudo python3 $folderProjectEngine/ntq.py $ip"
 cd $folderProject
+
+cd $folderProjectAuthN
+# WMI
+tmux new-window -t PT:17 -n 'WMI'
+tmux split-window -v -t PT:17.0
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:17.0 "printf \"\nThe commands to query a WMI service must be executed on a Windows powershell. \nPlease refer to the manual 'Cyber Security: practical guide to the secrets of ethical hacking'\"" Enter
+cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
