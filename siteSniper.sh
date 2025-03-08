@@ -2047,6 +2047,29 @@ tmux split-window -v -t PT:17.0
 tmux send-keys -t PT:17.0 "printf \"\nThe commands to query a WMI service must be executed on a Windows powershell. \nPlease refer to the manual 'Cyber Security: practical guide to the secrets of ethical hacking'\"" Enter
 cd $folderProject
 
+cd $folderProjectAuthN
+# IMAP
+tmux new-window -t PT:18 -n '[143,993] IMAP'
+tmux split-window -v -t PT:18.0
+tmux split-window -v -t PT:18.1
+tmux select-pane -t "18.1"
+tmux split-window -h -t "18.1"
+tmux split-window -v -t PT:18.3
+tmux select-pane -t "18.3"
+tmux split-window -h -t "18.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:18.0 "# IMAP: Service fingerprint" Enter
+tmux send-keys -t PT:18.0 "nmap -sV -Pn -vv -p 143 --script=imap* $ip -oA out.143"
+tmux send-keys -t PT:18.1 "# IMAP: get Banner (143 port)" Enter
+tmux send-keys -t PT:18.1 "nc $ip 143"
+tmux send-keys -t PT:18.2 "# IMAP: get Banner (993 port)" Enter
+tmux send-keys -t PT:18.2 "nc --ssl $ip 993"
+tmux send-keys -t PT:18.3 "printf \"\n# IMAP: get Emails\n# login <USER> <PASSWORD>\n# SELECT INBOX\n# FETCH 1:* (FLAGS BODY[HEADER.FIELDS (SUBJECT FROM DATE)])\n# FETCH 1 BODY[]\n# LOGOUT\" " Enter
+tmux send-keys -t PT:18.3 "nc $ip 143"
+tmux send-keys -t PT:18.4 "printf \"\n# IMAP: get Emails\n# login <USER> <PASSWORD>\n# SELECT INBOX\n# FETCH 1:* (FLAGS BODY[HEADER.FIELDS (SUBJECT FROM DATE)])\n# FETCH 1 BODY[]\n# LOGOUT\" " Enter
+tmux send-keys -t PT:18.4 "nc --ssl $ip 993"
+cd $folderProject
+
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
