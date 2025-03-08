@@ -1646,7 +1646,7 @@ cd $folderProject
 # Service AuthN bypass
 cd $folderProjectAuthN
 # FTP
-tmux new-window -t PT:2 -n 'FTP protocol'
+tmux new-window -t PT:2 -n '[21] FTP'
 tmux split-window -v -t PT:2.0
 tmux split-window -v -t PT:2.1
 tmux select-pane -t "2.1"
@@ -1671,7 +1671,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # GIT
-tmux new-window -t PT:3 -n 'GIT protocol'
+tmux new-window -t PT:3 -n '[22,80,445] GIT'
 tmux split-window -v -t PT:3.0
 tmux select-pane -t "3.0"
 tmux split-window -h -t "3.0"
@@ -1716,7 +1716,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SSH
-tmux new-window -t PT:4 -n 'SSH protocol'
+tmux new-window -t PT:4 -n '[22] SSH'
 tmux split-window -v -t PT:4.0
 tmux split-window -v -t PT:4.1
 tmux select-pane -t "4.1"
@@ -1735,7 +1735,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SVN
-tmux new-window -t PT:5 -n 'SVN protocol'
+tmux new-window -t PT:5 -n '[22,80,443,3690] SVN'
 tmux split-window -v -t PT:5.0
 tmux select-pane -t "5.0"
 tmux split-window -h -t "5.0"
@@ -1781,7 +1781,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Telnet
-tmux new-window -t PT:6 -n 'Telnet protocol'
+tmux new-window -t PT:6 -n '[23] Telnet'
 tmux split-window -v -t PT:6.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:6.0 "# Telnet: Service fingerprint" Enter
@@ -1790,7 +1790,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # SMTP
-tmux new-window -t PT:7 -n 'SMTP protocol'
+tmux new-window -t PT:7 -n '[25] SMTP'
 tmux split-window -v -t PT:7.0
 tmux split-window -v -t PT:7.1
 tmux select-pane -t "7.1"
@@ -1809,7 +1809,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # DNS
-tmux new-window -t PT:8 -n 'DNS protocol'
+tmux new-window -t PT:8 -n '[53] DNS'
 tmux split-window -v -t PT:8.0
 tmux split-window -v -t PT:8.1
 # Esecuzione dei comandi nelle sottofinestre
@@ -1824,7 +1824,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # TFTP
-tmux new-window -t PT:9 -n 'TFTP protocol'
+tmux new-window -t PT:9 -n '[69] TFTP'
 tmux split-window -v -t PT:9.0
 tmux split-window -v -t PT:9.1
 tmux split-window -v -t PT:9.2
@@ -1845,7 +1845,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # finger
-tmux new-window -t PT:10 -n 'Finger protocol'
+tmux new-window -t PT:10 -n '[79] Finger'
 tmux split-window -v -t PT:10.0
 tmux split-window -v -t PT:10.1
 tmux select-pane -t "10.1"
@@ -1874,7 +1874,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Kerberos - Enumeration
-tmux new-window -t PT:11 -n 'Kerberos - Enumeration'
+tmux new-window -t PT:11 -n '[88] Kerberos - Enumeration'
 tmux split-window -v -t PT:11.0
 tmux select-pane -t "11.0"
 tmux split-window -h -t "11.0"
@@ -1894,7 +1894,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Kerberos - ASREP-roasting
-tmux new-window -t PT:12 -n 'Kerberos - ASREP-roasting'
+tmux new-window -t PT:12 -n '[88] Kerberos - ASREP-roasting'
 tmux split-window -v -t PT:12.0
 tmux select-pane -t "12.0"
 tmux split-window -h -t "12.0"
@@ -1936,7 +1936,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # Kerberos - KERBEROASTING
-tmux new-window -t PT:13 -n 'Kerberos - KERBEROASTING'
+tmux new-window -t PT:13 -n '[88] Kerberos - KERBEROASTING'
 tmux split-window -v -t PT:13.0
 tmux select-pane -t "13.0"
 tmux split-window -h -t "13.0"
@@ -1985,7 +1985,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # POP3
-tmux new-window -t PT:14 -n 'POP3'
+tmux new-window -t PT:14 -n '[110,995] POP3'
 tmux split-window -v -t PT:14.0
 tmux split-window -v -t PT:14.1
 tmux select-pane -t "14.1"
@@ -2002,7 +2002,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # NFS
-tmux new-window -t PT:15 -n 'NFS'
+tmux new-window -t PT:15 -n '[111,2049] NFS'
 tmux split-window -v -t PT:15.0
 tmux split-window -v -t PT:15.1
 tmux select-pane -t "15.1"
@@ -2026,22 +2026,22 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # NTQ
-tmux new-window -t PT:16 -n 'NTQ'
+tmux new-window -t PT:16 -n '[123] NTP'
 tmux split-window -v -t PT:16.0
 tmux split-window -v -t PT:16.1
 tmux select-pane -t "15.1"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:16.0 "# NTQ: Service fingerprint" Enter
+tmux send-keys -t PT:16.0 "# NTP: Service fingerprint" Enter
 tmux send-keys -t PT:16.0 "nmap -sV -Pn -vv -p 123 --script=ntq* $ip -oA out.123"
-tmux send-keys -t PT:16.1 "# NTQ: get information from NTQ service" Enter
+tmux send-keys -t PT:16.1 "# NTP: get information from NTQ service" Enter
 tmux send-keys -t PT:16.1 "ntpq -c readlist $ip && ntpq -c readvar $ip && ntpq -c peers $ip && ntpq -c associations $ip && ntpq -c iostat $ip && ntpq -c peers $ip && ntpq -c sysinfo $ip"
-tmux send-keys -t PT:16.2 "# NTQ: get date and time from NTQ service" Enter
+tmux send-keys -t PT:16.2 "# NTP: get date and time from NTQ service" Enter
 tmux send-keys -t PT:16.2 "sudo python3 $folderProjectEngine/ntq.py $ip"
 cd $folderProject
 
 cd $folderProjectAuthN
 # WMI
-tmux new-window -t PT:17 -n 'WMI'
+tmux new-window -t PT:17 -n '[135] WMI'
 tmux split-window -v -t PT:17.0
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:17.0 "printf \"\nThe commands to query a WMI service must be executed on a Windows powershell. \nPlease refer to the manual 'Cyber Security: practical guide to the secrets of ethical hacking'\"" Enter
