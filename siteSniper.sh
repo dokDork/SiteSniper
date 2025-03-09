@@ -533,6 +533,70 @@ else
 	sudo wget https://raw.githubusercontent.com/leonteale/pentestpackage/master/gxfr.py
 fi
 
+# SNMP (Enyx)
+printf "\n===================================\n"
+program="enyx"
+cd /opt
+if [ -d "/opt/enyx" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo mkdir /opt/enyx
+	cd /opt/enyx
+	sudo git clone https://github.com/trickster0/Enyx.git
+fi
+
+# SNMP (snmp-mibs-downloader)
+printf "\n===================================\n"
+program="snmp-mibs-downloader"
+cd /opt
+if dpkg -l | grep -q snmp-mibs-downloader; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install -y snmp-mibs-downloader
+	# Uncomment the 'mibs' line in snmp.conf
+	if grep -q '^#mibs:' /etc/snmp/snmp.conf; then
+	  echo "Uncommenting the 'mibs' line in /etc/snmp/snmp.conf"
+	  sudo sed -i 's/^#mibs:/mibs:/' /etc/snmp/snmp.conf
+	else
+	  echo "The line '#mibs:' was not found in /etc/snmp/snmp.conf"
+	  echo "Checking if the 'mibs:' line exists with a different comment character."
+	    if grep -q '^; *mibs' /etc/snmp/snmp.conf; then
+	      echo "Uncommenting the 'mibs' line in /etc/snmp/snmp.conf using the ';' symbol."
+	      sudo sed -i 's/^; *mibs/mibs/' /etc/snmp/snmp.conf
+	    else
+	      echo "Adding the 'mibs:' line to the end of the /etc/snmp/snmp.conf file"
+	      sudo echo "mibs:" >> /etc/snmp/snmp.conf
+	    fi
+	fi
+fi
+
+# SNMP (snmpwalk) 
+printf "\n===================================\n"
+program="snmpwalk"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install git snmpwalk
+fi
+
+# SNMP (snmpenum) 
+printf "\n===================================\n"
+program="snmpenum"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install git snmpenum
+	sudo mkdir /opt/snmpenum
+	cd /opt/snmpenum/
+	sudo wget https://gitlab.com/kalilinux/packages/snmpenum/-/blob/kali/master/linux.txt
+	sudo wget https://gitlab.com/kalilinux/packages/snmpenum/-/blob/kali/master/cisco.txt
+	sudo wget https://gitlab.com/kalilinux/packages/snmpenum/-/blob/kali/master/windows.txt
+fi
+
 # finger-user-enum (finger enumeration)
 printf "\n===================================\n"
 program="finger-user-enum"
@@ -558,6 +622,10 @@ else
 	echo "[->] Installing $program..."	
 	sudo apt install git git-svn subversion
 fi
+
+
+
+
 
 
 
@@ -2069,6 +2137,34 @@ tmux send-keys -t PT:18.3 "nc $ip 143"
 tmux send-keys -t PT:18.4 "printf \"\n# IMAP: get Emails\n# login <USER> <PASSWORD>\n# SELECT INBOX\n# FETCH 1:* (FLAGS BODY[HEADER.FIELDS (SUBJECT FROM DATE)])\n# FETCH 1 BODY[]\n# LOGOUT\" " Enter
 tmux send-keys -t PT:18.4 "nc --ssl $ip 993"
 cd $folderProject
+
+cd $folderProjectAuthN
+# SNMP
+tmux new-window -t PT:19 -n '[161,162] SNMP'
+tmux split-window -v -t PT:19.0
+tmux split-window -v -t PT:19.1
+tmux select-pane -t "19.1"
+tmux split-window -h -t "19.1"
+tmux split-window -v -t PT:19.3
+tmux select-pane -t "19.3"
+tmux split-window -h -t "19.3"
+tmux split-window -h -t "19.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:19.0 "# SNMP: Service fingerprint" Enter
+tmux send-keys -t PT:19.0 "nmap -sU -Pn -vv -p 161 --script=snmp* $ip -oA out.161"
+tmux send-keys -t PT:19.1 "# SNMP: bruteforce community string with onwsixtyone" Enter
+tmux send-keys -t PT:19.1 "onesixtyone -c /usr/share/metasploit-framework/data/wordlists/snmp_default_pass.txt $ip"
+tmux send-keys -t PT:19.2 "# SNMP: bruteforce community string with hydra" Enter
+tmux send-keys -t PT:19.2 "hydra -P /usr/share/seclists/Discovery/SNMP/common-snmp-community-strings.txt $ip snmp"
+tmux send-keys -t PT:19.3 "printf \"\n# SNMP: Information Exposure with snmpwalk\n# Please set:\n# - version and\n# - comminuty string\n# at the begining of the script\n\" " Enter
+tmux send-keys -t PT:19.3 "version=\"2c\" && community=\"public\" && ip=$ip && echo \"Retrieving network interface information\" && snmpwalk -v\$version -c \$community \$ip 1.3.6.1.2.1.4.34.1.3 && echo \"Retrieving Windows user information\" && snmpwalk -c \$community -v \$version \$ip 1.3.6.1.4.1.77.1.2.25 && echo \"Retrieving active processes on Windows\" && snmpwalk -c \$community -v \$version \$ip 1.3.6.1.2.1.25.4.2.1.2 && echo \"Retrieving TCP open ports on Windows\" && snmpwalk -c \$community -v \$version \$ip 1.3.6.1.2.1.6.13.1.3 && echo \"Retrieving installed software on Windows\" && snmpwalk -c \$community -v \$version \$ip 1.3.6.1.2.1.25.6.3.1.2 && echo \"Running SNMPWalk to retrieve general information\" && snmpwalk -v\$version -c \$community \$ip && echo \"Scan completed.\""
+tmux send-keys -t PT:19.4 "# SNMP: Information Exposure with snmpenum" Enter
+tmux send-keys -t PT:19.4 "snmpenum $ip public /opt/snmpenum/linux.txt"
+tmux send-keys -t PT:19.5 "# SNMP: Information Exposure - get IPV6 information from SNMP (Enyx)" Enter
+tmux send-keys -t PT:19.5 "python /opt/enyx/Enyx/Enyx_v3.py 1 public $ip"
+cd $folderProject
+
+
 
 
 # Attivazione della modalità interattiva
