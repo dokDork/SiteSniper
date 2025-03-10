@@ -2164,6 +2164,37 @@ tmux send-keys -t PT:19.5 "# SNMP: Information Exposure - get IPV6 information f
 tmux send-keys -t PT:19.5 "python /opt/enyx/Enyx/Enyx_v3.py 1 public $ip"
 cd $folderProject
 
+cd $folderProjectAuthN
+# Active Directory
+tmux new-window -t PT:20 -n '[389,636] Active Directory'
+tmux split-window -v -t PT:20.0
+tmux split-window -v -t PT:20.1
+tmux split-window -v -t PT:20.2
+tmux select-pane -t "20.2"
+tmux split-window -h -t "20.2"
+tmux split-window -h -t "20.2"
+tmux split-window -v -t PT:20.5
+tmux select-pane -t "20.5"
+tmux split-window -h -t "20.5"
+tmux split-window -h -t "20.5"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:20.0 "# AD: Service fingerprint" Enter
+tmux send-keys -t PT:20.0 "nmap -sU -Pn -vv -p 389 --script=ldap* $ip -oA out.389"
+tmux send-keys -t PT:20.1 "# AD: anonymous authentication" Enter
+tmux send-keys -t PT:20.1 "ldapsearch -x -H ldap://$ip:389 -D '' -w ''"
+tmux send-keys -t PT:20.2 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
+tmux send-keys -t PT:20.2 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -s base namingcontexts"
+tmux send-keys -t PT:20.3 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
+tmux send-keys -t PT:20.3 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -s base -b '' \"(objectClass=*)\" \"*\" +"
+tmux send-keys -t PT:20.4 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
+tmux send-keys -t PT:20.4 "nmap -p 389 --script ldap-rootdse -Pn $ip"
+tmux send-keys -t PT:20.5 "# AD: get all information from Active Directory" Enter
+tmux send-keys -t PT:20.5 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub"
+tmux send-keys -t PT:20.6 "# AD: get all information from Active Directory filtering them with grep (e.g. to find password)" Enter
+tmux send-keys -t PT:20.6 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub | grep –I –A2 –B2 password"
+tmux send-keys -t PT:20.7 "# AD: get all information from Active Directory filtering them with specific query (e.g. user, person, doamin user)" Enter
+tmux send-keys -t PT:20.7 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub \"(|(objectClass=person)(objectClass=user)(objectClass=Domain User))\""
+cd $folderProject
 
 
 
