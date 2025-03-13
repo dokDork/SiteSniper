@@ -2295,6 +2295,52 @@ tmux send-keys -t PT:22.3 "# SMB Reset Password" Enter
 tmux send-keys -t PT:22.3 "smbpasswd -U <USER> -r $ip"
 tmux send-keys -t PT:22.4 "# SMB Reset Password" Enter
 tmux send-keys -t PT:22.4 "python $folderProjectEngine/resetSMBpass.py -t $ip -u <USER> -p <PASS> -n <NEW-PASS> -f users.txt"
+cd $folderProject
+
+cd $folderProjectAuthN
+# SMB Credential Verification
+tmux new-window -t PT:23 -n '[389,636] SMB Shared Folders'
+tmux split-window -v -t PT:23.0
+tmux select-pane -t "23.0"
+tmux split-window -h -t "23.0"
+tmux split-window -h -t "23.0"
+tmux split-window -h -t "23.0"
+tmux split-window -v -t PT:23.4
+tmux select-pane -t "23.4"
+tmux split-window -h -t "23.4"
+tmux split-window -h -t "23.4"
+tmux split-window -h -t "23.4"
+tmux split-window -h -t "23.4"
+tmux split-window -h -t "23.4"
+tmux split-window -v -t PT:23.10
+tmux select-pane -t "23.10"
+tmux split-window -h -t "23.10"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:23.0 "# SMB find Shared Folders" Enter
+tmux send-keys -t PT:23.0 "netexec smb $ip -u users.txt -p passwords.txt --shares && echo "" && netexec smb $ip -u users.txt -p users.txt --shares && echo "" && netexec smb $ip -u 'dontknow' -p '' --shares && echo "" && netexec smb $ip -u '' -p '' --shares" 
+tmux send-keys -t PT:23.1 "# SMB find Shared Folders" Enter
+tmux send-keys -t PT:23.1 "crackmapexec smb $ip -u users.txt -p passwords.txt --shares && echo "" &&  crackmapexec smb $ip -u users.txt -p users.txt --shares && echo "" && crackmapexec smb $ip -u 'dontknow' -p '' --shares && echo "" && crackmapexec smb $ip -u '' -p ''" 
+tmux send-keys -t PT:23.2 "# SMB find Shared Folders (with spider_plus)" Enter
+tmux send-keys -t PT:23.2 "netexec smb $ip -u users.txt -p passwords.txt -M spider_plus && echo "" && netexec smb $ip -u users.txt -p users.txt -M spider_plus && echo "" && netexec smb $ip -u 'dontknow' -p '' -M spider_plus && echo "" && netexec smb $ip -u '' -p '' -M spider_plus" 
+tmux send-keys -t PT:23.3 "# SMB find Shared Folders (with spider_plus)" Enter
+tmux send-keys -t PT:23.3 "crackmapexec smb $ip -u users.txt -p passwords.txt -M spider_plus && echo "" &&  crackmapexec smb $ip -u users.txt -p users.txt -M spider_plus && echo "" && crackmapexec smb $ip -u 'dontknow' -p '' -M spider_plus && echo "" && crackmapexec smb $ip -u 'dontknow' -p '' -M spider_plus"
+tmux send-keys -t PT:23.4 "# SMB Read Shared Folders" Enter 
+tmux send-keys -t PT:23.4 "smbmap -H $ip -u USER -p PASS -r --depth 5"
+tmux send-keys -t PT:23.5 "# SMB Download Shared Folders" Enter 
+tmux send-keys -t PT:23.5 "smbmap -R $sharename -H $ip -A FILE -q"
+tmux send-keys -t PT:23.6 "# SMB Read Shared Folders" Enter 
+tmux send-keys -t PT:23.6 "xdg-open smb://$ip/"
+tmux send-keys -t PT:23.7 "# SMB Download Shared Folders" Enter 
+tmux send-keys -t PT:23.7 "smbclient -U <USER>:<PASS> //$ip/<remote folder> -N -c 'prompt OFF;recurse ON;lcd '<local kali folder>';mget *'"
+tmux send-keys -t PT:23.8 "printf \"\n# SMB: Read Shared Folders\n# To download file use these commands\n# smb> prompt off\n# smb> recurse on\n# smb> mget *\n\" " Enter
+tmux send-keys -t PT:23.8 "smbclient -u 'USER' -p 'PASS' -L \\\\$ip\\SHARE-FOLDER"
+tmux send-keys -t PT:23.9 "# SMB Mount Shared Folders" Enter 
+tmux send-keys -t PT:23.9 "mount -t cifs -o "username=USER,password=PASS,domain=$domain" //$ip/share /mnt/share"
+tmux send-keys -t PT:23.10 "printf \"\n# SMB: If you get the error\n# ls: cannot open directory: Permission denied\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\" " Enter
+tmux send-keys -t PT:23.11 "printf \"\n# SMB: To find hidden files\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\" " Enter
+cd $folderProject
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
