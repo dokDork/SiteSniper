@@ -613,6 +613,25 @@ else
 	sudo chmod 755 finger-user-enum.pl
 fi
 
+# thc-hydra
+printf "\n===================================\n"
+program="thc-hydra"
+cd /opt
+if [ -d "/opt/thc-hydra" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo git clone https://github.com/vanhauser-thc/thc-hydra.git
+	sudo cd thc-hydra
+	sudo apt-get install libssl-dev libssh-dev libidn11-dev libpcre3-dev libgtk 2.0-dev libmysqlclient-dev libpq-dev libsvn-dev firebird-dev libmemcached-dev libgpg-error-dev libgcrypt11-dev libgcrypt20-dev
+	sudo apt install libsmbclient-dev
+	cd /opt/thc-hydra/
+	sudo ./configure
+	sudo make
+	sudo make install
+fi
+
 # SVN TOOLs 
 printf "\n===================================\n"
 program="svn"
@@ -2197,36 +2216,64 @@ tmux send-keys -t PT:20.7 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS
 cd $folderProject
 
 cd $folderProjectAuthN
-# SMB
-tmux new-window -t PT:21 -n '[389,636] SMB'
-tmux split-window -v -t PT:20.0
-tmux split-window -v -t PT:20.1
-tmux split-window -v -t PT:20.2
-tmux select-pane -t "20.2"
-tmux split-window -h -t "20.2"
-tmux split-window -h -t "20.2"
-tmux split-window -v -t PT:20.5
-tmux select-pane -t "20.5"
-tmux split-window -h -t "20.5"
-tmux split-window -h -t "20.5"
+# SMB Enumeration
+tmux new-window -t PT:21 -n '[389,636] SMB Enumeration'
+tmux split-window -v -t PT:21.0
+tmux resize-pane -t PT:21.0 -y 3
+tmux split-window -v -t PT:21.1
+tmux split-window -v -t PT:21.2
+tmux select-pane -t "21.2"
+tmux split-window -h -t "21.2"
+tmux split-window -h -t "21.2"
+tmux split-window -h -t "21.2"
+tmux split-window -h -t "21.2"
+tmux split-window -v -t PT:21.7
+tmux select-pane -t "21.7"
+tmux split-window -h -t "21.7"
+tmux split-window -h -t "21.7"
+tmux split-window -h -t "21.7"
+tmux split-window -h -t "21.7"
+tmux split-window -v -t PT:21.12
+tmux select-pane -t "21.12"
+tmux split-window -h -t "21.12"
+tmux split-window -h -t "21.12"
+tmux split-window -h -t "21.12"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:20.0 "# AD: Service fingerprint" Enter
-tmux send-keys -t PT:20.0 "nmap -sU -Pn -vv -p 389 --script=ldap* $ip -oA out.389"
-tmux send-keys -t PT:20.1 "# AD: anonymous authentication" Enter
-tmux send-keys -t PT:20.1 "ldapsearch -x -H ldap://$ip:389 -D '' -w ''"
-tmux send-keys -t PT:20.2 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
-tmux send-keys -t PT:20.2 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -s base namingcontexts"
-tmux send-keys -t PT:20.3 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
-tmux send-keys -t PT:20.3 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -s base -b '' \"(objectClass=*)\" \"*\" +"
-tmux send-keys -t PT:20.4 "printf \"\n# AD: get Domain Naming Context\n# The username can be provided with these formalisms:\n# username@targetDomain.ctf\n# cn=username,dc=targetDomain,dc=ctf\n# targetDomain.ctf\username\n\" " Enter
-tmux send-keys -t PT:20.4 "nmap -p 389 --script ldap-rootdse -Pn $ip"
-tmux send-keys -t PT:20.5 "# AD: get all information from Active Directory" Enter
-tmux send-keys -t PT:20.5 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub"
-tmux send-keys -t PT:20.6 "# AD: get all information from Active Directory filtering them with grep (e.g. to find password)" Enter
-tmux send-keys -t PT:20.6 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub | grep –I –A2 –B2 password"
-tmux send-keys -t PT:20.7 "# AD: get all information from Active Directory filtering them with specific query (e.g. user, person, doamin user)" Enter
-tmux send-keys -t PT:20.7 "ldapsearch -x -H ldap://$ip:389 -D '<USER>' -w '<PASS>' -b \"dc=targetDomain,dc=ctf\" –s sub \"(|(objectClass=person)(objectClass=user)(objectClass=Domain User))\""
+tmux send-keys -t PT:21.0 "# SMB: Service fingerprint" Enter
+tmux send-keys -t PT:21.0 "nmap -sU -Pn -vv -p 445 --script=smb* $ip -oA out.445"
+tmux send-keys -t PT:21.1 "# SMB: Bruteforce SMB2" Enter
+tmux send-keys -t PT:21.1 "sudo /opt/thc-hydra/hydra -L users.txt -P passwords.txt -v $ip smb2"
+tmux send-keys -t PT:21.2 "# SMB: Enum All via enum4linux" Enter
+tmux send-keys -t PT:21.2 "enum4linux -a -u 'USER' -p 'PASS' $ip && echo "" && enum4linux -a -u '' -p '' $ip"
+tmux send-keys -t PT:21.3 "# SMB: Enum User and Group via RCP" Enter
+tmux send-keys -t PT:21.3 "sudo python rpcclient.py -u <USER> -p <PASS> $ip"
+tmux send-keys -t PT:21.4 "# SMB: Enum netBIOS name, IP, MAC via netBIOS" Enter
+tmux send-keys -t PT:21.4 "subnet=\"${ip%.*}.0/24\"" Enter
+tmux send-keys -t PT:21.4 "nbtscan $subnet"
+tmux send-keys -t PT:21.5 "# SMB: Enum netBIOS name, IP, MAC via netBIOS" Enter
+tmux send-keys -t PT:21.5 "nmblookup -A $ip"
+tmux send-keys -t PT:21.6 "# SMB: Enum SMB version, domain name, target name, target OS via NTLM" Enter
+tmux send-keys -t PT:21.6 "sudo python /usr/share/doc/python3-impacket/examples/DumpNTLMInfo.py $ip"
+tmux send-keys -t PT:21.7 "# SMB: Enum New Users" Enter
+tmux send-keys -t PT:21.7 "netexec smb $ip -u 'USER' -p 'PASS' --rid-brute 10000"
+tmux send-keys -t PT:21.8 "# SMB: Enum New Users" Enter
+tmux send-keys -t PT:21.8 "crackmapexec smb $ip -u 'USER' -p 'PASS' --users --groups --pass-pol --loggedon-users --rid-brute"
+tmux send-keys -t PT:21.9 "# SMB: Enum New Users" Enter
+tmux send-keys -t PT:21.9 "python /usr/share/doc/python3-impacket/examples/lookupsid.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:21.10 "# SMB: Enum New Users" Enter
+tmux send-keys -t PT:21.10 "/usr/share/doc/python3-impacket/examples/lookupsid.py -hashes 'aad3b435b51404eeaad3b435b51404ee:ae5064c2f62317332c88629e025924ef' '$domain/USER@$ip'"
+tmux send-keys -t PT:21.11 "# SMB: Enum New Users" Enter
+tmux send-keys -t PT:21.11 "impacket-net '<USER>':'<PASS>'@$ip user'"
+tmux send-keys -t PT:21.12 "# SMB: Enum Domain Group" Enter
+tmux send-keys -t PT:21.12 "impacket-net '<USER>':'<PASS>'@$ip group"
+tmux send-keys -t PT:21.13 "# SMB: Enum Domain Group" Enter
+tmux send-keys -t PT:21.13 "crackmapexec smb $ip -u 'USER' -p 'PASS' -d '$domain' --groups"
+tmux send-keys -t PT:21.14 "# SMB: Enum Local Group" Enter
+tmux send-keys -t PT:21.14 "impacket-net '<USER>':'<PASS>'@$ip localgroup"
+tmux send-keys -t PT:21.15 "# SMB: Enum Local Group" Enter
+tmux send-keys -t PT:21.15 "crackmapexec smb $ip -u 'USER' -p 'PASS' -d '$domain' --local-groups"
 cd $folderProject
+
 
 
 # Attivazione della modalità interattiva
