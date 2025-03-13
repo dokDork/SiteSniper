@@ -2340,6 +2340,32 @@ tmux send-keys -t PT:23.10 "printf \"\n# SMB: If you get the error\n# ls: cannot
 tmux send-keys -t PT:23.11 "printf \"\n# SMB: To find hidden files\n# Please refer to the manual 'Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025'\n\" " Enter
 cd $folderProject
 
+cd $folderProjectAuthN
+# SMB Execute command - Vulnerabilities - Reverse Shell
+tmux new-window -t PT:24 -n '[389,636] SMB Execute command - Vulnerabilities - Reverse Shell'
+tmux split-window -v -t PT:24.0
+tmux select-pane -t "24.0"
+tmux split-window -h -t "24.0"
+tmux split-window -v -t PT:24.2
+tmux split-window -v -t PT:24.3
+tmux select-pane -t "24.3"
+tmux split-window -h -t "24.3"
+tmux split-window -h -t "24.3"
+tmux split-window -h -t "24.3"
+tmux split-window -h -t "24.3"
+tmux split-window -v -t PT:24.8
+tmux select-pane -t "24.8"
+tmux split-window -h -t "24.8"
+tmux split-window -h -t "24.8"
+tmux split-window -h -t "24.8"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:24.0 "# SMB Execute Command" Enter
+tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u 'USER' -p 'PASS'  –x <command>"
+tmux send-keys -t PT:24.0 "# SMB Execute Command" Enter
+tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u 'USER' -p 'PASS'  –x <command> --force-ps32"
+tmux send-keys -t PT:24.0 "# SMB Known Vulnerabilities" Enter
+tmux send-keys -t PT:24.0 "crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M zerologon && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M nopac && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M petitpotam && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M shadowcoerce && crackmapexec smb $ip -u <USER> -p <PASS> -d 'WORKGROUP' -M dfscoerce"
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
