@@ -642,7 +642,16 @@ else
 	sudo apt install git git-svn subversion
 fi
 
-
+# SVN TOOLs 
+printf "\n===================================\n"
+program="gdb"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install gdb
+	sudo apt install gdb-minimal
+fi
 
 
 
