@@ -108,7 +108,7 @@ fi
 # username_anarchy
 program="username-anarchy"
 printf "\n===================================\n"
-pathAppo="/opt/uername-anarchy"
+pathAppo="/opt/username-anarchy"
 if [ -d "$pathAppo" ]; then
 	echo "[i] $program is already installed."
 else
@@ -146,19 +146,6 @@ else
 	sudo apt-get install $1
 fi
 
-# nishang
-printf "\n===================================\n"
-program="nishang"
-if ! is_installed "$program"; then
-	echo "[->] Installing $program..."
-	# Comando di installazione del programma
-	# Esempio: sudo apt-get install -y "$program"
-	cd /opt
-	sudo apt-get install $1
-else
-	echo "[i] $program is already installed."
-fi
-
 # mingw-w64
 printf "\n===================================\n"
 program="mingw-w64"
@@ -191,21 +178,27 @@ fi
 #Nessus
 printf "\n===================================\n"
 program="nessus"
-if is_installed "$program"; then
+if [ -d "/opt/nessus" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
-	sudo curl --request GET --url 'https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.6.3-ubuntu1404_amd64.deb' --output 'Nessus-10.6.3-ubuntu1404_amd64.deb'
-	sudo dpkg -i Nessus-10.6.3-ubuntu1404_amd64.deb
+	cd /opt
+	sudo mkdir nessus
+	cd nessus
+	sudo wget 'https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/24332/download?i_agree_to_tenable_license_agreement=true' -O Nessus_amd64.deb
+	sudo chmod 755 ./Nessus_amd64.deb
+	sudo dpkg -i ./Nessus_amd64.deb
 fi
 
 # kitrunner (analisi API)
 printf "\n===================================\n"
 program="kr"
-if is_installed "$program"; then
+if is_installed "/opt/kitrunner/$program"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
+	sudo mkdir /opt/kitrunner
+	cd /opt/kitrunner
 	sudo wget https://github.com/assetnote/kiterunner/releases/download/v1.0.2/kiterunner_1.0.2_linux_386.tar.gz
 	sudo gunzip kiterunner_1.0.2_linux_386.tar.gz
 	sudo tar -xvf kiterunner_1.0.2_linux_386.tar 
@@ -238,25 +231,18 @@ fi
 printf "\n===================================\n"
 program="droopescan"
 cd /opt
-if is_installed "droopescan"; then
+if [ -d "/opt/droopescan" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
 	cd /opt
-	pip install droopescan 
+	sudo mkdir /opt/droopescan
+	sudo chown -R $USER:$USER /opt/droopescan
+	sudo python3 -m venv /opt/droopescan  
+	source /opt/droopescan/bin/activate  
+	pip install droopescan
 fi
 
-
-# wisker / cupp (automatizzo la creazione di un dizionario)
-printf "\n===================================\n"
-program="wisker"
-if is_installed "wisker"; then
-	echo "[i] $program is already installed."
-else
-	echo "[->] Installing $program..."	
-	cd /opt
-	pip install wisker 
-fi
 
 printf "\n===================================\n"
 program="cupp"
@@ -273,7 +259,7 @@ fi
 printf "\n===================================\n"
 program="cmsmap"
 cd /opt
-if is_installed "cmsmap"; then
+if [ -d "/opt/CMSmap" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -311,7 +297,7 @@ fi
 printf "\n===================================\n"
 program="fromWord2Site"
 cd /opt
-if is_installed "fromWord2Site"; then
+if [ -d "/opt/fromWord2Site" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -342,7 +328,7 @@ echo "    https://github.com/IppSec/parrot-build"
 
 # Docker
 printf "\n===================================\n"
-program="Docker"
+program="docker"
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
@@ -467,7 +453,7 @@ fi
 # impacket
 printf "\n===================================\n"
 program="impacket"
-if is_installed "$program"; then
+if is_installed "$program-smbexec"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -477,14 +463,15 @@ fi
 # git-dumper
 printf "\n===================================\n"
 program="git-dumper"
-if is_installed "$program"; then
+if [ -d "/opt/git_stuff" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
 	sudo apt install python3 python3-pip
 	sudo apt install python3.13-venv
-	python3 -m venv git_stuff
-	source git_stuff/bin/activate
+	cd /opt
+	sudo python3 -m venv git_stuff
+	source /opt/git_stuff/bin/activate
 	pip install git-dumper
 fi
 
@@ -501,7 +488,7 @@ fi
 # kerbrute 
 printf "\n===================================\n"
 program="kerbrute"
-if is_installed "/home/kali/.local/bin/kerbrute "; then
+if is_installed "kerbrute"; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
@@ -653,6 +640,15 @@ else
 	sudo apt install gdb-minimal
 fi
 
+# shell Nishang 
+printf "\n===================================\n"
+program="nishang"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install nishang
+fi
 
 
 
@@ -1332,9 +1328,9 @@ tmux select-pane -t "16.4"
 tmux split-window -h -t "16.4"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:16.0 "# find endPoint with kr - dictionary" Enter
-tmux send-keys -t PT:16.0 "/opt/kr wordlist list"
+tmux send-keys -t PT:16.0 "/opt/kitrunner/kr wordlist list"
 tmux send-keys -t PT:16.1 "# find endPoint with kr - execute command" Enter
-tmux send-keys -t PT:16.1 "/opt/kr scan $url -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
+tmux send-keys -t PT:16.1 "/opt/kitrunner/kr scan $url -A httparchive_apiroutes_2023_10_28.txt # find endpoint auto"
 tmux send-keys -t PT:16.2 "# find endPoint with wfuzz" Enter
 tmux send-keys -t PT:16.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Content/common.txt -u $url/api/v1/FUZZ --hc 403,404"
 tmux send-keys -t PT:16.3 "# find endPoint with ffuf" Enter
