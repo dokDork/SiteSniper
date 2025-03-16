@@ -142,6 +142,23 @@ ask_for_url() {
     read -p "Inserisci l'URL: " url
 }
 
+get_publicIP() {
+    local interface=$1
+    local public_ip
+    local private_ip
+
+    # Ottieni l'IP pubblico usando un servizio esterno
+    public_ip=$(curl -s --interface "$interface" https://api.ipify.org)
+
+    # Controlla se l'IP pubblico è valido
+    if [[ -n "$public_ip" && "$public_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        echo "$public_ip"
+    else
+        # Se non esiste un IP pubblico, ottieni l'IP privato
+        private_ip=$(ip addr show "$interface" | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+        echo "$private_ip"
+    fi
+}
 
 
 
@@ -181,7 +198,8 @@ fold=$(confirm_values "project folder" "$fold")
 # Attacker interface
 attackerInt=$1
 # Attacker IP
-attackerIP=$(ip addr show $attackerInt | grep 'inet ' | awk -F' ' '{print $2}'| awk -F'/' '{print $1}')
+#attackerIP=$(ip addr show $attackerInt | grep 'inet ' | awk -F' ' '{print $2}'| awk -F'/' '{print $1}')
+attackerIP=$(get_publicIP "$attackerInt")
 attackerIP=$(confirm_values "attacker IP" "$attackerIP")
 # Mostra i valori trovati o inseriti
 show_values "$ip" "$website" "$domain" "$fold" "$attackerIP"
