@@ -650,6 +650,26 @@ else
 	sudo apt install gdb-minimal
 fi
 
+# odat (Oracle)
+printf "\n===================================\n"
+program="patator"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install odat
+fi
+
+# patator (oracle)
+printf "\n===================================\n"
+program="patator"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install patator
+fi
+
 # shell Nishang 
 printf "\n===================================\n"
 program="nishang"
