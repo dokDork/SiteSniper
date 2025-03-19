@@ -2642,6 +2642,34 @@ tmux send-keys -t PT:29.3 "# Squid: sqlmap configured with proxy but without pro
 tmux send-keys -t PT:29.3 "sudo sqlmap -u \"http://$site/item.php?size=1\" --current-db --proxy=\"http://$ip:3128\" --proxy-cred=\"USER:PASS\""
 cd $folderProject
 
+cd $folderProjectAuthN
+# Mysql MariaDB
+tmux new-window -t PT:30 -n '[3306] Mysql/MariaDB'
+tmux split-window -v -t PT:30.0
+tmux resize-pane -t PT:30.0 -y 3
+tmux split-window -v -t PT:30.1
+tmux resize-pane -t PT:30.1 -y 3
+tmux split-window -v -t PT:30.2
+tmux select-pane -t "30.2"
+tmux split-window -h -t "30.2"
+tmux split-window -h -t "30.2"
+tmux split-window -h -t "30.2"
+tmux split-window -h -t "30.2"
+tmux split-window -v -t PT:30.7
+tmux select-pane -t "30.7"
+tmux split-window -h -t "30.7"
+tmux split-window -v -t PT:30.9
+tmux select-pane -t "30.9"
+tmux split-window -h -t "30.9"
+tmux split-window -h -t "30.9"
+tmux split-window -h -t "30.9"
+tmux split-window -h -t "30.9"
+tmux split-window -h -t "30.9"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:30.0 "# Mysql/MariaDB: service fingerprint" Enter
+tmux send-keys -t PT:30.0 ""
+cd $folderProject
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
