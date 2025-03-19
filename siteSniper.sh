@@ -2667,7 +2667,11 @@ tmux split-window -h -t "30.9"
 tmux split-window -h -t "30.9"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:30.0 "# Mysql/MariaDB: service fingerprint" Enter
-tmux send-keys -t PT:30.0 ""
+tmux send-keys -t PT:30.0 "nmap -sV -Pn -vv --script=mysql-* $ip -p 3306 -o out.3306"
+tmux send-keys -t PT:30.0 "# Mysql/MariaDB: verify Credentials" Enter
+tmux send-keys -t PT:30.0 "hydra -L users.txt -P passwords.txt -f mysql://$ip:3306 && hydra -L users.txt -P pusers.txt -f mysql://$ip:3306 && hydra -l '' -p '' -f mysql://$ip:3306 && hydra -l 'dontknow' -p '' -f mysql://$ip:3306"
+tmux send-keys -t PT:30.0 "# Mysql/MariaDB: Access DB" Enter
+tmux send-keys -t PT:30.0 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 cd $folderProject
 
 # Attivazione della modalità interattiva
