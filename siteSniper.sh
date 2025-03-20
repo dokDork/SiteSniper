@@ -190,6 +190,21 @@ else
 	sudo dpkg -i ./Nessus_amd64.deb
 fi
 
+#lib_mysqludf_sys (mysql)
+printf "\n===================================\n"
+program="lib_mysqludf_sys"
+if [ -d "/opt/lib_mysqludf_sys" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo git clone https://github.com/mysqludf/lib_mysqludf_sys.git
+	cd lib_mysqludf_sys/
+	sudo apt update && sudo apt install default-libmysqlclient-dev
+	sudo rm -f lib_mysqludf_sys.so
+	sudo rm -f Makefile
+fi
+
 # kitrunner (analisi API)
 printf "\n===================================\n"
 program="kr"
@@ -441,11 +456,11 @@ fi
 # ZAP (vulnerability assessment)
 printf "\n===================================\n"
 program="zap"
-if is_installed "$program"; then
+if [ -d "/opt/gau" ]; then
 	echo "[i] $program is already installed."
 else
 	echo "[->] Installing $program..."	
-	sudo mkdir /opt/zap &&sudo wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2_14_0_unix.sh -O /opt/zap/zap.sh && sudo chmod +x /opt/zap/zap.sh
+	sudo mkdir /opt/zap && sudo wget https://github.com/zaproxy/zaproxy/releases/download/v2.14.0/ZAP_2_14_0_unix.sh -O /opt/zap/zap.sh && sudo chmod +x /opt/zap/zap.sh
 fi
 
 
@@ -652,7 +667,7 @@ fi
 
 # odat (Oracle)
 printf "\n===================================\n"
-program="patator"
+program="odat"
 if is_installed "$program"; then
 	echo "[i] $program is already installed."
 else
