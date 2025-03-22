@@ -92,6 +92,33 @@ printf "Check for apt updates\n\n"
 sudo apt update
 
 
+# Configure tmux
+printf "\n===================================\n"
+printf "Configure tmux\n\n"
+# Define the tmux configuration file path
+TMUX_CONF="$(readlink -f ~/.tmux.conf)"
+# Define the configuration line to add
+LINE='bind-key C-n run-shell "tmux kill-session -t #{session_name}"'
+
+# Check if the tmux configuration file exists
+if [ ! -f "$TMUX_CONF" ]; then
+    # If the file doesn't exist, create it and add the configuration line
+    sudo touch "$TMUX_CONF"
+    echo "$LINE" > "$TMUX_CONF"
+    echo "File $TMUX_CONF created and configuration added."
+else
+    # If the file exists, check if the configuration line is already present
+    if ! grep -Fxq "$LINE" "$TMUX_CONF"; then
+        # If the line is missing, append it to the file
+        echo "$LINE" >> "$TMUX_CONF"
+        echo "Configuration added to $TMUX_CONF."
+    else
+        # If the line already exists, do nothing
+        echo "Configuration already exists in $TMUX_CONF."
+    fi
+fi
+
+
 
 # webDataExtractor
 program="webDataExtractor.py"
