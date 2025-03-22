@@ -114,7 +114,7 @@ show_version() {
   echo '                                                          | $$                          '
   echo '                                                          |__/                          '
   echo ""
-  echo "version 2.5.1"                      
+  echo "version 2.5.2"                      
   echo ""
   echo ""
 }
