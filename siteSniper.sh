@@ -87,7 +87,10 @@ echo " ==="
 echo " === Utilità da installare su Kali ==="
 echo " ==="
 # aggiornamento apt
+printf "\n===================================\n"
+printf "Check for apt updates\n\n"
 sudo apt update
+
 
 
 # webDataExtractor
@@ -190,6 +193,21 @@ else
 	sudo dpkg -i ./Nessus_amd64.deb
 fi
 
+#Evil-WinRM script
+printf "\n===================================\n"
+program="evil-winrm"
+if [ -d "/opt/evil-winrm" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo mkdir evil-winrm
+	cd evil-winrm
+	sudo git clone https://github.com/samratashok/nishang.git
+	sudo git clone https://github.com/PowerShellMafia/PowerSploit.git
+
+fi
+
 #lib_mysqludf_sys (mysql)
 printf "\n===================================\n"
 program="lib_mysqludf_sys"
@@ -204,9 +222,7 @@ else
 	#sudo rm -f lib_mysqludf_sys.so
 	#sudo rm -f Makefile
 	#sudo sh -c 'echo "LIBDIR=/usr/lib\ninstall:\n\tgcc -Wall -I/usr/include/mysql -I. -shared lib_mysqludf_sys.c -o \$(LIBDIR)/lib_mysqludf_sys.so" > ./Makefile-mysql'
-	#sudo sh -c 'echo "LIBDIR=/usr/lib\ninstall:\n\tgcc -Wall -I/usr/include/mariadb/server -I/usr/include/mariadb/ -I/usr/include/mariadb/server/private -I. -shared lib_mysqludf_sys.c -o lib_mysqludf_sys.so" > ./Makefile-mariadb'
-
-	
+	#sudo sh -c 'echo "LIBDIR=/usr/lib\ninstall:\n\tgcc -Wall -I/usr/include/mariadb/server -I/usr/include/mariadb/ -I/usr/include/mariadb/server/private -I. -shared lib_mysqludf_sys.c -o lib_mysqludf_sys.so" > ./Makefile-mariadb'	
 fi
 
 # kitrunner (analisi API)
