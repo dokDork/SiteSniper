@@ -409,6 +409,23 @@ else
 fi
 
 
+# redis-rogue-server + RedisModules-ExecuteCommand
+printf "\n===================================\n"
+program="redis-rogue-server"
+cd /opt
+if [ -d "/opt/redis-rogue-server" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo git clone https://github.com/LoRexxar/redis-rogue-server.git
+	cd /opt
+	sudo git clone https://github.com/n0b0dyCN/RedisModules-ExecuteCommand.git
+	cd RedisModules-ExecuteCommand
+	sudo make
+	sudo mv /opt/RedisModules-ExecuteCommand/module.so /opt/redis-rogue-server/exp.so
+fi
+
 # hakluke/hakrawler
 printf "\n===================================\n"
 program="hakluke/hakrawler"
@@ -423,7 +440,6 @@ else
 	cd hakrawler
 	sudo docker build -t hakluke/hakrawler .
 fi
-
 
 # sxcurity/gau
 printf "\n===================================\n"
