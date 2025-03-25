@@ -3003,6 +3003,24 @@ tmux send-keys -t PT:37.7 "# Memchached: Information Gathering Manual - get valu
 tmux send-keys -t PT:37.7 "echo \"get user\" | nc -vn $ip 11211 "
 cd $folderProject
 
+cd $folderProjectAuthN
+# Mongodb
+tmux new-window -t PT:38 -n '[27017] Mongodb'
+tmux split-window -v -t PT:38.0
+tmux split-window -v -t PT:38.1
+tmux select-pane -t "38.1"
+tmux split-window -h -t "38.1"
+tmux split-window -h -t "38.1"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:38.0 "# Mongodb: Service fingerprint" Enter
+tmux send-keys -t PT:38.0 "nmap -vv -sV -Pn -p 27017 --script=mongodb-* $ip"
+tmux send-keys -t PT:38.1 "printf \"\n# Get all database in mongodb \n test> show dbs\n# Select one database\n test> use pleaselikeandsub\n\n\" " Enter
+tmux send-keys -t PT:38.1 "mongosh \"mongodb://USER:PASS@$ip:27017/dev?authSource=admin&w=1\""
+tmux send-keys -t PT:38.2 "printf \"\n# Show all tables of a specific database\n pleaselikeandsub> show collections\n# - SELECT * FROM USERS \n pleaselikeandsub> db.users.find()\n# - SELECT * FROM USERS LIMIT 1 \n pleaselikeandsub> db.users.find().limit(1)\n# - SELECT * FROM USERS WHERE name='jeremy' \n pleaselikeandsub> db.users.find({name:'jeremy'})\n# - SELECT * FROM USERS WHERE name!='jeremy' \n pleaselikeandsub> db.users.find({name:{\"$ne\":'jeremy'}})\n\n\" " Enter
+tmux send-keys -t PT:38.2 "mongosh \"mongodb://USER:PASS@$ip:27017/dev?authSource=admin&w=1\""
+tmux send-keys -t PT:38.3 "printf \"\n# UPDATE products SET Title='Toilet dok72' WHERE ID= 638f116eeb060210cbd83a93'\n pleaselikandsub> db.products.updateOne({_id: ObjectId("638f116eeb060210cbd83a93")},{$set: {title:"Toilet dok72"}}) \n# INSERT\n pleaselikandsub> db.tasks.insert({"cmd" : "whoami"})\n# CREATE TABLE\n pleaselikeandsub> db.users.insertOne({"name":"jeremy"})\n\n\" " Enter
+tmux send-keys -t PT:38.3 "mongosh \"mongodb://USER:PASS@$ip:27017/dev?authSource=admin&w=1\""
+cd $folderProject
 
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
