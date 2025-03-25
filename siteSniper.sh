@@ -189,7 +189,7 @@ else
 	echo "[i] $program is already installed."
 fi
 
-# mingw-w64
+# memcstat (memchached)
 printf "\n===================================\n"
 program="memcstat"
 if ! is_installed "memcstat"; then
@@ -197,6 +197,17 @@ if ! is_installed "memcstat"; then
 	# Comando di installazione del programma
 	# Esempio: sudo apt-get install -y "$program"
 	sudo apt install libmemcached-tools
+else
+	echo "[i] $program is already installed."
+fi
+
+# mongosh
+printf "\n===================================\n"
+program="mongosh"
+if ! is_installed "mongosh"; then
+	echo "[->] Installing $program..."
+	sudo apt install nodejs npm
+	sudo npm install -g mongosh
 else
 	echo "[i] $program is already installed."
 fi
