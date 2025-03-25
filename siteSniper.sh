@@ -2961,7 +2961,6 @@ tmux select-pane -t "37.4"
 tmux split-window -h -t "37.4"
 tmux split-window -h -t "37.4"
 tmux split-window -h -t "37.4"
-tmux split-window -h -t "37.4"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:37.0 "# Memchached: Service fingerprint" Enter
 tmux send-keys -t PT:37.0 "nmap -p11211 --script=memcached-info $ip"
@@ -2972,13 +2971,13 @@ tmux send-keys -t PT:37.2 "memcdump --servers=$ip"
 tmux send-keys -t PT:37.3 "# Memchached: Information Gathering Auto - get values of specific keys" Enter
 tmux send-keys -t PT:37.3 "memccat --servers=$ip KEY1 KEY2 KEY3"
 tmux send-keys -t PT:37.4 "# Memchached: Information Gathering Manual - get Version" Enter
-tmux send-keys -t PT:37.4 "echo "version" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.4 "echo \"version\" | nc -vn $ip 11211"
 tmux send-keys -t PT:37.5 "# Memchached: Information Gathering Manual - get keys number of all the slubs" Enter
-tmux send-keys -t PT:37.5 "echo "stats items" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.5 "echo \"stats items\" | nc -vn $ip 11211"
 tmux send-keys -t PT:37.6 "# Memchached: Information Gathering Manual - get keys of a specific slub" Enter
-tmux send-keys -t PT:37.6 "echo "stats cachedump 1 0" | nc -vn $ip 11211"
+tmux send-keys -t PT:37.6 "echo \"stats cachedump 1 0\" | nc -vn $ip 11211"
 tmux send-keys -t PT:37.7 "# Memchached: Information Gathering Manual - get value of a specific key (e.g. usres" Enter
-tmux send-keys -t PT:37.7 "echo "get user" | nc -vn $ip 11211 "
+tmux send-keys -t PT:37.7 "echo \"get user\" | nc -vn $ip 11211 "
 cd $folderProject
 
 
