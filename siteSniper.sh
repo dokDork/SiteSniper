@@ -189,6 +189,18 @@ else
 	echo "[i] $program is already installed."
 fi
 
+# mingw-w64
+printf "\n===================================\n"
+program="memcstat"
+if ! is_installed "memcstat"; then
+	echo "[->] Installing $program..."
+	# Comando di installazione del programma
+	# Esempio: sudo apt-get install -y "$program"
+	sudo apt install libmemcached-tools
+else
+	echo "[i] $program is already installed."
+fi
+
 # script nmap
 printf "\n===================================\n"
 program="nmap script (vulnscan, vulners)"
