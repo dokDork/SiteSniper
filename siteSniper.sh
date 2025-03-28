@@ -3054,7 +3054,7 @@ tmux send-keys "domain=$domain" Enter
 tmux send-keys "cd $folderProjectWebAuthN" Enter
 
 # WEB User Enumeration
-cd $folderProjectQuickWin
+cd $folderProjectWebAuthN
 # Layout
 tmux new-window -t PT:1 -n 'WEB User Enumeration'
 tmux split-window -v -t PT:1.0
@@ -3074,69 +3074,58 @@ tmux send-keys -t PT:1.3 "ffuf -request BurpSavedLoginRequest.txt -fr \"Username
 cd $folderProject
 
 # WEB Password Enumeration
-cd $folderProjectQuickWin
+cd $folderProjectWebAuthN
 # Layout
 tmux new-window -t PT:2 -n 'WEB Password Enumeration'
 tmux split-window -v -t PT:2.0
-tmux split-window -v -t PT:2.1
-tmux split-window -v -t PT:2.2
-tmux select-pane -t "2.1"
-tmux split-window -h -t "2.1"
+tmux select-pane -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -h -t "2.0"
+tmux split-window -v -t "2.0"
+tmux split-window -v -t PT:2.7
+tmux select-pane -t "2.7"
+tmux split-window -h -t "2.7"
+tmux split-window -h -t "2.7"
+tmux split-window -v -t PT:2.10
+tmux select-pane -t "2.10"
+tmux split-window -h -t "2.10"
+tmux split-window -h -t "2.10"
+tmux split-window -h -t "2.10"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:2.0 "# ù" Enter
-tmux send-keys -t PT:2.0 ""
-cd $folderProject
-
-# WEB Bruteforce AuthN
-cd $folderProjectQuickWin
-# Layout
-tmux new-window -t PT:3 -n 'WEB Bruteforce AuthN'
-tmux split-window -v -t PT:3.0
-tmux split-window -v -t PT:3.1
-tmux split-window -v -t PT:3.2
-tmux select-pane -t "3.1"
-tmux split-window -h -t "3.1"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "# ù" Enter
-tmux send-keys -t PT:3.0 ""
-cd $folderProject
-
-
-# WEB Command Injection
-cd $folderProjectWebAuthN
-# Layout
-tmux new-window -t PT:4 -n 'WEB Command Injection'
-tmux split-window -v -t PT:4.0
-tmux split-window -v -t PT:4.1
-tmux split-window -v -t PT:4.2
-tmux select-pane -t "4.1"
-tmux split-window -h -t "4.1"
-tmux split-window -h -t "4.1"
-tmux select-pane -t "4.4"
-tmux split-window -h -t "4.4"
-tmux split-window -h -t "4.4"
-# Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
-tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
-tmux send-keys -t PT:4.1 "# activate listener ICMP" Enter
-tmux send-keys -t PT:4.1 "sudo tcpdump -i tun0 icmp"
-tmux send-keys -t PT:4.2 "# activate listener HTTP" Enter
-tmux send-keys -t PT:4.2 "python3 -m http.server 80"
-tmux send-keys -t PT:4.3 "# activate listener SMB" Enter
-tmux send-keys -t PT:4.3 "impacket-smbserver -smb2support htb \$(pwd)"
-#Preparo il file per le command injection
-cd $folderProjectEngine
-#tmux send-keys -t PT:1.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
-python ./cmdGenerator.py $attackerIP cmdlist.txt
-mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
-cd $folderProjectWebAuthN
-#sleep 1
-tmux send-keys -t PT:4.4"# command injection automation (save burp file with name: burp.req)" Enter
-tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt"
-tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
-tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
-tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
-tmux send-keys -t PT:4.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+tmux send-keys -t PT:2.0 "# WEB Password Enumeration: Create Dictionary - find dictionary from predefined dictionaries" Enter
+tmux send-keys -t PT:2.0 "find /usr/share/seclists/ | grep pass | xargs wc -l | sort -n"
+tmux send-keys -t PT:2.1 "# WEB Password Enumeration: Create Dictionary - I create all the combinations of the letters a,b,@ on 4 letter words" Enter
+tmux send-keys -t PT:2.1 "crunch 4 4 ab@ -o pass.txt"
+tmux send-keys -t PT:2.2 "# WEB Password Enumeration: Create Dictionary - I create a password that follows a template" Enter
+tmux send-keys -t PT:2.2 "crunch 6 6 -t ,@@%%% -o pass.txt"
+tmux send-keys -t PT:2.3 "# WEB Password Enumeration: Create Dictionary - I create a password that concatenates all the words indicated" Enter
+tmux send-keys -t PT:2.3 "crunch 1 1 -o pass.txt -p  cat dog pig"
+tmux send-keys -t PT:2.4 "# WEB Password Enumeration: Create Dictionary - Get words from site" Enter
+tmux send-keys -t PT:2.4 "cewl $site -d 5 -m 6 -w ./cewl.out.txt --with-numbers"
+tmux send-keys -t PT:2.5 "# WEB Password Enumeration: Create Dictionary - From User information to dictionary" Enter
+tmux send-keys -t PT:2.5 "cupp -i"
+tmux send-keys -t PT:2.6 "# WEB Password Enumeration: Create Dictionary - From some Word to dictionary" Enter
+tmux send-keys -t PT:2.6 "wister -w mario rossi 25/12/1945 pietro rossi 25/12/2008  -c 1 2 3 4 5 -o wister.txt"
+tmux send-keys -t PT:2.7 "# WEB Password Enumeration: Aggregate words of Dictionary - Combine two dictionaries" Enter
+tmux send-keys -t PT:2.7 "/usr/share/hashcat-utils/combinator.bin words.txt digits.txt > dizio.txt"
+tmux send-keys -t PT:2.8 "#  WEB Password Enumeration: Aggregate words of Dictionary - Combine three dictionaries" Enter
+tmux send-keys -t PT:2.8 "/usr/share/hashcat-utils/combinator3.bin digits.txt words.txt digits.txt > dizio.txt"
+tmux send-keys -t PT:2.9 "#  WEB Password Enumeration: Aggregate words of Dictionary - Combine dictionary and hashcat rules" Enter
+tmux send-keys -t PT:2.9 "hashcat --stdout -a 6 words.list ?d?d"
+tmux send-keys -t PT:2.10 "# WEB Password Enumeration: Operate on dictionaries - combine multiple dictionaries into one" Enter
+tmux send-keys -t PT:2.10 "cat dizio1.txt dizio2.txt dizio3.txt | sort -u > dizionario_finale.txt"
+tmux send-keys -t PT:2.11 "# WEB Password Enumeration: Operate on dictionaries - all words in lowercase" Enter
+tmux send-keys -t PT:2.11 "awk '{print tolower($0)}' < passwordSite.txt > passwordSiteLower.txt"
+tmux send-keys -t PT:2.12 "# WEB Password Enumeration: Operate on dictionaries - add suffix" Enter
+tmux send-keys -t PT:2.12 "for i in \$(cat pwlist.txt); do echo $i; echo ${i}2019; echo ${i}2020; echo ${i}\!; done > newpwlist.txt"
+tmux send-keys -t PT:2.13 "# WEB Password Enumeration: Operate on dictionaries - manipulate words with hashcat" Enter
+tmux send-keys -t PT:2.13 "hashcat --force --stdout passwords.txt --stdout -r /usr/share/hashcat/rules/best64.rule -r /usr/share/hashcat/rules/toggles1.rule > newpasswords.txt | awk 'length($0) > 7' > newpasswords2.txt"
+tmux send-keys -t PT:2.14 "# " Enter
+tmux send-keys -t PT:2.14 ""
 cd $folderProject
 
 
