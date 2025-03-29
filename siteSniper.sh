@@ -322,6 +322,18 @@ else
 	sudo apt install rlwrap
 fi
 
+# wister
+printf "\n===================================\n"
+program="wister"
+if is_installed "$program"; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	sudo apt install pipx
+	pipx ensurepath
+	pipx install wister
+fi
+
 # droopescan (automatizzo l'analisi delle vulnerabilità di drupal)
 printf "\n===================================\n"
 program="droopescan"
