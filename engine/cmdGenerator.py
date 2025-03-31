@@ -97,7 +97,7 @@ with open(file_in, 'r') as f:
             # Generate commands
             command_list = generate_manipulated_commands(line, prefixes, suffixes)
             for cmd in command_list:
-                print(f"{cmd}")
+                #print(f"{cmd}")
                 out.write(f"{cmd}" + '\n')
 
 # Handle the BASE64 section
