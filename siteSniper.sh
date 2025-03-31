@@ -3193,7 +3193,7 @@ cd $folderProject
 # WEB Command Injection
 cd $folderProjectWebAuthN
 # Layout
-tmux new-window -t PT:4 -n 'WEB Command Injection'
+tmux new-window -t PT:4 -n 'WEB Command Injection Auto'
 tmux split-window -v -t PT:4.0
 tmux split-window -v -t PT:4.1
 tmux split-window -v -t PT:4.2
