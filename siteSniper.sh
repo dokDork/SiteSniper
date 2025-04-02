@@ -3196,13 +3196,21 @@ cd $folderProjectWebAuthN
 tmux new-window -t PT:4 -n 'WEB Command Injection Auto'
 tmux split-window -v -t PT:4.0
 tmux split-window -v -t PT:4.1
-tmux split-window -v -t PT:4.2
 tmux select-pane -t "4.1"
 tmux split-window -h -t "4.1"
 tmux split-window -h -t "4.1"
+tmux split-window -v -t PT:4.4
 tmux select-pane -t "4.4"
 tmux split-window -h -t "4.4"
 tmux split-window -h -t "4.4"
+tmux split-window -v -t PT:4.7
+tmux select-pane -t "4.7"
+tmux split-window -h -t "4.7"
+tmux split-window -h -t "4.7"
+tmux split-window -v -t PT:4.10
+tmux select-pane -t "4.10"
+tmux split-window -h -t "4.10"
+tmux split-window -h -t "4.10"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
 tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
