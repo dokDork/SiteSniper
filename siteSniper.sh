@@ -3068,7 +3068,7 @@ tmux send-keys "cd $folderProjectWebAuthN" Enter
 # WEB User Enumeration
 cd $folderProjectWebAuthN
 # Layout
-tmux new-window -t PT:1 -n 'WEB User Enumeration'
+tmux new-window -t PT:1 -n 'WEB Attack credentials: User Enumeration'
 tmux split-window -v -t PT:1.0
 tmux select-pane -t "1.0"
 tmux split-window -h -t "1.0"
@@ -3088,7 +3088,7 @@ cd $folderProject
 # WEB Password Enumeration
 cd $folderProjectWebAuthN
 # Layout
-tmux new-window -t PT:2 -n 'WEB Password Enumeration'
+tmux new-window -t PT:2 -n 'WEB Attack credentials: Password Enumeration'
 tmux split-window -v -t PT:2.0
 tmux resize-pane -t PT:2.0 -y 3
 tmux select-pane -t "2.0"
@@ -3160,7 +3160,7 @@ cd $folderProject
 # WEB Bruteforce AuthN
 cd $folderProjectWebAuthN
 # Layout
-tmux new-window -t PT:3 -n 'WEB Bruteforce AuthN'
+tmux new-window -t PT:3 -n 'WEB Attack credentials: Bruteforce AuthN'
 tmux split-window -v -t PT:3.0
 tmux select-pane -t "3.0"
 tmux split-window -h -t "3.0"
