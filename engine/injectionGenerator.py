@@ -84,7 +84,7 @@ suffixes = ["%00 "]
 
 # Process input file
 with open(file_in, 'r') as f:
-    with open('out-command-injection-list.txt', 'w') as out:
+    with open('out-injection-list.txt', 'w') as out:
         for line in f:
             line = line.strip()
             if line.strip() == "" or line.startswith("=="):
