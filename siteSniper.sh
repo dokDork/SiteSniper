@@ -150,7 +150,7 @@ else
 fi
 
 #chain-genrator (LFI)
-program="username-anarchy"
+program="php_filter_chain_generator"
 printf "\n===================================\n"
 pathAppo="/opt/php_filter_chain_generator"
 if [ -d "$pathAppo" ]; then
