@@ -84,7 +84,7 @@ is_installed() {
 # ===
 
 echo " ==="
-echo " === Utilità da installare su Kali ==="
+echo " === Tools to be installed on kali ==="
 echo " ==="
 # aggiornamento apt
 printf "\n===================================\n"
@@ -149,6 +149,20 @@ else
 	sudo chmod 755 username-anarchy
 fi
 
+#chain-genrator (LFI)
+program="username-anarchy"
+printf "\n===================================\n"
+pathAppo="/opt/php_filter_chain_generator"
+if [ -d "$pathAppo" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."
+	cd /opt
+	sudo git clone https://github.com/synacktiv/php_filter_chain_generator
+	cd php_filter_chain_generator
+	sudo chmod 755 php_filter_chain_generator.py
+fi
+
 # seclists
 program="seclists"
 printf "\n===================================\n"
@@ -161,6 +175,19 @@ if ! is_installed "$program"; then
 else
 	echo "[i] $program is already installed."
 fi
+
+# xclip
+program="xclip"
+printf "\n===================================\n"
+if ! is_installed "$program"; then
+	echo "[->] Installing $program..."
+	# Comando di installazione del programma
+	# Esempio: sudo apt-get install -y "$program"
+	sudo apt-get install $1
+else
+	echo "[i] $program is already installed."
+fi
+
 
 # impacket
 printf "\n===================================\n"
@@ -3229,7 +3256,7 @@ mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN
 cd $folderProjectWebAuthN
 #sleep 1
 tmux send-keys -t PT:4.4"# command injection automation (save burp file with name: burp.req)" Enter
-tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt"
+tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt -fl 120"
 tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
 tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
