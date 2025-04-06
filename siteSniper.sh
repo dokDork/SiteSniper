@@ -3252,6 +3252,7 @@ tmux split-window -v -t PT:4.10
 tmux select-pane -t "4.10"
 tmux split-window -h -t "4.10"
 tmux split-window -h -t "4.10"
+sleep 5
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
 tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
@@ -3306,7 +3307,7 @@ tmux split-window -v -t PT:5.6
 #Preparo il file per le command injection
 cd $folderProjectEngine
 python ./injectionGenerator.py $attackerIP injectionlist.txt
-mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
 cd $folderProjectWebAuthN
 tmux send-keys -t PT:5.0"# LFI injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:5.0 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
@@ -3320,8 +3321,7 @@ tmux send-keys -t PT:5.4 "# LFI: port scanner - file with ports number" Enter
 tmux send-keys -t PT:5.4 "sudo rm -f $folderProjectWebAuthN/numbers.txt && for i in {1..65535}; do echo $i; done > numbers.txt"
 tmux send-keys -t PT:5.5 "# LFI: port scanner start" Enter
 tmux send-keys -t PT:5.5 "ffuf -request GET-burp-example.req -request-proto http -w numbers.txt:FUZZ -fl 92"
-tmux send-keys -t PT:5.6 "# LFI: " Enter
-tmux send-keys -t PT:5.6 ""
+tmux send-keys -t PT:5.6 "printf \"\nIf it is possible to read these files, it could be possibile to get a RCE:\nc:/inetpub/logs/LogFiles/W3SVC1/u_ex<aaMMgg>.log \n\n/proc/self/environ \n/proc/self/fd/0 \n/proc/self/fd/1 \n... \n/proc/self/fd/5\n\n/var/log/apache2/access.log \n/var/log/httpd/access.log \n/var/log/nginx/access.log \n\n/var/spool/micheal \n/var/log/mail \n/var/email/asterix \n\n/var/log/auth.log \n \" " Enter
 cd $folderProject
 
 
