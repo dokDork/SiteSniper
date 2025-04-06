@@ -64,30 +64,4 @@ with open(file_in, 'r') as f:
                 #print(f"{cmd}")
                 out.write(f"{cmd}" + '\n')
 
-# Handle the BASE64 section
-output_file = 'out-injection-list.txt'
-
-# Read the file and remove the existing BASE64 section if it exists
-with open(output_file, 'r') as f:
-    lines = f.readlines()
-
-# Remove the BASE64 section if it exists
-new_lines = []
-base64_section_found = False
-for line in lines:
-    if line.startswith("==> BASE64"):
-        base64_section_found = True
-    if not base64_section_found:
-        new_lines.append(line)
-    if line.strip() == "" and base64_section_found:
-        base64_section_found = False
-
-# Write the updated content back to the file
-with open(output_file, 'w') as f:
-    f.writelines(new_lines)
-
-# Append the new BASE64 section to the file
-with open(output_file, 'a') as f:
-    f.write("\n".join(base64_section) + "\n")
-
 print("Command list generated successfully. Check 'out-injection-list.txt'.")

