@@ -3267,7 +3267,6 @@ cd $folderProjectEngine
 python ./cmdGenerator.py $attackerIP cmdlist.txt
 mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
 cd $folderProjectWebAuthN
-#sleep 1
 tmux send-keys -t PT:4.4"# command injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt -fl 120"
 tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter

