@@ -149,6 +149,19 @@ else
 	sudo chmod 755 username-anarchy
 fi
 
+#LFI (LFIxplorer)
+printf "\n===================================\n"
+program="LFIxplorer"
+if [ -d "/opt/LFIxplorer" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."	
+	cd /opt
+	sudo git clone https://github.com/dokDork/LFIxplorer.git
+	cd LFIxplorer 
+	chmod 755 LFIxplorer.py 
+fi
+
 #chain-genrator (LFI)
 program="php_filter_chain_generator"
 printf "\n===================================\n"
@@ -3301,8 +3314,8 @@ tmux send-keys -t PT:5.1"# LFI injection automation (GET)" Enter
 tmux send-keys -t PT:5.1 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:5.2 "# LFI injection automation (POST)" Enter
 tmux send-keys -t PT:5.2 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
-tmux send-keys -t PT:5.3 "# LFI: " Enter
-tmux send-keys -t PT:5.3 ""
+tmux send-keys -t PT:5.3 "# LFI: read file" Enter
+tmux send-keys -t PT:5.3 "sudo python3 /opt/LFIxplorer/LFIxplorer.py burp.req"
 tmux send-keys -t PT:5.4 "# LFI: " Enter
 tmux send-keys -t PT:5.4 ""
 tmux send-keys -t PT:5.5 "# LFI: " Enter
