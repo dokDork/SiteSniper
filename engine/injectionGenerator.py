@@ -44,7 +44,7 @@ file_in = sys.argv[2]
 #prefixes = [" ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& ", "%EF%BC%86 ", "%EF%BC%86%EF%BC%86 ", "%EF%BD%9C ", "%EF%BD%9C%EF%BD%9C "]
 #suffixes = ["%00 ", "%00; ", "%0A ", "? ", "?%00 ", "; ", "& ", "|| ", "| ", "-- ", "# "]
 prefixes = ["; ", "%00; ", "%0A"]
-suffixes = ["%00 "]
+suffixes = ["%00 ", "? "]
 
 # Process input file
 with open(file_in, 'r') as f:
