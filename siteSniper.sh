@@ -3252,7 +3252,6 @@ tmux split-window -v -t PT:4.10
 tmux select-pane -t "4.10"
 tmux split-window -h -t "4.10"
 tmux split-window -h -t "4.10"
-sleep 5
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
 tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
