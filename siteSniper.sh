@@ -149,6 +149,20 @@ else
 	sudo chmod 755 username-anarchy
 fi
 
+# SSTImap (SSTI)
+program="SSTImap"
+printf "\n===================================\n"
+pathAppo="/opt/SSTImap"
+if [ -d "$pathAppo" ]; then
+	echo "[i] $program is already installed."
+else
+	echo "[->] Installing $program..."
+	cd /opt
+	sudo git clone https://github.com/vladko312/SSTImap.git
+	cd /opt/SSTImap
+	sudo chmod 755 sstimap.py
+fi
+
 #LFI (LFIxplorer)
 printf "\n===================================\n"
 program="LFIxplorer"
@@ -3423,17 +3437,16 @@ tmux select-pane -t "8.4"
 tmux split-window -h -t "8.4"
 tmux split-window -h -t "8.4"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:8.0 "# automate command injection scan" Enter
-tmux send-keys -t PT:8.0 "sudo uniscan -u $url -qweds"
+tmux send-keys -t PT:8.0 "# automate SSTI injection scan" Enter
+tmux send-keys -t PT:8.0 "sudo python3 /opt/SSTImap/sstimap.py --os-shell -u $url"
 tmux send-keys -t PT:8.1 "# activate listener ICMP" Enter
 tmux send-keys -t PT:8.1 "sudo tcpdump -i tun0 icmp"
 tmux send-keys -t PT:8.2 "# activate listener HTTP" Enter
 tmux send-keys -t PT:8.2 "python3 -m http.server 80"
 tmux send-keys -t PT:8.3 "# activate listener for reverse shell on port 9001" Enter
 tmux send-keys -t PT:8.3 "nc -nlvp 9001"
-#Preparo il file per le command injection
 cd $folderProjectEngine
-python ./cmdGenerator.py $attackerIP injection.txt
+python ./injectionGenerator.py $attackerIP injectionlist.txt
 mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
 cd $folderProjectWebAuthN
 tmux send-keys -t PT:8.4"# command injection automation (save burp file with name: burp.req)" Enter
