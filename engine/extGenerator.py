@@ -32,7 +32,7 @@ if len(sys.argv) < 3:
     print("FILE-IN: input file containing the list of commands")
     print("")
     print("This script generates a list of commands useful for ffuf analysis.")
-    print("It generates command to test varous vulnerability: LFI, RFI, XSS, SQL injection, SSTI, etc...")
+    print("It generate extension to test File Upload functionality.")
     print("")
     sys.exit(1)
 

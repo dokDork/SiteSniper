@@ -67,8 +67,8 @@ if len(sys.argv) < 3:
     print("ATTACKER-IP: IP address of the attacker's network interface to receive calls from the target machine")
     print("FILE-IN: input file containing the list of commands")
     print("")
-    print("This script generates a list of commands to load into BurpSuite Intruder to test if the parameter identified on the target site")
-    print("is vulnerable to the following types of attacks: command injection, LFI, RFI, XSS, SQL injection, SSTI")
+    print("This script generates a list of commands useful for ffuf analysis.")
+    print("It generates commands to test command injection.")
     print("")
     sys.exit(1)
 

