@@ -3131,7 +3131,11 @@ python ./injectionGenerator.py $attackerIP injectionlist.txt
 mv "$folderProjectEngine/out-injection-list.txt" "$folderProjectWebAuthN/out-injection-list.txt"
 cd $folderProjectWebAuthN
 
-
+# Preparo il file per testare le estensioni che si possono caricare con il file upload
+cd $folderProjectEngine
+python ./extGenerator.py $attackerIP extlist.txt
+mv "$folderProjectEngine/out-ext-list.txt" "$folderProjectWebAuthN/out-ext-list.txt"
+cd $folderProjectWebAuthN
 
 # WEB User Enumeration
 cd $folderProjectWebAuthN

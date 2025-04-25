@@ -43,12 +43,12 @@ file_in = sys.argv[2]
 # Define prefixes and suffixes
 #prefixes = [" ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& ", "%EF%BC%86 ", "%EF%BC%86%EF%BC%86 ", "%EF%BD%9C ", "%EF%BD%9C%EF%BD%9C "]
 #suffixes = ["%00 ", "%00; ", "%0A ", "? ", "?%00 ", "; ", "& ", "|| ", "| ", "-- ", "# "]
-prefixes = ["; "]
-suffixes = ["%20 ", "%0A ", "%00 ", "%0D%0A ", "/ ", ".\ ", ". ", ".... "]
+prefixes = ["%00"]
+suffixes = ["%20 ", "%0A ", "%00 ", "%0D%0A ", "/ ", ".\\ ", ". ", ".... "]
 
 # Process input file
 with open(file_in, 'r') as f:
-    with open('out-injection-list.txt', 'w') as out:
+    with open('out-ext-list.txt', 'w') as out:
         for line in f:
             line = line.strip()
             if line.strip() == "" or line.startswith("=="):
@@ -64,4 +64,4 @@ with open(file_in, 'r') as f:
                 #print(f"{cmd}")
                 out.write(f"{cmd}" + '\n')
 
-print("Command list generated successfully. Check 'out-injection-list.txt'.")
+print("Ext list generated successfully. Check 'out-ext-list.txt'.")
