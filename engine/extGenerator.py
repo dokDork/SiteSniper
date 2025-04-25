@@ -43,8 +43,8 @@ file_in = sys.argv[2]
 # Define prefixes and suffixes
 #prefixes = [" ", "%00; ", "%0A ", "|| ", "| ", "; ", "& ", "&& ", "%EF%BC%86 ", "%EF%BC%86%EF%BC%86 ", "%EF%BD%9C ", "%EF%BD%9C%EF%BD%9C "]
 #suffixes = ["%00 ", "%00; ", "%0A ", "? ", "?%00 ", "; ", "& ", "|| ", "| ", "-- ", "# "]
-prefixes = ["; ", "%00; ", "%0A"]
-suffixes = ["%00 ", "? ", " -- -", " # ", "/* "]
+prefixes = ["; "]
+suffixes = ["%20 ", "%0A ", "%00 ", "%0D%0A ", "/ ", ".\ ", ". ", ".... "]
 
 # Process input file
 with open(file_in, 'r') as f:
