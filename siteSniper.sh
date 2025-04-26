@@ -3465,10 +3465,10 @@ tmux send-keys -t PT:9.0 "# File Upload: test allowed extension (filename=""File
 tmux send-keys -t PT:9.0 "ffuf -request upload.req -request-proto http -w /usr/share/seclists/Fuzzing/extensions-most-common.fuzz.txt -mr <Message displayed upon successful upload>"
 tmux send-keys -t PT:9.1 "# File Upload: test allowed extension with bypass techniques (filename=""FileToBeUploadedFUZZ"")" Enter
 tmux send-keys -t PT:9.1 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-ext-list.txt -fl 120"
-tmux send-keys -t PT:9.2 "# activate listener HTTP" Enter
-tmux send-keys -t PT:9.2 "python3 -m http.server 80"
-tmux send-keys -t PT:9.3 "# activate listener for reverse shell on port 9001" Enter
-tmux send-keys -t PT:9.3 "nc -nlvp 9001"
+tmux send-keys -t PT:9.2 "# File Upload: activate listener on port 80" Enter
+tmux send-keys -t PT:9.2 "sudo python3 -m http.server 80"
+tmux send-keys -t PT:9.3 "# File Upload: test command injection with bypass techniques (filename=""FileToBeUploaded.pngFUZZ"")" Enter
+tmux send-keys -t PT:9.3 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-list.txt -fl 120"
 
 
 
