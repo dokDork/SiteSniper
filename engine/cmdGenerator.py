@@ -129,4 +129,4 @@ base64_section = generate_base64_section(ip_address)
 with open(output_file, 'a') as f:
     f.write("\n".join(base64_section) + "\n")
 
-print("Command list generated successfully. Check 'out-command-injection-list.txt'.")
+print("[i] Command list generated successfully. Check 'out-command-injection-list.txt'.")

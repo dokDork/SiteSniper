@@ -64,4 +64,4 @@ with open(file_in, 'r') as f:
                 #print(f"{cmd}")
                 out.write(f"{cmd}" + '\n')
 
-print("Various Injection list generated successfully. Check 'out-injection-list.txt'.")
+print("[i] Various Injection list generated successfully. Check 'out-injection-list.txt'.")

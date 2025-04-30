@@ -64,4 +64,4 @@ with open(file_in, 'r') as f:
                 #print(f"{cmd}")
                 out.write(f"{cmd}" + '\n')
 
-print("Ext list generated successfully. Check 'out-ext-list.txt'.")
+print("[i] Extstension list generated successfully. Check 'out-ext-list.txt'.")
