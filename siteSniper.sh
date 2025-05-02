@@ -3471,7 +3471,18 @@ tmux send-keys -t PT:9.3 "# File Upload: test command injection with bypass tech
 tmux send-keys -t PT:9.3 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-command-list.txt -fl 120"
 
 
-
+# XSS
+cd $folderProjectWebAuthN
+# Layout
+tmux new-window -t PT:10 -n 'XSS'
+tmux split-window -v -t PT:10.0
+tmux select-pane -t "10.0"
+tmux split-window -h -t "10.0"
+# Esecuzione dei comandi nelle sottofinestre
+tmux send-keys -t PT:10.0 "# XSS: activate listener on port 80" Enter
+tmux send-keys -t PT:10.0 "sudo python3 -m http.server 80"
+tmux send-keys -t PT:10.1 "# XSS: test command injection with bypass techniques (filename=""FileToBeUploaded.pngFUZZ"")" Enter
+tmux send-keys -t PT:10.1 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
 
 
 
