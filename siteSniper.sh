@@ -3481,7 +3481,7 @@ tmux split-window -h -t "10.0"
 # Esecuzione dei comandi nelle sottofinestre
 tmux send-keys -t PT:10.0 "# XSS: activate listener on port 80" Enter
 tmux send-keys -t PT:10.0 "sudo python3 -m http.server 80"
-tmux send-keys -t PT:10.1 "# XSS: test command injection with bypass techniques (filename=""FileToBeUploaded.pngFUZZ"")" Enter
+tmux send-keys -t PT:10.1 "# XSS: test XSS injection with bypass techniques" Enter
 tmux send-keys -t PT:10.1 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
 
 
