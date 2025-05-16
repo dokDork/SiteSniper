@@ -3493,11 +3493,11 @@ tmux split-window -v -t PT:11.0
 tmux select-pane -t "11.0"
 tmux split-window -h -t "11.0"
 tmux split-window -h -t "11.0"
-tmux send-keys -t PT:11.0 "# SQLi injection automation (save burp file with name: burp.req)" Enter
+tmux send-keys -t PT:11.0 "# SQLi injection automation (save burp file with name: burp.req). I recommend you to set FUZZ in this mode id=123FUZZ" Enter
 tmux send-keys -t PT:11.0 "ffuf -request burp.req -request-proto http -w $folderProjectWebAuthN/out-injection-list.txt -fl 120"
-tmux send-keys -t PT:11.1 "# SQLi injection automation (GET)" Enter
+tmux send-keys -t PT:11.1 "# SQLi injection automation (GET). I recommend you to set FUZZ in this mode id=123FUZZ" Enter
 tmux send-keys -t PT:11.1 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" --sc=200 $url/?id=FUZZ"
-tmux send-keys -t PT:11.2 "# SQLi injection automation (POST)" Enter
+tmux send-keys -t PT:11.2 "# SQLi injection automation (POST). I recommend you to set FUZZ in this mode id=123FUZZ" Enter
 tmux send-keys -t PT:11.2 "wfuzz -c -z file,out-injection-list.txt -H \"Content-Type: application/x-www-form-urlencoded\" -H \"User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3\" -d \"username=admin&password=FUZZ\" --sc=200 $url/login.php # cmd injection (POST)"
 cd $folderProject
 
