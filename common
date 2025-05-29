@@ -143,21 +143,27 @@ ask_for_url() {
 }
 
 get_publicIP() {
-    local interface=$1
-    local public_ip
-    local private_ip
+  local interface=$1
+  local public_ip
+  local private_ip
 
-    # Ottieni l'IP pubblico usando un servizio esterno
+  # Se l'interfaccia è tun0 o simili (VPN), non forzare l'interfaccia in curl
+  if [[ "$interface" =~ ^tun ]]; then
+    # Ottieni l'IP pubblico reale senza specificare interfaccia (esce tramite la VPN)
+    public_ip=$(curl -s https://api.ipify.org)
+  else
+    # Per interfacce normali, usa curl con --interface
     public_ip=$(curl -s --interface "$interface" https://api.ipify.org)
+  fi
 
-    # Controlla se l'IP pubblico è valido
-    if [[ -n "$public_ip" && "$public_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        echo "$public_ip"
-    else
-        # Se non esiste un IP pubblico, ottieni l'IP privato
-        private_ip=$(ip addr show "$interface" | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
-        echo "$private_ip"
-    fi
+  # Verifica se l'IP pubblico è valido
+  if [[ -n "$public_ip" && "$public_ip" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+    echo "$public_ip"
+  else
+    # Se non esiste un IP pubblico valido, ottieni l'IP privato dell'interfaccia
+    private_ip=$(ip addr show "$interface" | grep "inet\b" | awk '{print $2}' | cut -d/ -f1)
+    echo "$private_ip"
+  fi
 }
 
 
