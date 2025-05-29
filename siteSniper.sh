@@ -110,7 +110,8 @@ else
     # If the file exists, check if the configuration line is already present
     if ! grep -Fxq "$LINE" "$TMUX_CONF"; then
         # If the line is missing, append it to the file
-        echo "$LINE" >> "$TMUX_CONF"
+        # echo "$LINE" >> "$TMUX_CONF"
+        echo "$LINE" | sudo tee "$TMUX_CONF" > /dev/null
         echo "Configuration added to $TMUX_CONF."
     else
         # If the line already exists, do nothing
