@@ -1245,7 +1245,7 @@ tmux split-window -v -t PT:15.3
 tmux send-keys -t PT:15.0 "# Active scan: OS Type with ping" Enter
 tmux send-keys -t PT:15.0 "ping $ip"
 tmux send-keys -t PT:15.1 "# Active scan: OS Type with tcpdump and nc" Enter
-tmux send-keys -t PT:15.1 "tcpdump -i eth0 -v -n ip src $ip"
+tmux send-keys -t PT:15.1 "sudo tcpdump -i eth0 -v -n ip src $ip"
 tmux send-keys -t PT:15.2 "# Active scan: OS Type with tcpdump and nc" Enter
 tmux send-keys -t PT:15.2 "nc $ip 80"
 tmux send-keys -t PT:15.3 "# Active scan: OS Type with nmap" Enter
