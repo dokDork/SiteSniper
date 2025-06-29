@@ -1093,7 +1093,7 @@ tmux send-keys -t PT:5.0 "grep -v '^#' $folderProjectEngine/osint-web-dns.txt | 
 tmux send-keys -t PT:5.1 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with dnsrecon" Enter
 tmux send-keys -t PT:5.1 "dnsrecon -d $domain"
 tmux send-keys -t PT:5.2 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with host" Enter
-tmux send-keys -t PT:5.2 "host -t a $site && host -t aaaa $site && host -t mx $site && host -t ns $site && host -t ptr $ip"
+tmux send-keys -t PT:5.2 "echo 'A:' && host -t a $site && echo 'AAAA:' host -t aaaa $site && echo 'MX:' && host -t mx $site && echo 'NS:' && host -t ns $site && echo 'PTR:' host -t ptr $ip"
 tmux send-keys -t PT:5.3 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with nslookup" Enter
 tmux send-keys -t PT:5.3 "nslookup $site && nslookup $ip"
 tmux send-keys -t PT:5.4 "# OSINT: DNS record (A,MX,NS,...) data exfiltration with dnsenum" Enter
