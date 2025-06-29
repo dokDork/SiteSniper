@@ -123,7 +123,7 @@ show_version() {
 confirm_values() {
     value_type=$1
     value=$2
-    read -p "Confirm or modify the $value_type [$value]: " new_value
+    read -e -p "Confirm or modify the $value_type [$value]: " new_value
     new_value=${new_value:-$value} # Usa il valore precedente se non viene inserito uno nuovo
     echo "$new_value"
 }
