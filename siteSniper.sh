@@ -1557,7 +1557,7 @@ tmux send-keys -t PT:16.2 "wfuzz -X POST -w /usr/share/seclists/Discovery/Web-Co
 tmux send-keys -t PT:16.3 "# find endPoint with ffuf" Enter
 tmux send-keys -t PT:16.3 "ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -u $url/api/v1/FUZZ "
 tmux send-keys -t PT:16.4 "# find Data Parameter with curl " Enter
-tmux send-keys -t PT:16.4 "curl -X POST -H 'Content-type: application/json' -x $url/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
+tmux send-keys -t PT:16.4 "curl -X POST -H 'Content-type: application/json' $url/api/v1/user -d '{""user"":""admin"",""pass"",""password""}'"
 tmux send-keys -t PT:16.5 "# find Data Parameter with ffuf " Enter
 tmux send-keys -t PT:16.5 "ffuf -request request.txt -w /usr/share/seclists/Discovery/Web-Content/common.txt"
 
