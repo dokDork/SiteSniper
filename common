@@ -179,7 +179,7 @@ get_publicIP() {
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <Interface> <Target site>"
     echo " - Interface: Interface from which attacker exexutes action"
-    echo " - Target site: if target has a web site, this is site root without protocol definition. If target has no web site fill this field as you want"
+    echo " - Target site: if target is a web site, this is site root with protocol definition. If target has no web site fill this field as you want"
     echo ""
     echo "Example:"
     echo "$0 tun0 http://www.hackedbox.htb"
