@@ -908,6 +908,8 @@ echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_
 echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat" | sudo tee -a download.txt
 echo "https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_linux_386.gz" | sudo tee -a download.txt
 echo "https://github.com/hugsy/gdb-static/raw/master/gdb-7.10.1-x32" | sudo tee -a download.txt
+echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64" | sudo tee -a download.txt
+echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32" | sudo tee -a download.txt
 
 # Scarica i file utilizzando wget
 printf "\n===================================\n"
