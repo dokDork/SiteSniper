@@ -1009,6 +1009,11 @@ echo "[i] ProcDump installation"
 sudo wget -N https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/raw/refs/heads/master/Rubeus.exe
 sudo unzip -o Rubeus.exe
 sudo chmod 755 *
+# SharpHound
+printf "\n===================================\n"
+echo "[i] SharpHound installation"
+sudo cp $folderProjectEngine/SharpHound.ps1 ./
+sudo chmod 755 *
 
 
 ;;
