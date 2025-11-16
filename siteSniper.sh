@@ -229,7 +229,7 @@ else
 	# Comando di installazione del programma
 	# Esempio: sudo apt-get install -y "$program"
 	cd /opt
-	sudo apt-get install $1
+	sudo apt-get install $program
 fi
 
 # mingw-w64
