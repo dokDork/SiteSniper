@@ -212,7 +212,7 @@ if ! is_installed "$program"; then
 	echo "[->] Installing $program..."
 	# Comando di installazione del programma
 	# Esempio: sudo apt-get install -y "$program"
-	sudo apt-get install $1
+	sudo apt-get install $program
 else
 	echo "[i] $program is already installed."
 fi
