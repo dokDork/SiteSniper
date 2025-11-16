@@ -240,7 +240,7 @@ if ! is_installed "i686-w64-mingw32-gcc"; then
 	# Comando di installazione del programma
 	# Esempio: sudo apt-get install -y "$program"
 	cd /opt
-	sudo apt-get install $1
+	sudo apt-get install $program
 else
 	echo "[i] $program is already installed."
 fi
