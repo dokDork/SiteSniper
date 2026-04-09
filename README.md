@@ -1,7 +1,13 @@
 # SiteSniper
 [![License](https://img.shields.io/badge/license-MIT-_red.svg)](https://opensource.org/licenses/MIT)  
 <img src="https://github.com/dokDork/red-team-penetration-test-script/raw/main/images/siteSniper.png" width="250" height="250">  
-  
+
+## Disclaimer
+This tool is provided for authorized security testing, research, and educational purposes only.
+If you use this tool for any activity involving attacks, exploitation, or security testing against individuals, companies, systems, or networks, you must have explicit prior authorization from the relevant person, organization, or asset owner.
+
+Unauthorized use is strictly prohibited. The author assumes no responsibility for any misuse or damage caused by this tool.
+
 ## Description
 **SiteSniper** is a script created to automate some phases of a blackbox penetration test. Once the target has been identified, many scripts are prepared which you can decide if and when to execute them simply by pressing ENTER. It uses **tmux** as terminal so it is necessary to know how to use it.
 The scripts concern the phase of:
