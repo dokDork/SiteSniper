@@ -896,9 +896,10 @@ fi
 #File singoli da scaricare nella cartella
 cd $folderLin
 sudo chown $(whoami):$(whoami) $folderLin
+sudo rm -f download.txt
 # Crea il file download.txt con 10 URL
 sudo touch download.txt
-echo "https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh" | sudo tee -a download.txt
+echo "https://github.com/peass-ng/PEASS-ng/releases/download/20260817-e45108b9/linpeas.sh" | sudo tee -a download.txt
 echo "https://raw.githubusercontent.com/sleventyeleven/linuxprivchecker/master/linuxprivchecker.py" | sudo tee -a download.txt
 echo "https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh" | sudo tee -a download.txt
 echo "https://raw.githubusercontent.com/jondonas/linux-exploit-suggester-2/master/linux-exploit-suggester-2.pl" | sudo tee -a download.txt
@@ -907,10 +908,10 @@ echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_
 echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nmap" | sudo tee -a download.txt
 echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/nping" | sudo tee -a download.txt
 echo "https://github.com/andrew-d/static-binaries/raw/master/binaries/linux/x86_64/socat" | sudo tee -a download.txt
-echo "https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_linux_386.gz" | sudo tee -a download.txt
+echo "https://github.com/jpillora/chisel/releases/download/v1.11.8/chisel_1.11.8_linux_386.gz" | sudo tee -a download.txt
 echo "https://github.com/hugsy/gdb-static/raw/master/gdb-7.10.1-x32" | sudo tee -a download.txt
-echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64" | sudo tee -a download.txt
-echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32" | sudo tee -a download.txt
+echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy64s" | sudo tee -a download.txt
+echo "https://github.com/DominicBreuker/pspy/releases/download/v1.2.1/pspy32s" | sudo tee -a download.txt
 
 
 
@@ -958,6 +959,7 @@ fi
 #File singoli da scaricare nella cartella
 cd $folderWin
 sudo chown $(whoami):$(whoami) $folderWin
+sudo rm -f download.txt
 # Crea il file download.txt con 10 URL
 cat << EOF > download.txt
 https://github.com/carlospolop/PEASS-ng/releases/download/20220508/winPEAS.bat
