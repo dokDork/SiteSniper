@@ -956,6 +956,7 @@ fi
 
 #File singoli da scaricare nella cartella
 cd $folderWin
+sudo chown $(whoami):$(whoami) $folderWin
 # Crea il file download.txt con 10 URL
 cat << EOF > download.txt
 https://github.com/carlospolop/PEASS-ng/releases/download/20220508/winPEAS.bat
@@ -968,8 +969,8 @@ https://github.com/AlessandroZ/LaZagne/releases/download/2.4.3/lazagne.exe
 https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nmap.exe
 https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/nping.exe
 https://github.com/andrew-d/static-binaries/raw/master/binaries/windows/x86/ncat.exe
-https://github.com/jpillora/chisel/releases/download/v1.7.4/chisel_1.7.4_windows_386.gz
 https://github.com/gentilkiwi/mimikatz/releases/download/2.2.0-20220919/mimikatz_trunk.zip
+https://github.com/jpillora/chisel/releases/download/v1.11.8/chisel_1.11.8_darwin_amd64.gz
 EOF
 # Scarica i file utilizzando wget
 printf "\n===================================\n"
@@ -979,7 +980,7 @@ wget -N -i download.txt
 #completo l'installazione di chisel
 printf "\n===================================\n"
 echo "[i] chisel installation"
-sudo gunzip chisel_1.7.4_windows_386.gz 
+sudo gunzip chisel_1.11.8_darwin_amd64.gz 
 sudo mv chisel_1.7.4_windows_386 chisel.exe 
 sudo upx brute chisel.exe
 
