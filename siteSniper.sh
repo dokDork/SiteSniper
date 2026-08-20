@@ -895,6 +895,7 @@ fi
 
 #File singoli da scaricare nella cartella
 cd $folderLin
+sudo chown $(whoami):$(whoami) $folderLin
 # Crea il file download.txt con 10 URL
 sudo touch download.txt
 echo "https://github.com/carlospolop/PEASS-ng/releases/latest/download/linpeas.sh" | sudo tee -a download.txt
@@ -981,7 +982,7 @@ wget -N -i download.txt
 printf "\n===================================\n"
 echo "[i] chisel installation"
 sudo gunzip chisel_1.11.8_darwin_amd64.gz 
-sudo mv chisel_1.7.4_windows_386 chisel.exe 
+sudo mv chisel_1.11.8_darwin_amd64 chisel.exe 
 sudo upx brute chisel.exe
 
 # SharpCollection
