@@ -69,3 +69,5 @@ Optional: You can insert a shortcut to move faster through the tool.
 echo "bind-key C-n run-shell \"tmux kill-session -t #{session_name}\"" >> ~/.tmux.conf
 ```
 
+---
+Author: Luigi Capuzzello (dokDork) · [Website](https://capuzzello.altervista.org/) · [LinkedIn](https://www.linkedin.com/in/luigi-capuzzello/)
